@@ -43,7 +43,7 @@ const AdvertiserDetailsPage = () => {
         ToastError(error.message);
       }
     })();
-  }, []);
+  }, [advertiserId]);
 
   useEffect(() => {
     const getData = (async () => {
@@ -61,7 +61,7 @@ const AdvertiserDetailsPage = () => {
         ToastError(error.message);
       }
     })();
-  }, []);
+  }, [advertiserId]);
 
   const handleBack = () => {
     setShowPost(false);

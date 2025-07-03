@@ -40,7 +40,7 @@ const Layout = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     (async () => {
