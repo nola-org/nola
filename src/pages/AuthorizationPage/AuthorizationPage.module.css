@@ -1,0 +1,22 @@
+.top_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.return {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 16px;
+  line-height: 48px;
+  letter-spacing: var(--primary-letter);
+}
+
+.title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 48px;
+  letter-spacing: var(--primary-letter);
+}

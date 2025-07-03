@@ -1,0 +1,36 @@
+.title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+}
+
+.registrationCheck_container {
+  display: flex;
+  height: 60vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.description {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #333333;
+  text-align: center;
+  padding: 16px 45px;
+}
+
+.authorizationCheck {
+  font-size: 14px;
+  line-height: 18px;
+  color: #333333;
+  text-align: center;
+  padding: 0 80px;
+}
+
+.authorizationLinks {
+  color: #435bd7;
+}

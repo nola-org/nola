@@ -1,0 +1,96 @@
+.inputForm {
+  width: calc(100% - 52px);
+  border-radius: 12px;
+  border: 1px solid;
+  padding: 15px 24px;
+  margin-bottom: 18px;
+  color: #9e9e9e;
+  position: relative;
+}
+
+.inputForm:active,
+:focus {
+  outline: #000000;
+  border-color: #000000;
+  color: #000000;
+}
+
+.active {
+  outline: #000000;
+  border-color: #000000;
+  color: #000000;
+}
+
+.textInfo {
+  margin: auto;
+  width: 231px;
+  font-family: Manrope;
+  font-size: 9px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 12px;
+}
+.spanPolicy {
+  cursor: pointer;
+  margin-left: 2px;
+  color: #435bd7;
+}
+.inputContainer {
+  position: relative;
+}
+
+.passwordInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.img_error {
+  position: absolute;
+  top: 18%;
+  display: block;
+  right: 20px;
+  width: 20px;
+  height: 26px;
+}
+
+.eyeIcon {
+  color: #9e9e9e;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+.error {
+  color: #da2e2e;
+}
+
+.errorText {
+  color: #da2e2e;
+  font-size: 12px;
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  /* background-color: white; */
+  padding: 0 5px;
+  z-index: 1;
+}
+
+.errorPlaceholder::placeholder{
+  color: rgba(218, 46, 46, 1);
+}
+
+.btn_text {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 48px;
+  letter-spacing: var(--primary-letter);
+  color: #f8f8f8;
+}
+
+.btn_valid button {
+  background-color: #eccd43;
+  color: #f8f8f8;
+}

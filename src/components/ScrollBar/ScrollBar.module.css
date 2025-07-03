@@ -1,0 +1,85 @@
+.authContainer {
+  display: flex;
+  justify-content: center;
+  gap: 95px;
+}
+
+.auth,
+.authDark {
+  text-decoration: none;
+  padding: 30px 0;
+  font-weight: 500;
+  font-size: 16px;
+  color: #9e9e9e80;
+  line-height: 1.17;
+  position: relative;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  background-color: transparent;
+  transition: color 0.3s ease;
+}
+
+.authDark {
+  color: #ffffff;
+}
+
+.auth:hover,
+.auth.active {
+  font-weight: 600;
+  color: #333333;
+}
+
+.authDark:hover,
+.authDark.activeDark {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.auth::after,
+.authDark::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 60%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 4px;
+  background-color: #9e9e9e80;
+  border-radius: 2px;
+  transition: height 0.3s ease, background-color 0.3s ease;
+}
+
+.authDark::after {
+  background-color: rgb(150, 145, 145);
+}
+
+.auth.active::after,
+.auth:hover::after {
+  height: 4px;
+  background-color: #333333;
+}
+
+.authDark.activeDark::after,
+.authDark:hover::after {
+  height: 4px;
+  background-color: #ffffff;
+}
+
+.iconDark,
+.icon {
+  position: absolute;
+  top: 26px;
+  right: -30px;
+
+  display: flex;
+  align-items: center;
+}
+
+.iconDark svg path {
+  stroke: #ffffff;
+}
+
+.icon svg path {
+  stroke: #18171780;
+}

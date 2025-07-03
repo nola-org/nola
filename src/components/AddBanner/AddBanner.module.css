@@ -1,0 +1,106 @@
+.loader {
+  position: absolute;
+  top: 240px;
+  left: -1%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30vh;
+}
+
+.addPhoto_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 228px;
+  background-color: #fdf9e8;
+  border-radius: 12px;
+  margin-top: 42px;
+  margin-bottom: 32px;
+}
+
+.img_menu_container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 43px;
+}
+
+.img_menu {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.overBanner {
+  position: absolute;
+  top: 24px;
+  left: 16px;
+}
+
+.underBanner {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 16px;
+  color: #666666;
+}
+
+.underBanner_description {
+  position: absolute;
+  bottom: 14px;
+}
+
+.addPhoto_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  background-color: #f8f8f8;
+}
+
+.addPhoto {
+  display: none;
+}
+
+.banner {
+  width: 90px;
+  height: 90px;
+}
+
+.turn {
+  transform: rotate(90deg);
+}
+
+@media screen and (min-width: 400px) {
+  .addPhoto_item {
+    width: 110px;
+    height: 110px;
+  }
+
+  .banner {
+    width: 110px;
+    height: 110px;
+  }
+
+  .underBanner {
+    bottom: 14px;
+  }
+
+  .img_menu_container {
+    bottom: 33px;
+  }
+
+  .underBanner_description {
+    bottom: 8px;
+  }
+}

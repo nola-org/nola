@@ -1,0 +1,92 @@
+.container {
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+}
+
+.imageForm {
+  margin: 54px auto 32px auto;
+  width: 147px;
+  height: 116px;
+  padding-left: 35px;
+}
+
+.titleForm {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: var(--primary-letter);
+  text-align: center;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 8px;
+}
+
+.infoForm {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: var(--primary-letter);
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+  margin-bottom: 16px;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  height: 55vh;
+}
+
+.inputForm {
+  width: calc(100% - 52px);
+  border-radius: 12px;
+  border: 1px solid;
+  padding: 15px 24px;
+  border-color: var(--primary-color);
+}
+
+.active {
+  outline: #000000;
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+.goBack {
+  display: flex;
+  align-items: center;
+}
+.titleRecovery {
+  padding-left: 60px;
+  font-size: 20px;
+}
+
+.inputContainer {
+  position: relative;
+  flex-grow: 1;
+}
+
+.errorText {
+  color: rgba(218, 46, 46, 1);
+  font-size: 12px;
+  position: absolute;
+  top: 54px;
+  padding: 0 5px;
+  z-index: 1;
+}
+
+.errorPlaceholder::placeholder {
+  color: rgba(218, 46, 46, 1);
+}
+
+.img_error {
+  position: absolute;
+  top: 4%;
+  display: block;
+  right: 20px;
+  width: 20px;
+  height: 26px;
+}
+
+.btn_container {
+  flex-shrink: 0;
+  margin-bottom: 32px;
+}

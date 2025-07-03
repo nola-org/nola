@@ -1,0 +1,82 @@
+.main {
+  padding-bottom: 100px;
+}
+
+.nav {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0%;
+  left: 0%;
+  z-index: 50;
+  text-align: center;
+  width: 100%;
+  height: 80px;
+}
+
+.list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item {
+  position: relative;
+  display: inline-block;
+  width: 75px;
+  height: 83px;
+}
+
+.icon_save svg {
+  position: absolute;
+  top: 20px;
+  left: 58%;
+  height: 32px;
+  transform: translate(-55%, -2px);
+}
+
+.iconDark svg path {
+  stroke: #ffffff;
+}
+
+.iconDark svg rect {
+  fill: rgb(28 26 26);
+}
+
+.iconDark svg circle {
+  stroke: #ffffff;
+}
+
+.iconActive svg {
+  fill: #ffffff;
+}
+
+.iconDarkActive svg {
+  fill: rgb(28 26 26);
+}
+
+.iconDarkActiveWidth svg path {
+  stroke-width: 4;
+}
+
+.iconActiveWidth svg path {
+  stroke-width: 4;
+}
+
+.iconDarkActiveWidth svg circle {
+  stroke-width: 4;
+}
+
+.iconActiveWidth svg circle {
+  stroke-width: 4;
+}
+
+@media screen and (max-width: 370px) {
+  .icon {
+    width: 70px;
+  }
+}
