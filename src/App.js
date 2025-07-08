@@ -117,11 +117,11 @@ function App() {
 
               <Route path="search" element={<SearchPage />} />
               <Route
-                path="search/categories"
+                path="search/categories/:id"
                 element={<SearchCategoriesPage />}
               />
               <Route
-                path="search/categories/searchEngineResults"
+                path="search/categories/:id/searchEngineResults/:searchId"
                 element={<SearchEngineResultsPage />}
               />
 
@@ -221,8 +221,9 @@ function App() {
                 />
               }
             />
-
-            <Route path="/main/:postId" element={<PostDetailsPage />} />
+{/* 
+            <Route path="/main/:postId" element={<PostDetailsPage />} /> */}
+                    <Route path="/main/:postId" element={<PostDetailsPage />} />
 
             <Route path="/:advertiserId" element={<AdvertiserDetailsPage />} />
 
@@ -301,6 +302,9 @@ function App() {
             />
             <Route path="/verify-email/:token" element={<ConfirmEmailPage />} />
             <Route path="/verify-email/" element={<ConfirmEmailPage />} />
+
+            <Route path="/confirm-email/:token" element={<ConfirmEmailPage />} />
+            <Route path="/confirm-email/" element={<ConfirmEmailPage />} />
           </Routes>
         </Suspense>
       )}

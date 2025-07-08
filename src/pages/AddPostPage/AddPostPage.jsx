@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { postPostApi } from "../../services/https/https";
+import { getAccountApi, postPostApi } from "../../services/https/https";
 import { ToastContainer } from "react-toastify";
 import { nanoid } from "nanoid";
 import css from "./AddPostPage.module.css";
@@ -18,79 +18,74 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   const [formConfig, setFormConfig] = useState(false);
   const [postSuccessfullyAdded, setPostSuccessfullyAdded] = useState(false);
   const [validForm, setValidForm] = useState(false);
-  const [sendPost, setSendPost] = useState({});
+  // const [sendPost, setSendPost] = useState({});
+  const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
-    return (
-      // JSON.parse(localStorage.getItem("previewPost"))?.links ||
-      location?.state?.links ?? [{ id: nanoid(), href: "", action: "" }]
-    );
+    return location?.state?.links ?? [{ id: nanoid(), href: "", action: "" }];
   });
-  const [post, setPost] = useState(() => {
+  const [data, setData] = useState(() => {
     return (
-      // JSON.parse(localStorage.getItem("previewPost")) ??
       location.state ?? {
-        // draftsEdit ?? // postEdit ??
-        description: "",
         title: "",
+        description: "",
         category: {
-          index: "",
+          id: "",
           name: "",
-          title: "",
-          // subcategory: [
-          //   {
-          //     name: ""
-          //   }
-          // ],
         },
         subcategory: {
+          id: "",
           name: "",
         },
         callToAction: "" || "Read more",
         callToActionLinks: "",
         banners: [],
+        // links: [{ id: nanoid(), href: "", action: "" }],
         status: "pending",
       }
     );
   });
 
-  // useEffect(() => {
-  //   localStorage.setItem("previewPost", JSON.stringify(post));
-  // }, [post]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await getAccountApi();
+
+      setProfile(data.profile_picture?.replace("image/upload/", ""));
+    })();
+  }, []);
 
   const handleToggleModal = () => {
     setIsModal((prev) => !prev);
   };
 
   const cancelAddPost = () => {
-    // localStorage.removeItem("previewPost");
     navigate("/main");
     setIsModal((prev) => !prev);
   };
 
   const createPostDrafts = async () => {
     try {
-      // const data = await postDraftsPost(post)
-      const data = await postPostApi({ ...post, status: "draft" });
-      console.log("drafts", data);
+       setIsModal((prev) => !prev);
+      const dataRes = await postPostApi({ ...data, status: "draft" });
+      console.log("drafts", dataRes);
 
-      // localStorage.setItem("backend", JSON.stringify(post));
-
-      // localStorage.removeItem("previewPost");
-      // localStorage.removeItem("filterCategory");
       navigate("/main");
-      setIsModal((prev) => !prev);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (post.title !== "" && post.category !== "" && post.subcategory !== "") {
+    if (
+      data.title !== "" &&
+      data.category !== "" &&
+      data.subcategory !== "" &&
+      data.banners.length !== 0
+    ) {
       setValidForm(true);
     } else {
       setValidForm(false);
     }
-  }, [post.category, post.subcategory, post.title]);
+  }, [data.category, data.subcategory, data.title, data.banners]);
 
   const handleBack = () => {
     setIsModal((prev) => !prev);
@@ -98,14 +93,12 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
 
   const handleSubmitPost = async (e) => {
     e.preventDefault();
-    console.log("post", post);
+    console.log("post", data);
     try {
-      const data = await postPostApi({ ...post, status: "pending" });
+      const dataRes = await postPostApi({ ...data, status: "pending" });
 
-      setSendPost(data);
+      // setSendPost(data);
       setPostSuccessfullyAdded(true);
-      // localStorage.removeItem("previewPost");
-      localStorage.removeItem("filterCategory");
 
       setTimeout(() => {
         navigate("/main");
@@ -116,14 +109,14 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   };
 
   const handlePreview = () => {
-    console.log("handlePreview");
+    console.log("handlePreview", data);
     navigate("/main/addPost/previewAdvertisemet", {
       state: {
-        post,
+        data,
+        profile,
         from: location.pathname,
       },
     });
-    // navigate("/main/addPost/previewAdvertisemet", { state: post });
   };
 
   return (
@@ -131,12 +124,6 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
       {!postSuccessfullyAdded && (
         <>
           <ToastContainer />
-          {/* {formConfig && (
-            <HandleFormConfig
-              message={"Sucsessfull add a new advertisement"}
-              navigatePage={"/main/accountAdverticer"}
-            />
-          )} */}
           <div className={css.top_container} onClick={handleBack}>
             <GoBackButton
               to=""
@@ -151,14 +138,13 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
 
           <form onSubmit={handleSubmitPost}>
             <CreatePost
-              setPost={setPost}
-              post={post}
+              setPost={setData}
+              post={data}
               links={links}
               setLinks={setLinks}
             />
 
             <div className={css.btn_container}>
-              {/* <NavLink to="/main/addPost/previewAdvertisemet"> */}
               <button
                 type="button"
                 className={css.btn_preview_container}
@@ -168,7 +154,6 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
                   Preview
                 </span>
               </button>
-              {/* </NavLink> */}
 
               <button
                 type="submit"
@@ -196,7 +181,8 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
         </Modal>
       )}
       {postSuccessfullyAdded && (
-        <MessagePostOnModeration data={sendPost}>
+        <MessagePostOnModeration
+        >
           Advertisement is under moderation. <br />
           It will take about 15 minutes.
         </MessagePostOnModeration>

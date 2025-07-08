@@ -1,4 +1,4 @@
-import css from "./SearchEngineResultsPage.module.css"
+import css from "./SearchEngineResultsPage.module.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -6,17 +6,47 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
+import { useEffect, useState } from "react";
+import {
+  getAllPostApi,
+  getPostsByCategoryId,
+  getSubCategoriesId,
+} from "../../services/https/https";
+import { useParams } from "react-router-dom";
+import { useSavePost } from "../../services/hooks/useSavePost";
+import { Posts } from "../../components/Posts/Posts";
+import { ToastError } from "../../services/ToastError/ToastError";
+import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 
 const SearchEngineResultsPage = () => {
-    return (
-        <div>
-            
+  const [data, setData] = useState([]);
+  const { searchId } = useParams();
+  const { isSaved, toggleSave } = useSavePost();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getData = (async () => {
+      try {
+        const { data } = await getAllPostApi();
+        const filtered = data.results.filter(
+          (post) => post.subcategory.id.toString() === searchId
+        );
+        setData(filtered);
+      } catch (error) {
+        ToastError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [searchId]);
+
+  return (
+    <div>
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
         loop={true}
-          
         slidesPerView={"auto"}
         coverflowEffect={{
           rotate: 0,
@@ -63,8 +93,34 @@ const SearchEngineResultsPage = () => {
           ></div>
         </div>
       </Swiper>
-</div>
-    )
-}
 
-export default SearchEngineResultsPage
+      {loading && (
+        <div className="loader">
+          <LoaderSpiner />
+        </div>
+      )}
+      <ul className={css.list}>
+        {data &&
+          data?.map((post) => (
+            <>
+              <Posts
+                key={post.id}
+                post={post}
+                handleSavePost={() => toggleSave(post)}
+                savedPost={isSaved(post.id)}
+              />
+            </>
+          ))}
+      </ul>
+      {data?.length === 0 && (
+        <div className={css.container}>
+          <p className={`${css.noResults} dark:text-white`}>
+            No results found for your query.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SearchEngineResultsPage;

@@ -42,11 +42,18 @@ export const getAccountId = async (id) => {
 //   return data;
 // };
 
-export const putAccoutApi = async ({ ...body }, id) => {
-  const { data } = await instance.put(`/users/${id}`, body);
-  return data;
-};
+// export const putAccoutApi = async ({ ...body }, id) => {
+//   const { data } = await instance.put(`/users/${id}`, body);
+//   return data;
+// };
 // =======
+export const getPostUserApi = async () => {
+  try {
+    return await instance.get(`/ads/my/`);
+  } catch (error) {
+    console.log("error", error.message);
+  }
+};
 
 // -----------POSTS-------------
 export const getAllPostApi = async () => {
@@ -68,14 +75,6 @@ export const getPostIdApi = async (id) => {
 export const getPostUserIdApi = async (id) => {
   try {
     return await instance.get(`/public/users/${id}/ads/`);
-  } catch (error) {
-    console.log("error", error.message);
-  }
-};
-
-export const getPostUserApi = async (id) => {
-  try {
-    return await instance.get(`/ads/my/`);
   } catch (error) {
     console.log("error", error.message);
   }
@@ -104,7 +103,7 @@ export const deletePostApi = async (id) => {
 
 export const getDraftsApi = async () => {
   try {
-    return await instance.get("/ads/?status=draft");
+    return await instance.get("/ads/my/");
   } catch (error) {
     console.log(error);
   }
@@ -113,33 +112,6 @@ export const getDraftsApi = async () => {
 export const getDraftsPostId = async (id) => {
   try {
     const { data } = await instance.get(`/ads/${id}/?status=draft`);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const postDraftsPost = async (body) => {
-  try {
-    const { data } = await instance.post(`/Drafts`, body);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getDraftsPost = async () => {
-  try {
-    const { data } = await instance.get(`/Drafts`);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const patchDraftsPostId = async (id, body) => {
-  try {
-    const { data } = await instance.put(`/Drafts/${id}`, body);
     return data;
   } catch (error) {
     console.log(error);
@@ -155,8 +127,53 @@ export const deleteDraftsPostId = async (id) => {
   }
 };
 
-// --------categories----------
-export const getCategories = async (id) => {
+
+// export const postDraftsPost = async (body) => {
+//   try {
+//     const { data } = await instance.post(`/Drafts`, body);
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// export const getDraftsPost = async () => {
+//   try {
+//     const { data } = await instance.get(`/Drafts`);
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// export const patchDraftsPostId = async (id, body) => {
+//   try {
+//     const { data } = await instance.put(`/Drafts/${id}`, body);
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+// --------Save post----------
+export const getSavePostApi = async () => {
+  const { data } = await instance.get(`/ads/saved/`);
+  return data;
+};
+
+export const postSavePostApi = async (id, savePost) => {
+  const { data } = await instance.post(`/ads/${id}/save/`, savePost);
+  return data;
+};
+
+export const postUnsavePostApi = async (id) => {
+  const { data } = await instance.post(`/ads/${id}/save/`);
+  return data;
+};
+
+// --------Categories and SubCategories----------
+export const getCategories = async () => {
   try {
     const { data } = await instance.get(`/categories/`);
     return data;
@@ -165,12 +182,56 @@ export const getCategories = async (id) => {
   }
 };
 
-// ---------RecoverPassword-------
+export const getCategoriesId = async (id) => {
+  try {
+    const { data } = await instance.get(`/categories/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const getSubCategories = async () => {
+  try {
+    const { data } = await instance.get(`/subcategories/`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getSubCategoriesId = async (id) => {
+  try {
+    const { data } = await instance.get(`/subcategories/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// export const patchPostCategory = async (postId, categoryId) => {
+//   try {
+//     const { data } = await instance.patch(`/ads/${postId}/categories/`, {
+//       id: categoryId,
+//     });
+//     return data;
+//   } catch (error) {
+//     console.error("Помилка оновлення категорії поста:", error);
+//   }
+// };
+
+// -----------Password-------
 
 export const postForgotPassword = async (email) => {
   const { data } = await instance.post(
     `/Account/forgot-password?email=${email}`
   );
+  return data;
+};
+
+export const postPasswordChange = async (body) => {
+  const data = await instance.post(`/auth/change-password/`, body);
   return data;
 };
 
@@ -184,67 +245,9 @@ export const getResetPassword = async (email, token) => {
   return data;
 };
 
-// -----------POST-------------
-export const getAllAdverticerPostApi = async (token) => {
-  try {
-    return fetch("https:... /POST ??", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
+// ---------EmailChange-------
 
-export const getPostApi = async (token, id) => {
-  try {
-    return fetch(`https://.../POST ??/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-// -----------LiNKS-------------
-export const getLinksApi = async (token) => {
-  try {
-    const { data } = await axios.get("https://.../account/  LINKS ??", {
-      headers: { Authorization: `${token}` },
-    });
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const postLinksApi = async (token, links) => {
-  try {
-    await fetch("https://.../account/  LINKS ?? ", {
-      method: "POST",
-      body: JSON.stringify(links),
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const deleteLinksApi = async (token, id) => {
-  const { data } = await axios.delete(`https://.../account/  LINKS ?? /${id}`, {
-    headers: { Authorization: `${token}` },
-  });
+export const postEmailChange = async (email) => {
+  const data = await instance.post(`/auth/email/change/`, email);
   return data;
 };

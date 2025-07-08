@@ -14,6 +14,7 @@ import { CreatePost } from "../../components/CreatePost/CreatePost";
 import { Toastify } from "../../services/Toastify/Toastify";
 import { MessagePostOnModeration } from "../../components/MessagePostOnModeration/MessagePostOnModeration";
 import { nanoid } from "nanoid";
+import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 
 const EditPostPage = () => {
   const location = useLocation();
@@ -32,8 +33,8 @@ const EditPostPage = () => {
     data.length !== 0 || {
       description: "",
       title: "",
-      category: { index: null, title: "" },
-      subcategory: { index: null, title: "" },
+      category: { name: "" },
+      subcategory: { name: "" },
       callToAction: "" || "Read more",
       callToActionLinks: "",
       banners: [],
@@ -59,7 +60,6 @@ const EditPostPage = () => {
       }
     })();
 
-    // localStorage.setItem("previewPost", JSON.stringify(post));
   }, [params, post, location.state]);
 
   const handleChangePost = ({ target }) => {
@@ -77,11 +77,12 @@ const EditPostPage = () => {
     try {
       const res = await patchPostApi(params.editPostId, {
         ...data,
+        category: { name: data.category.name },
+        subcategory: { name: data.subcategory.name },
         status: "pending",
       });
 
       setPostSuccessfullyAdded(true);
-      localStorage.removeItem("previewPost");
 
       setTimeout(() => {
         navigate("/main");
@@ -99,8 +100,7 @@ const EditPostPage = () => {
         from: location.pathname,
       },
     });
-    // navigate("/main/addPost/previewAdvertisemet", { state: data });
-  };
+   };
 
   return (
     <div>
@@ -114,27 +114,40 @@ const EditPostPage = () => {
       )} */}
       {!postSuccessfullyAdded && (
         <div>
-          <form onSubmit={handleSubmitPost}>
-            {/* post={data} setPost={setData} */}
-            <CreatePost
-              post={data}
-              setPost={setData}
-              links={links}
-              setLinks={setLinks}
-            />
+          {data && Object.keys(data)?.length > 0 ? (
+            <form onSubmit={handleSubmitPost}>
 
-            <div className={css.btn_container} onClick={handlePreview}>
-              {/* <NavLink to="/main/addPost/previewAdvertisemet"> */}
-              <button type="button" className={css.btn}>
-                <span className={css.btn_back}> Preview</span>
-              </button>
-              {/* </NavLink> */}
+              <CreatePost
+                post={data}
+                setPost={setData}
+                links={links}
+                setLinks={setLinks}
+              />
 
-              <button type="submit" className={`${css.btn} ${css.btn_active}`}>
-                <span className={css.btn_back_active}>Publish</span>
-              </button>
+              <div className={css.btn_container}>
+                {/* <NavLink to="/main/addPost/previewAdvertisemet"> */}
+                <button
+                  type="button"
+                  className={css.btn}
+                  onClick={handlePreview}
+                >
+                  <span className={css.btn_back}> Preview</span>
+                </button>
+                {/* </NavLink> */}
+
+                <button
+                  type="submit"
+                  className={`${css.btn} ${css.btn_active}`}
+                >
+                  <span className={css.btn_back_active}>Publish</span>
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="loader">
+              <LoaderSpiner />
             </div>
-          </form>
+          )}
         </div>
       )}
       {postSuccessfullyAdded && (

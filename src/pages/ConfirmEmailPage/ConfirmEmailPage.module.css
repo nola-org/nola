@@ -6,6 +6,16 @@
   justify-content: center;
 }
 
+.hero_title{
+  font-family: Poppins;
+  font-weight: 700;
+  font-size: 16px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-align: center;  
+}
+
 .title_container{
   text-align: center;
   margin-top: 50px;

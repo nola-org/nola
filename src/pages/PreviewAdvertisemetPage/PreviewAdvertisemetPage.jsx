@@ -13,7 +13,7 @@ import { MessagePostOnModeration } from "../../components/MessagePostOnModeratio
 import { Banners } from "../../components/Banners/Banners";
 import { ToastError } from "../../services/ToastError/ToastError";
 import { ToastContainer } from "react-toastify";
-import { patchPostApi } from "../../services/https/https";
+import { patchPostApi, postPostApi } from "../../services/https/https";
 
 const PreviewAdvertisemetPage = ({ setPreview }) => {
   const navigate = useNavigate();
@@ -21,8 +21,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
 
   const [validForm, setValidForm] = useState(false);
   const [preview, sePreview] = useState(() => {
-    // return JSON.parse(localStorage.getItem("previewPost")) || "";
-    return state.post || state.data || [];
+    return state || state.post || state.data || {};
   });
 
   const [postSuccessfullyAdded, setPostSuccessfullyAdded] = useState(false);
@@ -41,13 +40,25 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
 
   const handleConfirmClick = async () => {
     try {
-      const res = await patchPostApi(preview.id, {
-        ...preview,
-        status: "pending",
-      });
+      if (preview?.data?.id) {
+        const res = await patchPostApi(preview?.data?.id, {
+          ...preview.data,
+          category: { name: preview?.data.category.name },
+          subcategory: { name: preview?.data.subcategory.name },
+          status: "pending",
+        });
+
+        setPostSuccessfullyAdded(true);
+
+        setTimeout(() => {
+          navigate("/main");
+        }, 3000);
+        return;
+      }
+
+      const dataRes = await postPostApi({ ...preview.data, status: "pending" });
+      console.log("dataRes", dataRes);
       setPostSuccessfullyAdded(true);
-      // localStorage.removeItem("previewPost");
-      localStorage.removeItem("filterCategory");
 
       setTimeout(() => {
         navigate("/main");
@@ -58,7 +69,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
   };
 
   const handleBack = () => {
-    navigate(`${state.from}`, { state: preview || [] });
+    navigate(`${state.from}`, { state: preview?.data || [] });
   };
 
   return (
@@ -77,7 +88,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
               <p className={css.title}>Advertisement preview</p>
 
               {preview &&
-                [preview]?.map(({ banners }) => (
+                [preview?.data]?.map(({ banners }) => (
                   <>
                     <Swiper
                       slidesPerView={1}
@@ -147,16 +158,19 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
                         ></div>
                       </div>
                     </Swiper>
-                    {[preview]?.map(({ title, description, links }) => (
+                    {[preview.data]?.map(({ title, description, links }) => (
                       <>
                         <PostsAdverticer
                           title={title}
                           description={description}
                           links={links}
-                          profile_picture={preview.advertiser.profile_picture?.replace(
-                            "image/upload/",
-                            ""
-                          )}
+                          profile_picture={
+                            state?.profile ||
+                            preview?.advertiser?.profile_picture?.replace(
+                              "image/upload/",
+                              ""
+                            )
+                          }
                         />
                       </>
                     ))}

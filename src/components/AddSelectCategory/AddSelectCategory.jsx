@@ -1,133 +1,66 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
-import css from "./AddSelectCategory.module.css";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-import category from "../../assets/json/category.json";
-import subcategory from "../../assets/json/subcategory.json";
-import { useState } from "react";
-
+import css from "./AddSelectCategory.module.css";
 import { useCustomContext } from "../../services/Context/Context";
-import { nanoid } from "nanoid";
+import { getCategories } from "../../services/https/https";
 
 export const AddSelectCategory = ({ setPost, post }) => {
   const { theme } = useCustomContext();
 
-  const [categorySelect, setCategorySelect] = useState([]);
-  const [categoryIndex, setCategoryIndex] = useState(null);
-  const [findCategory, setFindCategory] = useState(() => {
-    return (
-      post?.category?.name ??
-      JSON.parse(localStorage.getItem("previewPost"))?.category?.name
-    );
-  });
-
-  const [subcategorySelect, setSubcategorySelect] = useState(
-    // []
-    () => {
-      return JSON.parse(localStorage.getItem("filterCategory")) || subcategory;
-    }
-  );
-  const [subcategoryIndex, setSubcategoryIndex] = useState(null);
-  const [findSubcategory, setFindSubcategory] = useState(() => {
-    return (
-      post.subcategory ??
-      JSON.parse(localStorage.getItem("previewPost"))?.subcategory
-    );
-  });
-
+  const [categories, setCategories] = useState([]);
+  const [filteredSubcategories, setFilteredSubcategories] = useState([]);
   const [disabledSelect, setDisabledSelect] = useState(true);
 
   useEffect(() => {
-    setCategorySelect(category);
-    setSubcategorySelect(
-      JSON.parse(localStorage.getItem("filterCategory")) || []
-    );
+    (async () => {
+      const fetchedCategories = await getCategories(); // [{ id, name, subcategories: [] }]
+      const formatted = fetchedCategories.results.map((cat) => ({
+        ...cat,
+        label: cat.name,
+        value: cat.id,
+        subcategories: cat.subcategories.map((sub) => ({
+          ...sub,
+          label: sub.name,
+          value: sub.id,
+        })),
+      }));
+      setCategories(formatted);
+    })();
+  }, []);
 
-    if (
-      !JSON.parse(localStorage.getItem("filterCategory")) &&
-      post.subcategory
-    ) {
-      const findCategoryIndex = categorySelect?.findIndex(
-        ({ label }) => label === findCategory
-      );
 
-      setCategoryIndex(findCategoryIndex);
-
-      const findSubcategoryIndex = subcategorySelect.findIndex(
-        ({ label }) => label === post?.subcategory?.name
-      );
-
-      setSubcategoryIndex(findSubcategoryIndex);
-
-      setSubcategorySelect(subcategorySelect);
-
-      return;
+  useEffect(() => {
+    if (post?.category?.id) {
+      const selected = categories.find((cat) => cat.id === post.category.id);
+      if (selected) {
+        setFilteredSubcategories(selected.subcategories);
+        setDisabledSelect(false);
+      }
     }
+  }, [post?.category?.id, post?.category?.name, categories]);
 
-    const findCategoryIndex = categorySelect?.findIndex(
-      ({ label }) => label === findCategory
-    );
-    setCategoryIndex(findCategoryIndex);
-
-    const findSubcategoryIndex = subcategorySelect?.findIndex(
-      ({ label }) => label === findSubcategory
-    );
-    setSubcategoryIndex(findSubcategoryIndex);
-    // eslint-disable-next-line
-  }, [categorySelect, findCategory, findSubcategory]);
-
-  const handleSelectCategoryPost = (categoryOption) => {
-    const subcategoryFilter = subcategory;
-
-    const filterCategoryId = subcategoryFilter?.filter(
-      ({ categoryId }) => categoryId === categoryOption.id
-    );
-
-    const categoryFindIndex = categorySelect?.findIndex(
-      (item) => item.label === categoryOption.label
-    );
-
+  const handleSelectCategoryPost = async (option) => {
     setPost((prev) => ({
-      ...post,
+      ...prev,
       category: {
-        ...prev.category,
-
-        index: nanoid(),
-        name: categoryOption.label,
-        title: categoryOption.label,
+        id: option.id,
+        name: option.name,
       },
+      subcategory: { id: "", name: "" },
     }));
-
-    setCategoryIndex(categoryFindIndex);
-    setSubcategorySelect(filterCategoryId);
-
+    setFilteredSubcategories(option.subcategories || []);
     setDisabledSelect(false);
-
-    localStorage.setItem("filterCategory", JSON.stringify(filterCategoryId));
   };
-
-  const handleSelectSubcategoryPost = (subcategoryOption) => {
-    const subcategoryIndex = subcategorySelect.findIndex(
-      (item) => item.value === subcategoryOption.value
-    );
-
+  console.log(post);
+  const handleSelectSubcategoryPost = (option) => {
     setPost((prev) => ({
-      ...post,
-
-      // category: {
-      //   ...prev.category,
-      //   // subcategory: [
-      //   //   {
-      //   //     name: subcategoryOption.label
-      //   //   }
-      //   // ],
-      // },
+      ...prev,
       subcategory: {
-        name: subcategoryOption.label,
+        id: option.id,
+        name: option.name,
       },
     }));
-
-    setSubcategoryIndex(subcategoryIndex);
   };
 
   const themeSelect = (theme) => ({
@@ -139,9 +72,11 @@ export const AddSelectCategory = ({ setPost, post }) => {
     },
   });
 
-  const selected_categotyOption = categorySelect[categoryIndex];
-  const selected_subCategotyOption = subcategorySelect[subcategoryIndex]?.label;
-  console.log("selected", post.subcategory.name);
+  const selectedCategoryOption =
+    categories.find((cat) => cat.id === post?.category?.id) || null;
+  const selectedSubcategoryOption =
+    filteredSubcategories.find((sub) => sub.id === post?.subcategory?.id) ||
+    null;
 
   return (
     <>
@@ -163,8 +98,8 @@ export const AddSelectCategory = ({ setPost, post }) => {
             }}
             theme={themeSelect}
             onChange={handleSelectCategoryPost}
-            value={selected_categotyOption}
-            options={categorySelect}
+            value={selectedCategoryOption}
+            options={categories}
           />
         ) : (
           <Select
@@ -176,8 +111,8 @@ export const AddSelectCategory = ({ setPost, post }) => {
             }}
             theme={themeSelect}
             onChange={handleSelectCategoryPost}
-            value={selected_categotyOption}
-            options={categorySelect}
+            value={selectedCategoryOption}
+            options={categories}
           />
         )}
       </label>
@@ -198,10 +133,10 @@ export const AddSelectCategory = ({ setPost, post }) => {
               }),
             }}
             theme={themeSelect}
-            isDisabled={disabledSelect}
-            value={selected_subCategotyOption}
-            options={subcategorySelect}
             onChange={handleSelectSubcategoryPost}
+            isDisabled={disabledSelect}
+            value={selectedSubcategoryOption}
+            options={filteredSubcategories}
           />
         ) : (
           <Select
@@ -213,10 +148,10 @@ export const AddSelectCategory = ({ setPost, post }) => {
               }),
             }}
             theme={themeSelect}
-            isDisabled={disabledSelect}
-            value={selected_subCategotyOption}
-            options={subcategorySelect}
             onChange={handleSelectSubcategoryPost}
+            isDisabled={disabledSelect}
+            value={selectedSubcategoryOption}
+            options={filteredSubcategories}
           />
         )}
       </label>
@@ -225,6 +160,6 @@ export const AddSelectCategory = ({ setPost, post }) => {
 };
 
 AddSelectCategory.propTypes = {
-  setPost: PropTypes.func,
-  post: PropTypes.object,
+  setPost: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired,
 };

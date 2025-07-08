@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { ToastError } from "../../services/ToastError/ToastError";
 import checked from "../../assets/icons/checked.svg";
-import registrationCheck from "../../assets/icons/registrationCheck.svg";
+import attention from "../../assets/icons/attention.svg";
 import css from "./ConfirmEmailPage.module.css";
 import { instance } from "../../services/axios";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
@@ -45,19 +45,29 @@ const ConfirmEmailPage = () => {
         <div className={css.container}>
           <img src={checked} alt="checked" />
           <div className={css.title_container}>
-            <h1>Success!</h1>
+            <h1 className={`${css.hero_title} dark:text-white`}>
+              Congratulations!
+            </h1>
             <p className={`${css.title} dark:text-white`}>
-              Your email address has been verified.
+              You are now with us!
             </p>
           </div>
+          <p className={`${css.title} dark:text-white`}>Go ahead</p>
           <NavLink to="/main/authorization" className={css.link}>
             Login
           </NavLink>
         </div>
       ) : (
         <div className={css.container}>
-          <img src={registrationCheck} alt="registrationCheck" />
-          <h1 className={`${css.title} dark:text-white`}>Error! Try again</h1>
+          <img src={attention} alt="registrationCheck" />
+          <div className={css.title_container}>
+            <h1 className={`${css.hero_title} dark:text-white`}>
+              Ouch! Something went wrong!
+            </h1>
+            <p className={`${css.title} dark:text-white`}>
+              Please try verifying again a little later
+            </p>
+          </div>
           <Link to="/main/authorization/registration" className={css.link}>
             Registration
           </Link>
@@ -68,14 +78,18 @@ const ConfirmEmailPage = () => {
 };
 
 export default ConfirmEmailPage;
-// c3f6c4b11b@emaily.pro
-// 44444Aa@
+// innadidenko29@gmail.com
+// 44444Aa@ --- 44445Aa@ --- 44444Aa@
 // inna
 // +
 
+// 60ef727a49@emaily.pro
+// test-5
+// 44444Aa@
+
 //27263c8870@emaily.pro
 // 44444Aa@
-// test
+// test +
 
 //5a75924153@emaily.pro
 // 44444Aa@

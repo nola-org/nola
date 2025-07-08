@@ -15,10 +15,10 @@ import { Modal } from "../Modal/Modal";
 const schema = yup.object().shape({
   email: yup
     .string()
-    // .matches(
-    //   /^[a-zA-Z0-9._%+-]+@(gmail\.com|ukr\.net|meta\.ua)$/,
-    //   "Please enter valid characters"
-    // )
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@(gmail\.com|ukr\.net|meta\.ua)$/,
+      "Please enter valid characters"
+    )
     .matches(/^[^\s]*$/, "Please enter valid characters")
     .matches(/^[^а-яА-ЯіІїЇєЄ]*$/, "Please enter valid characters")
     .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address")
@@ -135,17 +135,17 @@ const RegistrationForm = () => {
           // Toastify("Registration sucsessfull");
           // navigate("/main/accountAdverticer/adverticerEdit");
           // navigate("/main/authorization");
+          setFormData({
+            email: "",
+            password: "",
+            password_confirm: "",
+            username: "",
+          });
+          setErrors({});
+          setValidForm(false);
         } catch (error) {
           ToastError(error);
         }
-        setFormData({
-          email: "",
-          password: "",
-          password_confirm: "",
-          username: "",
-        });
-        setErrors({});
-        setValidForm(false);
       })
       .catch((validationErrors) => {
         const errorsMap = {};

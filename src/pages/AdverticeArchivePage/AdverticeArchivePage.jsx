@@ -23,6 +23,7 @@ import { useCustomContext } from "../../services/Context/Context";
 import { ReactComponent as Icon_Edit_Post } from "../../assets/icons/edit_post.svg";
 import relaunchPost from "../../assets/icons/relaunch_post.svg";
 import deletePost from "../../assets/icons/delete_post.svg";
+import { Banners } from "../../components/Banners/Banners";
 
 const AdverticeArchivePage = () => {
   const { theme, setTheme } = useCustomContext();
@@ -44,9 +45,6 @@ const AdverticeArchivePage = () => {
     setLoading(true);
     const getData = (async () => {
       try {
-        //  await getAllAdverticerPostApi.status || getAccountApi.status
-        // const { data } = await getAllPostApi();
-        // const { data } = await getAccountApi();
         const dataPublication = await getPostUserApi();
 
         const res = dataPublication?.data.filter(
@@ -101,7 +99,6 @@ const AdverticeArchivePage = () => {
 
   const handleRecoverePost = async (id) => {
     const [recoverePost] = post.filter((item) => item.id === id);
-    console.log("recoverePost", recoverePost);
 
     try {
       handleToggleModal();
@@ -144,7 +141,7 @@ const AdverticeArchivePage = () => {
               `}
             >
               <img
-                src={banners[0]}
+                src={banners[0] || banners[1] || banners[2]}
                 alt=""
                 className={css.img}
                 onClick={() => handlePost(id)}
@@ -238,7 +235,7 @@ const AdverticeArchivePage = () => {
 
                 <p className={css.return}>Return to the feed</p>
               </div>
-              <img src={banners} alt="" className={css.img} />
+              <Banners banner={banners} />
               <PostsAdverticer
                 id={id}
                 title={title}

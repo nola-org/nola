@@ -165,6 +165,7 @@ button:focus {
 .css-ax1btm-control,
 .css-4kykm2-control,
 .css-1mth05l-control,
+.css-jm9bgz-control,
 .css-13lgg0t-control {
   border-radius: 12px !important;
   border: 1px solid #8d8d8d !important;
@@ -183,7 +184,10 @@ button:focus {
 .css-1cy7ion-control,
 .css-8ivij3-control,
 .css-ax1btm-control,
-.css-4kykm2-control {
+.css-4kykm2-control,
+.css-jm9bgz-control,
+.css-tm283i-controlб
+.css-1si4de2-control{
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
@@ -205,12 +209,14 @@ button:focus {
 .css-1856o3w-control:hover,
 .css-7pfxy0-control:hover,
 .css-1cy7ion-control:hover,
-.css-ffxk2k-control:hover {
+.css-ffxk2k-control:hover,
+.css-1si4de2-control:hover {
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
   border-color: #8d8d8d !important;
   box-shadow: 0 0 0 0 transparent !important;
+  border-radius: 12px !important;
 }
 
 .css-1nmdiq5-menu {

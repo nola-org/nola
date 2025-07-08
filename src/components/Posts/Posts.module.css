@@ -78,7 +78,7 @@
 
 .save_btn {
   background-color: transparent;
-  border-color: transparent;
+  border-color: transparent !important;
   margin-left: auto;
 }
 

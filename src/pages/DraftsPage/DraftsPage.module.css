@@ -31,6 +31,11 @@
   flex-basis: calc((100% - 36px) / 2);
   margin-top: 16px;
   margin-right: 16px;
+  cursor: pointer;
+}
+
+.drafts_item:not(:first-child) {
+  pointer-events: none;
 }
 
 .drafts_img,
@@ -77,6 +82,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: auto;
 }
 
 .edit {

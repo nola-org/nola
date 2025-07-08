@@ -48,23 +48,6 @@ const AdverticerPublicationsPage = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  //   useEffect(() => {
-  //     (async () => {
-  //       console.log(post[0]);
-  //       // return{
-  //       //   ...post[0],
-  //       //   status: "pending"
-  //       // }
-
-  //        const res = await patchPostApi(4, {
-  //         ...post[0],
-  //         status: "pending"
-  //       })
-  //         console.log("data MessagePostOnModeration", res);
-
-  // })()
-  //   }, [post])
-
   useEffect(() => {
     setLoading(true);
     const getData = (async () => {
@@ -173,7 +156,6 @@ const AdverticerPublicationsPage = () => {
     Toastify("Post has been launched");
   };
   const postMenuActive = (id) => {
-    console.log("postMenuActive", id);
     setMenuActive((prev) => !prev);
     setPostActiveId(id);
   };
@@ -202,7 +184,7 @@ const AdverticerPublicationsPage = () => {
               }`}
             >
               <img
-                src={banners[0]}
+                src={banners[0] || banners[1] || banners[2]}
                 alt=""
                 className={`${css.img}  
                  ${status === "pending" && css.imgOnModeration}

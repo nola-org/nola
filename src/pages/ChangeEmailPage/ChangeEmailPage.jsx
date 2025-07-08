@@ -9,6 +9,11 @@ import { Modal } from "../../components/Modal/Modal";
 import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import { useNavigate } from "react-router-dom";
 import { MessagePostOnModeration } from "../../components/MessagePostOnModeration/MessagePostOnModeration";
+import { postEmailChange } from "../../services/https/https";
+import { ToastError } from "../../services/ToastError/ToastError";
+import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { logOutThunk } from "../../redux/auth/authThunk";
 
 const schema = yup.object().shape({
   email: yup
@@ -44,6 +49,7 @@ const schema = yup.object().shape({
 export const ChangeEmailPage = () => {
   const navigate = useNavigate();
   const { theme, setTheme } = useCustomContext();
+  const dispatch = useDispatch();
   const [isModal, setIsModal] = useState(false);
   const [messageChangePassword, setMessageChangePassword] = useState(false);
   const [validForm, setValidForm] = useState(false);
@@ -84,14 +90,29 @@ export const ChangeEmailPage = () => {
     setIsModal((prev) => !prev);
   };
 
-  const confirmMessage = () => {
-    handleToggleModal();
+  const confirmMessage = async () => {
+    console.log("Form submitted with data:", formData);
 
-    setMessageChangePassword(true);
+    try {
+      handleToggleModal();
+      const data = await postEmailChange(formData);
 
-    setTimeout(() => {
-      navigate("/setting");
-    }, 3000);
+      setMessageChangePassword(true);
+
+      setFormData({ email: "", newEmail: "" });
+      setErrors({});
+      setValidForm(false);
+
+      // setTimeout(() => {
+      //   navigate("/setting");
+      // }, 3000);
+      setTimeout(() => {
+        dispatch(logOutThunk());
+        navigate("/main/authorization");
+      }, 3000);
+    } catch (error) {
+      ToastError(error.message);
+    }
   };
 
   const handleBlur = async (field) => {
@@ -123,20 +144,8 @@ export const ChangeEmailPage = () => {
 
     schema
       .validate(formData, { abortEarly: false })
-      .then(async () => {
-        try {
-          console.log("Form submitted with data:", formData);
-
-          setIsModal(true);
-        } catch (error) {
-          console.log(error);
-        }
-        setFormData({
-          email: "",
-          newEmail: "",
-        });
-        setErrors({});
-        setValidForm(false);
+      .then(() => {
+        setIsModal(true);
       })
       .catch((validationErrors) => {
         const newErrors = {};
@@ -149,6 +158,7 @@ export const ChangeEmailPage = () => {
 
   return (
     <>
+      <ToastContainer />
       {!messageChangePassword && (
         <>
           <GoBackButton
@@ -240,7 +250,7 @@ export const ChangeEmailPage = () => {
                     ? false
                     : true
                 }
-                />
+              />
             </div>
           </form>
         </>

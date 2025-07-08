@@ -16,8 +16,6 @@ import { ToastError } from "../../services/ToastError/ToastError";
 
 const AdvertiserDetailsPage = () => {
   const { advertiserId } = useParams();
-  console.log("advertiserId", advertiserId);
-
   const locationRef = useRef(location.state?.from ?? "/main");
   const navigate = useNavigate();
   const { postsId, setPostsId } = useCustomContext();
@@ -26,15 +24,10 @@ const AdvertiserDetailsPage = () => {
   const [dataPublication, setDataPublication] = useState([]);
   const [showPost, setShowPost] = useState(false);
 
-  //  useEffect(() => {
-  //     http://${advertiserId}
-  // }, [])
 
   useEffect(() => {
     const getData = (async () => {
       try {
-        // const data = await getAccountIdApi(advertiserId);
-        // const { data } = await getAllPostApi();
         const data = await getAccountId(advertiserId);
         console.log(data);
 
@@ -48,13 +41,7 @@ const AdvertiserDetailsPage = () => {
   useEffect(() => {
     const getData = (async () => {
       try {
-        // const {data} = await getPostUserApi(advertiserId)
         const { data } = await getPostUserIdApi(advertiserId);
-
-        console.log("setDataPublication", data);
-        // const res = data.filter((el) =>
-        //   // el.status === "pending" ||
-        //   el.status === "published")
 
         setDataPublication(data || []);
       } catch (error) {
@@ -77,7 +64,6 @@ const AdvertiserDetailsPage = () => {
   const handlePost = (id) => {
     setShowPost(dataPublication?.filter((item) => item.id === id));
   };
-  console.log("showPost", dataPublication);
 
   return (
     <div className={css.container}>
@@ -110,7 +96,7 @@ const AdvertiserDetailsPage = () => {
           dataPublication?.map(({ id, title, description, banners }) => (
             <li key={id} className={css.post_container}>
               <img
-                src={banners[0]}
+                src={banners[0] || banners[1] || banners[2]}
                 alt="banner"
                 className={css.img}
                 onClick={() => handlePost(id)}

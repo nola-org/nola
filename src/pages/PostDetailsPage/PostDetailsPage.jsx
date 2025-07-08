@@ -11,11 +11,13 @@ import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 import { PostsAdverticer } from "../../components/PostsAdverticer/PostsAdverticer";
 import { Toastify } from "../../services/Toastify/Toastify";
 import { Banners } from "../../components/Banners/Banners";
+import { useSavePost } from "../../services/hooks/useSavePost";
 
 const LOKAL_KEY = "savedPost";
 
 const PostDetailsPage = () => {
   const { theme, setTheme } = useCustomContext();
+  const { isSaved, toggleSave } = useSavePost();
   const location = useLocation();
   const locationRef = useRef(location.state?.from ?? "/main");
   const navigate = useNavigate();
@@ -23,21 +25,6 @@ const PostDetailsPage = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const [savedPostId, setSavedPostId] = useState(() => {
-    return JSON.parse(localStorage.getItem("savedPostId")) ?? [];
-  });
-  const [savedPost, setSavedPost] = useState(() => {
-    return JSON.parse(localStorage.getItem(LOKAL_KEY)) ?? [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem(LOKAL_KEY, JSON.stringify(savedPost));
-  }, [savedPost]);
-
-  useEffect(() => {
-    localStorage.setItem("savedPostId", JSON.stringify(savedPostId));
-  }, [savedPostId]);
 
   useEffect(() => {
     setLoading(true);
@@ -55,7 +42,7 @@ const PostDetailsPage = () => {
   }, [postId]);
 
   const handleBack = () => {
-    if (locationRef.current) return;
+    // if (locationRef.current) return;
     navigate(-1);
 
     setPostsId(post?.id);
@@ -65,29 +52,36 @@ const PostDetailsPage = () => {
     setPostsId(post?.id);
   }, [post?.id, setPostsId]);
 
-  const handleSavePostClick = (savedId) => {
-    if (savedPostId.includes(post.id)) {
-      const deletePost = savedPost.filter((post) => post.id !== savedId);
+  // const handleSavePostClick = (savedId) => {
+  //   if (savedPostId.includes(post.id)) {
+  //     const deletePost = savedPost.filter((post) => post.id !== savedId);
 
-      const deletePostId = savedPostId.filter((el) => el !== savedId);
+  //     const deletePostId = savedPostId.filter((el) => el !== savedId);
 
-      setSavedPost(deletePost);
+  //     setSavedPost(deletePost);
 
-      setSavedPostId(deletePostId);
+  //     setSavedPostId(deletePostId);
 
-      ToastError("Post has been deleted");
-      return;
-    }
-    setSavedPostId((prev) => {
-      if (prev.includes(savedId)) {
-        return prev.filter((postId) => postId !== savedId);
-      } else {
-        localStorage.setItem("savedPostId", JSON.stringify([...prev, savedId]));
-        setSavedPost((prev) => [...prev, post]);
-        Toastify("Post successfully saved");
-        return [...prev, savedId];
-      }
-    });
+  //     ToastError("Post has been deleted");
+  //     return;
+  //   }
+  //   setSavedPostId((prev) => {
+  //     if (prev.includes(savedId)) {
+  //       return prev.filter((postId) => postId !== savedId);
+  //     } else {
+  //       localStorage.setItem("savedPostId", JSON.stringify([...prev, savedId]));
+  //       setSavedPost((prev) => [...prev, post]);
+  //       Toastify("Post successfully saved");
+  //       return [...prev, savedId];
+  //     }
+  //   });
+  // };
+
+  const handleSaveToggle = () => {
+    toggleSave(post);
+    // if (isSaved(post.id)) {
+    //   ToastError("Post has been deleted");
+    // }
   };
 
   return (
@@ -116,14 +110,14 @@ const PostDetailsPage = () => {
       {post && (
         <div key={post.id} className={css.post_container}>
           <Banners banner={post.banners} />
-          {/* <img src={post.banners[0]} alt="banner" className={css.img} /> */}
 
           <button
             type="button"
-            onClick={() => handleSavePostClick(post.id)}
+            // onClick={() => handleSavePostClick(post.id)}
+            onClick={handleSaveToggle}
             className={css.save_btn}
           >
-            {!savedPostId.includes(post.id) ? (
+            {!isSaved(post.id) ? (
               <div className={theme === "dark" ? css.iconDark : ""}>
                 <Save_Icon />
               </div>

@@ -13,12 +13,12 @@ const ProfyleCheckPage = () => {
         </p>
 
         <p className={css.authorizationCheck}>
-          Please complete your
+          First, fill out your
           <NavLink
             to="/main/accountAdverticer/adverticerEdit"
             className={css.authorizationLinks}
           >
-            <span className={`dark:text-white`}> profile </span>
+            <span className={`dark:text-white`}> account </span>
           </NavLink>
           <span className={`dark:text-white`}>to start posting ads.</span>
         </p>

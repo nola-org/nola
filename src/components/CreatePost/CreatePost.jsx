@@ -7,6 +7,7 @@ import { AddPostLinks } from "../AddPostLinks/AddPostLinks";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
+import { ToastContainer } from "react-toastify";
 
 export const CreatePost = ({ setPost, post, links, setLinks }) => {
   const [update, setUpdate] = useState(false);
@@ -16,10 +17,10 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
 
   const handleChangePost = ({ target }) => {
     const { name, value } = target;
-    setPost({
-      ...post,
+    setPost((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
 
     setSymbolsTitleCount(value.length);
 
@@ -38,7 +39,7 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
     }
 
     setPost((prev) => ({
-      ...post,
+      ...prev,
       links: [...prev.links, { id: nanoid(), href: "", action: "" }],
     }));
     setLinks((prev) => [...prev, { id: nanoid(), href: "", action: "" }]);
@@ -47,10 +48,10 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
   const handleLinkDelete = (deleteId) => {
     const newLinks = post.links.filter(({ id }) => id !== deleteId);
 
-    setPost({
-      ...post,
+    setPost((prev) => ({
+      ...prev,
       links: newLinks,
-    });
+    }));
 
     setLinks(newLinks);
   };
@@ -62,10 +63,10 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
       const newLinks = [...prev];
       newLinks.splice(linkIndex, 1, { id, href, action });
 
-      setPost({
-        ...post,
+      setPost((prev) => ({
+        ...prev,
         links: newLinks,
-      });
+      }));
 
       links?.map(({ action, href }) => {
         if (action?.length === 0 && href?.length === 0) {
@@ -85,12 +86,15 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
 
   return (
     <>
+      <ToastContainer />
       {update && (
         <div className={css.loader}>
           <LoaderSpiner />
         </div>
       )}
-      {post?.length !== 0 && <AddBanner setPost={setPost} post={post} />}
+      {Object.keys(post)?.length > 0 && (
+        <AddBanner setPost={setPost} post={post} />
+      )}
       <p className={`${css.title} dark:text-white`}>Fill in the details</p>
 
       <label className={`${css.post_description} dark:text-white`}>
@@ -114,7 +118,7 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
         </p>
       </label>
 
-      {post?.length !== 0 && (
+      {Object.keys(post)?.length > 0 && (
         <AddSelectCategory setPost={setPost} post={post} />
       )}
 
@@ -142,7 +146,8 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
           Add a link address and choose a Call-To-Action button if you want to
           promptly redirect a consumer to the landing page (optional):
         </p>
-        {post?.length !== 0 && (
+
+        {Object.keys(post)?.length > 0 && (
           <AddCallToAction setPost={setPost} post={post} />
         )}
 
@@ -151,13 +156,15 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
           a short title:
         </p>
 
-        <AddPostLinks
-          links={links}
-          setLinks={setLinks}
-          onLinkAdd={handleLinkAdd}
-          onLinkChange={handleLinkChange}
-          onLinkDelete={handleLinkDelete}
-        />
+        {Object.keys(post)?.length > 0 && (
+          <AddPostLinks
+            links={links}
+            setLinks={setLinks}
+            onLinkAdd={handleLinkAdd}
+            onLinkChange={handleLinkChange}
+            onLinkDelete={handleLinkDelete}
+          />
+        )}
 
         <p className={`${css.supported_links} dark:text-white`}>
           Supported links: Facebook, Instagram, Pinterest, Tik-tok, Webpage
