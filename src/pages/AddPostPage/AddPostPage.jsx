@@ -40,7 +40,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
         callToActionLinks: "",
         banners: [],
         // links: [{ id: nanoid(), href: "", action: "" }],
-        status: "pending",
+        status: "draft",
       }
     );
   });

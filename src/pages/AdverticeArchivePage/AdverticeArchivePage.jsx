@@ -104,7 +104,7 @@ const AdverticeArchivePage = () => {
       handleToggleModal();
       const data = await patchPostApi(id, {
         ...recoverePost,
-        status: "published",
+        status: "pending",
       });
       setIsPostSctive(id);
       Toastify("Archived post has been recovered");

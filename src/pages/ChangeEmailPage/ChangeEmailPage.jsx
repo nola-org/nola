@@ -34,10 +34,10 @@ const schema = yup.object().shape({
   newEmail: yup
     .string()
     .required("Email is required")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@(gmail\.com|ukr\.net|meta\.ua)$/,
-      "Please enter valid characters"
-    )
+    // .matches(
+    //   /^[a-zA-Z0-9._%+-]+@(gmail\.com|ukr\.net|meta\.ua)$/,
+    //   "Please enter valid characters"
+    // )
     .matches(/^[^\s]*$/, "Please enter valid characters")
     .matches(/^[^а-яА-ЯіІїЇєЄ]*$/, "Please enter valid characters")
     .matches(
@@ -240,16 +240,16 @@ export const ChangeEmailPage = () => {
             <div className={css.btn_container}>
               <Button
                 label="Send a request"
-                disabled={
-                  (formData?.email?.includes("gmail.com") ||
-                    formData?.email?.includes("ukr.net") ||
-                    formData?.email?.includes("meta.ua")) &&
-                  (formData?.newEmail?.includes("gmail.com") ||
-                    formData?.newEmail?.includes("ukr.net") ||
-                    formData?.newEmail?.includes("meta.ua"))
-                    ? false
-                    : true
-                }
+                // disabled={
+                //   (formData?.email?.includes("gmail.com") ||
+                //     formData?.email?.includes("ukr.net") ||
+                //     formData?.email?.includes("meta.ua")) &&
+                //   (formData?.newEmail?.includes("gmail.com") ||
+                //     formData?.newEmail?.includes("ukr.net") ||
+                //     formData?.newEmail?.includes("meta.ua"))
+                //     ? false
+                //     : true
+                // }
               />
             </div>
           </form>
