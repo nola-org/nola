@@ -2,6 +2,7 @@ import css from "./EditPostPage.module.css";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
+  getAccountApi,
   getPostApi,
   getPostIdApi,
   getPostIdModerationApi,
@@ -23,6 +24,7 @@ const EditPostPage = () => {
   const [formConfig, setFormConfig] = useState(false);
   const [postSuccessfullyAdded, setPostSuccessfullyAdded] = useState(false);
   const [data, setData] = useState([]);
+  const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
     return (
       // JSON.parse(localStorage.getItem("previewPost"))?.links ||
@@ -42,6 +44,14 @@ const EditPostPage = () => {
   );
 
   useEffect(() => {
+    (async () => {
+      const { data } = await getAccountApi();
+
+      setProfile(data.profile_picture?.replace("image/upload/", ""));
+    })();
+  }, []);
+
+  useEffect(() => {
     const getData = (async () => {
       try {
         if (location.state) {
@@ -59,7 +69,6 @@ const EditPostPage = () => {
         console.log(error);
       }
     })();
-
   }, [params, post, location.state]);
 
   const handleChangePost = ({ target }) => {
@@ -73,7 +82,6 @@ const EditPostPage = () => {
   const handleSubmitPost = async (e) => {
     e.preventDefault();
     setFormConfig(true); // delete later
-
     try {
       const res = await patchPostApi(params.editPostId, {
         ...data,
@@ -97,10 +105,11 @@ const EditPostPage = () => {
     navigate("/main/addPost/previewAdvertisemet", {
       state: {
         data,
+        profile,
         from: location.pathname,
       },
     });
-   };
+  };
 
   return (
     <div>
@@ -116,7 +125,6 @@ const EditPostPage = () => {
         <div>
           {data && Object.keys(data)?.length > 0 ? (
             <form onSubmit={handleSubmitPost}>
-
               <CreatePost
                 post={data}
                 setPost={setData}

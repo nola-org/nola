@@ -12,12 +12,13 @@ import { getAccountApi, getDraftsApi } from "../../services/https/https";
 import { useEffect, useState } from "react";
 import { ToastError } from "../../services/ToastError/ToastError";
 import { instance } from "../../services/axios";
+import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 
 const Layout = () => {
   const location = useLocation();
   const { token } = useAuth();
   const { theme, setTheme } = useCustomContext();
-  const [profile, setProfile] = useState([]);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [drafts, setDrafts] = useState(true);
 
@@ -55,125 +56,135 @@ const Layout = () => {
 
   return (
     <div>
-      <main className={css.main}>{!loading && <Outlet />}</main>
-      {!loading && (
-        <footer className={`${css.footer} `}>
-          <nav className={`${css.nav} dark:bg-black`}>
-            <ul className={css.list}>
-              <li className={css.item}>
-                <NavLink to="">
+      <main className={css.main}>
+        {loading ? (
+          <div className="loader">
+            <LoaderSpiner />
+          </div>
+        ) : (
+          <Outlet />
+        )}
+      </main>
+      {/* <main className={css.main}>{!loading && <Outlet />}</main> */}
+      {/* {!loading && */}
+      {/* ( */}
+      <footer className={`${css.footer} `}>
+        <nav className={`${css.nav} dark:bg-black`}>
+          <ul className={css.list}>
+            <li className={css.item}>
+              <NavLink to="">
+                <div
+                  className={`${css.icon} ${
+                    theme === "dark"
+                      ? css.iconDark
+                      : location.pathname === "/main"
+                      ? css.iconDarkActive
+                      : ""
+                  } ${location.pathname === "/main" ? css.iconActive : ""}`}
+                >
+                  <Icon_Home />
+                </div>
+              </NavLink>
+            </li>
+            <li className={css.item}>
+              <NavLink to="search">
+                <div
+                  className={`${css.icon} ${
+                    theme === "dark"
+                      ? css.iconDark
+                      : location.pathname === "/main/search"
+                      ? css.iconDarkActiveWidth
+                      : ""
+                  } ${
+                    location.pathname === "/main/search"
+                      ? css.iconActiveWidth
+                      : ""
+                  }`}
+                >
+                  <Icon_Searching />
+                </div>
+              </NavLink>
+            </li>
+            <li className={css.item}>
+              {!token ? (
+                <NavLink to="registrationCheck">
                   <div
                     className={`${css.icon} ${
                       theme === "dark"
                         ? css.iconDark
-                        : location.pathname === "/main"
-                        ? css.iconDarkActive
-                        : ""
-                    } ${location.pathname === "/main" ? css.iconActive : ""}`}
-                  >
-                    <Icon_Home />
-                  </div>
-                </NavLink>
-              </li>
-              <li className={css.item}>
-                <NavLink to="search">
-                  <div
-                    className={`${css.icon} ${
-                      theme === "dark"
-                        ? css.iconDark
-                        : location.pathname === "/main/search"
+                        : location.pathname === "/main/registrationCheck"
                         ? css.iconDarkActiveWidth
                         : ""
                     } ${
-                      location.pathname === "/main/search"
+                      location.pathname === "/main/registrationCheck"
                         ? css.iconActiveWidth
                         : ""
                     }`}
                   >
-                    <Icon_Searching />
+                    <Icon_Add />
                   </div>
                 </NavLink>
-              </li>
-              <li className={css.item}>
-                {!token ? (
-                  <NavLink to="registrationCheck">
-                    <div
-                      className={`${css.icon} ${
-                        theme === "dark"
-                          ? css.iconDark
-                          : location.pathname === "/main/registrationCheck"
-                          ? css.iconDarkActiveWidth
-                          : ""
-                      } ${
-                        location.pathname === "/main/registrationCheck"
-                          ? css.iconActiveWidth
-                          : ""
-                      }`}
-                    >
-                      <Icon_Add />
-                    </div>
-                  </NavLink>
-                ) : !profile.bio > 0 ? (
-                  <NavLink to="profileCheckPage">
-                    <div
-                      className={`${css.icon} ${
-                        theme === "dark"
-                          ? css.iconDark
-                          : location.pathname === "/main/profileCheckPage"
-                          ? css.iconDarkActiveWidth
-                          : ""
-                      } ${
-                        location.pathname === "/main/profileCheckPage"
-                          ? css.iconActiveWidth
-                          : ""
-                      }`}
-                    >
-                      <Icon_Add />
-                    </div>
-                  </NavLink>
-                ) : drafts ? (
-                  <NavLink to="/main/drafts">
-                    <div
-                      className={`${css.icon} ${
-                        theme === "dark"
-                          ? css.iconDark
-                          : location.pathname === "/main/drafts"
-                          ? css.iconDarkActiveWidth
-                          : ""
-                      } ${
-                        location.pathname === "/main/drafts"
-                          ? css.iconActiveWidth
-                          : ""
-                      }`}
-                    >
-                      <Icon_Add />
-                    </div>
-                  </NavLink>
-                ) : (
-                  <NavLink to="addPost">
-                    <div
-                      className={`${css.icon} ${
-                        theme === "dark"
-                          ? css.iconDark
-                          : location.pathname === "/main/drafts"
-                          ? css.iconDarkActiveWidth
-                          : ""
-                      } ${
-                        location.pathname === "/main/drafts"
-                          ? css.iconActiveWidth
-                          : ""
-                      }`}
-                    >
-                      <Icon_Add />
-                    </div>
-                  </NavLink>
-                )}
-              </li>
-
-              <li className={css.item}>
-                <NavLink to="savedPosts">
+              ) : !profile ? (
+                <NavLink to="profileCheckPage">
                   <div
-                    className={`${css.icon} 
+                    className={`${css.icon} ${
+                      theme === "dark"
+                        ? css.iconDark
+                        : location.pathname === "/main/profileCheckPage"
+                        ? css.iconDarkActiveWidth
+                        : ""
+                    } ${
+                      location.pathname === "/main/profileCheckPage"
+                        ? css.iconActiveWidth
+                        : ""
+                    }`}
+                  >
+                    <Icon_Add />
+                  </div>
+                </NavLink>
+              ) : drafts ? (
+                <NavLink to="/main/drafts">
+                  <div
+                    className={`${css.icon} ${
+                      theme === "dark"
+                        ? css.iconDark
+                        : location.pathname === "/main/drafts"
+                        ? css.iconDarkActiveWidth
+                        : ""
+                    } ${
+                      location.pathname === "/main/drafts"
+                        ? css.iconActiveWidth
+                        : ""
+                    }`}
+                  >
+                    <Icon_Add />
+                  </div>
+                </NavLink>
+              ) : (
+                <NavLink to="addPost">
+                  <div
+                    className={`${css.icon} ${
+                      theme === "dark"
+                        ? css.iconDark
+                        : location.pathname === "/main/drafts"
+                        ? css.iconDarkActiveWidth
+                        : ""
+                    } ${
+                      location.pathname === "/main/drafts"
+                        ? css.iconActiveWidth
+                        : ""
+                    }`}
+                  >
+                    <Icon_Add />
+                  </div>
+                </NavLink>
+              )}
+            </li>
+
+            <li className={css.item}>
+              <NavLink to="savedPosts">
+                <div
+                  className={`${css.icon} 
                    ${css.icon_save}
                     ${
                       theme === "dark"
@@ -182,43 +193,42 @@ const Layout = () => {
                         ? css.iconDarkActiveWidth
                         : ""
                     } ${
-                      location.pathname === "/main/savedPosts"
-                        ? css.iconActiveWidth
-                        : ""
-                    }`}
-                  >
-                    <Icon_Save />
-                  </div>
-                </NavLink>
-              </li>
-              <li className={css.item}>
-                <NavLink to="authorization">
-                  <div
-                    className={`${css.icon} ${
-                      theme === "dark"
-                        ? css.iconDark
-                        : location.pathname === "/main/accountAdverticer" ||
-                          location.pathname === "/main/authorization" ||
-                          location.pathname ===
-                            "/main/authorization/registration"
-                        ? css.iconDarkActive
-                        : ""
-                    } ${
-                      location.pathname === "/main/accountAdverticer" ||
-                      location.pathname === "/main/authorization" ||
-                      location.pathname === "/main/authorization/registration"
-                        ? css.iconActive
-                        : ""
-                    }`}
-                  >
-                    <Icon_Account />
-                  </div>
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      )}
+                    location.pathname === "/main/savedPosts"
+                      ? css.iconActiveWidth
+                      : ""
+                  }`}
+                >
+                  <Icon_Save />
+                </div>
+              </NavLink>
+            </li>
+            <li className={css.item}>
+              <NavLink to="authorization">
+                <div
+                  className={`${css.icon} ${
+                    theme === "dark"
+                      ? css.iconDark
+                      : location.pathname === "/main/accountAdverticer" ||
+                        location.pathname === "/main/authorization" ||
+                        location.pathname === "/main/authorization/registration"
+                      ? css.iconDarkActive
+                      : ""
+                  } ${
+                    location.pathname === "/main/accountAdverticer" ||
+                    location.pathname === "/main/authorization" ||
+                    location.pathname === "/main/authorization/registration"
+                      ? css.iconActive
+                      : ""
+                  }`}
+                >
+                  <Icon_Account />
+                </div>
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      </footer>
+      {/* )} */}
     </div>
   );
 };

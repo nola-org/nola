@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import css from "./AdvertiserDetailsPage.module.css";
 import { ReactComponent as Icon_Back } from "../../assets/icons/arrow_left.svg";
 import { Advertiser } from "../../components/Advertiser/Advertiser";
@@ -16,6 +16,8 @@ import { ToastError } from "../../services/ToastError/ToastError";
 
 const AdvertiserDetailsPage = () => {
   const { advertiserId } = useParams();
+  const location = useLocation();
+  const openedFromPostId = location.state?.postId;
   const locationRef = useRef(location.state?.from ?? "/main");
   const navigate = useNavigate();
   const { postsId, setPostsId } = useCustomContext();
@@ -55,10 +57,14 @@ const AdvertiserDetailsPage = () => {
   };
 
   const handleGoBack = () => {
-    // if (locationRef.current) return;
-    navigate(-1);
-
-    setPostsId(data?.id);
+    if (openedFromPostId) {
+      setPostsId(openedFromPostId);
+    }
+    if (document.referrer) {
+      navigate(-1);
+    } else {
+      navigate('/main');
+    }
   };
 
   const handlePost = (id) => {
@@ -67,15 +73,6 @@ const AdvertiserDetailsPage = () => {
 
   return (
     <div className={css.container}>
-      {/* <div onClick={handleGoBack}>
-        <GoBackButton
-          imgAlt="Go back"
-          imgWidth="50px"
-          imgHeight="50px"
-          title="Friendly Study"
-        />
-      </div> */}
-
       <NavLink
         to={locationRef.current}
         onClick={handleGoBack}

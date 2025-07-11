@@ -8,6 +8,7 @@ import { useAuth } from "./services/hooks/useAuth";
 import { RestrictedRout } from "./components/AuthRouts/RestrictedRout";
 import { PrivateRoute } from "./components/AuthRouts/PrivateRout";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import { LoaderSpiner } from "./services/loaderSpinner/LoaderSpinner";
 
 const Layout = lazy(() => import("./components/Layout/Layout"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage/LoadingPage"));
@@ -104,210 +105,213 @@ function App() {
   return (
     <div className="App">
       <ScrollToTop />
-      {!isRefreshing && (
-        <Suspense fallback={null}>
-          <Routes>
-            <Route path="/" element={<LoadingPage />} />
+      {/* {!isRefreshing && ( */}
+      <Suspense
+        fallback={
+          <div className="loader">
+            <LoaderSpiner />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<LoadingPage />} />
 
-            <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/welcome" element={<WelcomePage />} />
 
-            <Route path="/main" element={<Layout />}>
-              <Route index element={<MainPage />} />
-              <Route path="savedPosts" element={<SavedPostsPage />} />
+          <Route path="/main" element={<Layout />}>
+            <Route index element={<MainPage />} />
+            <Route path="savedPosts" element={<SavedPostsPage />} />
 
-              <Route path="search" element={<SearchPage />} />
-              <Route
-                path="search/categories/:id"
-                element={<SearchCategoriesPage />}
-              />
-              <Route
-                path="search/categories/:id/searchEngineResults/:searchId"
-                element={<SearchEngineResultsPage />}
-              />
+            <Route path="search" element={<SearchPage />} />
+            <Route
+              path="search/categories/:id"
+              element={<SearchCategoriesPage />}
+            />
+            <Route
+              path="search/categories/:id/searchEngineResults/:searchId"
+              element={<SearchEngineResultsPage />}
+            />
 
-              <Route
-                path="/main/authorization"
-                element={<AuthorizationPage />}
-              />
+            <Route path="/main/authorization" element={<AuthorizationPage />} />
 
-              <Route
-                path="authorization"
-                element={
-                  <RestrictedRout
-                    component={<AuthorizationPage />}
-                    redirectTo="/main/accountAdverticer"
-                  />
-                }
-              >
-                <Route path="registration" element={<RegistrationPage />} />
-                <Route index element={<SignInPage />} />
-              </Route>
-
-              <Route
-                path="registrationCheck"
-                element={
-                  <RestrictedRout
-                    redirectTo="/main/addPost"
-                    component={<RegistrationCheckPage />}
-                  />
-                }                
-              />
-              <Route path="profileCheckPage" element={<ProfileCheckPage />} />
-
-              <Route
-                path="accountAdverticer"
-                element={
-                  <PrivateRoute
-                    component={<AccountAdverticerPage />}
-                    redirectTo="/main/authorization"
-                  />
-                }
-              >
-                <Route index element={<AdverticerPublicationsPage />} />
-                <Route
-                  path="adverticerArchive"
-                  element={<AdverticeArchivePage />}
+            <Route
+              path="authorization"
+              element={
+                <RestrictedRout
+                  component={<AuthorizationPage />}
+                  redirectTo="/main/accountAdverticer"
                 />
-              </Route>
+              }
+            >
+              <Route path="registration" element={<RegistrationPage />} />
+              <Route index element={<SignInPage />} />
+            </Route>
 
-              <Route
-                path="drafts"
-                element={
-                  <PrivateRoute
-                    component={<DraftsPage />}
-                    redirectTo="/main/authorization"
-                  />
-                }
-                // element={<DraftsPage />}
-              />
+            <Route
+              path="registrationCheck"
+              element={
+                <RestrictedRout
+                  redirectTo="/main/addPost"
+                  component={<RegistrationCheckPage />}
+                />
+              }
+            />
+            <Route path="profileCheckPage" element={<ProfileCheckPage />} />
 
+            <Route
+              path="accountAdverticer"
+              element={
+                <PrivateRoute
+                  component={<AccountAdverticerPage />}
+                  redirectTo="/main/authorization"
+                />
+              }
+            >
+              <Route index element={<AdverticerPublicationsPage />} />
               <Route
-                path="editPost/:editPostId"
-                element={
-                  <PrivateRoute
-                    component={<EditPostPage />}
-                    redirectTo="/main/authorization"
-                  />
-                }
-              />
-
-              <Route
-                path="drafts/:editDraftsId"
-                element={
-                  <PrivateRoute
-                    component={<EditDraftsPage />}
-                    redirectTo="/main/authorization"
-                  />
-                }
-              />
-
-              <Route
-                path="addPost/previewAdvertisemet"
-                element={
-                  <PrivateRoute
-                    component={<PreviewAdvertisemetPage />}
-                    redirectTo="/main/authorization"
-                  />
-                }
+                path="adverticerArchive"
+                element={<AdverticeArchivePage />}
               />
             </Route>
 
             <Route
-              path="/main/addPost"
+              path="drafts"
               element={
                 <PrivateRoute
-                  component={<AddPostPage />}
+                  component={<DraftsPage />}
+                  redirectTo="/main/authorization"
+                />
+              }
+              // element={<DraftsPage />}
+            />
+
+            <Route
+              path="editPost/:editPostId"
+              element={
+                <PrivateRoute
+                  component={<EditPostPage />}
                   redirectTo="/main/authorization"
                 />
               }
             />
-{/* 
+
+            <Route
+              path="drafts/:editDraftsId"
+              element={
+                <PrivateRoute
+                  component={<EditDraftsPage />}
+                  redirectTo="/main/authorization"
+                />
+              }
+            />
+
+            <Route
+              path="addPost/previewAdvertisemet"
+              element={
+                <PrivateRoute
+                  component={<PreviewAdvertisemetPage />}
+                  redirectTo="/main/authorization"
+                />
+              }
+            />
+          </Route>
+
+          <Route
+            path="/main/addPost"
+            element={
+              <PrivateRoute
+                component={<AddPostPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
+          {/* 
             <Route path="/main/:postId" element={<PostDetailsPage />} /> */}
-                    <Route path="/main/:postId" element={<PostDetailsPage />} />
+          <Route path="/main/:postId" element={<PostDetailsPage />} />
 
-            <Route path="/:advertiserId" element={<AdvertiserDetailsPage />} />
+          <Route path="/:advertiserId" element={<AdvertiserDetailsPage />} />
 
-            <Route
-              path="/reset-password/:email/:token"
-              element={<RecoverPasswordPage />}
-            />
-            <Route path="/recovery" element={<RecoveryPage />} />
-            <Route path="/updatePassword" element={<UpdatePasswordPage />} />
+          <Route
+            path="/reset-password/:email/:token"
+            element={<RecoverPasswordPage />}
+          />
+          <Route path="/recovery" element={<RecoveryPage />} />
+          <Route path="/updatePassword" element={<UpdatePasswordPage />} />
 
-            <Route
-              path="main/accountAdverticer/adverticerEdit"
-              element={
-                <PrivateRoute
-                  component={<AdverticerEditPage />}
-                  redirectTo="/main/authorization"
-                />
-              }
-            />
+          <Route
+            path="main/accountAdverticer/adverticerEdit"
+            element={
+              <PrivateRoute
+                component={<AdverticerEditPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
 
-            <Route
-              path="main/accountAdverticer/adverticerEdit/links"
-              element={
-                <PrivateRoute
-                  component={<LinksPage />}
-                  redirectTo="/main/authorization"
-                />
-              }
-            />
-            <Route
-              path="main/accountAdverticer/adverticerEdit/links/addLinks"
-              element={
-                <PrivateRoute
-                  component={<AddLinksPage />}
-                  redirectTo="/main/authorization"
-                />
-              }
-            />
+          <Route
+            path="main/accountAdverticer/adverticerEdit/links"
+            element={
+              <PrivateRoute
+                component={<LinksPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
+          <Route
+            path="main/accountAdverticer/adverticerEdit/links/addLinks"
+            element={
+              <PrivateRoute
+                component={<AddLinksPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
 
-            <Route path="/setting" element={<SettingPage />} />
+          <Route path="/setting" element={<SettingPage />} />
 
-            <Route path="/main/setting/language" element={<LanguagePage />} />
-            <Route path="/main/setting/theme" element={<ThemePage />} />
+          <Route path="/main/setting/language" element={<LanguagePage />} />
+          <Route path="/main/setting/theme" element={<ThemePage />} />
 
-            <Route path="/main/setting/questions" element={<QuestionsPage />} />
+          <Route path="/main/setting/questions" element={<QuestionsPage />} />
 
-            <Route
-              path="/main/setting/aboutService"
-              element={<AboutServicePage />}
-            />
+          <Route
+            path="/main/setting/aboutService"
+            element={<AboutServicePage />}
+          />
 
-            <Route
-              path="/main/setting/policyAndPrivecy"
-              element={<PolicyAndPrivecyPage />}
-            />
+          <Route
+            path="/main/setting/policyAndPrivecy"
+            element={<PolicyAndPrivecyPage />}
+          />
 
-            <Route path="/main/setting/feedback" element={<FeedbackPage />} />
-            <Route
-              path="/main/settingAdverticer/changePassword"
-              element={
-                <PrivateRoute
-                  component={<ChangePasswordPage />}
-                  redirectTo="/main/authorization"
-                />
-              }
-            />
+          <Route path="/main/setting/feedback" element={<FeedbackPage />} />
+          <Route
+            path="/main/settingAdverticer/changePassword"
+            element={
+              <PrivateRoute
+                component={<ChangePasswordPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
 
-            <Route
-              path="/main/settingAdverticer/changeEmail"
-              element={
-                <PrivateRoute
-                  component={<ChangeEmailPage />}
-                  redirectTo="/main/authorization"
-                />
-              }
-            />
-            <Route path="/verify-email/:token" element={<ConfirmEmailPage />} />
-            <Route path="/verify-email/" element={<ConfirmEmailPage />} />
+          <Route
+            path="/main/settingAdverticer/changeEmail"
+            element={
+              <PrivateRoute
+                component={<ChangeEmailPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
+          <Route path="/verify-email/:token" element={<ConfirmEmailPage />} />
+          <Route path="/verify-email/" element={<ConfirmEmailPage />} />
 
-            <Route path="/confirm-email/:token" element={<ConfirmEmailPage />} />
-            <Route path="/confirm-email/" element={<ConfirmEmailPage />} />
-          </Routes>
-        </Suspense>
-      )}
+          <Route path="/confirm-email/:token" element={<ConfirmEmailPage />} />
+          <Route path="/confirm-email/" element={<ConfirmEmailPage />} />
+        </Routes>
+      </Suspense>
+      {/* // )} */}
     </div>
   );
 }

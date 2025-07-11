@@ -19,6 +19,7 @@ const LOKAL_KEY = "savedPost";
 export const MainPage = () => {
   const { token } = useAuth();
   const { theme } = useCustomContext();
+  const { postsId, setPostsId } = useCustomContext();
 
   const [isScrollTop, setIsScrollTop] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -81,6 +82,7 @@ export const MainPage = () => {
               post={post}
               handleSavePost={() => toggleSave(post)}
               savedPost={isSaved(post.id)}
+              elementId={postsId}
             />
           ))}
       </ul>

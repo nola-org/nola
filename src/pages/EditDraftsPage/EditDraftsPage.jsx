@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  getAccountApi,
   getDraftsPostId,
   patchDraftsPostId,
   patchPostApi,
@@ -27,7 +28,7 @@ const EditDraftsPage = () => {
   const [postSuccessfullyAdded, setPostSuccessfullyAdded] = useState(false);
   const [validForm, setValidForm] = useState(false);
   const [data, setData] = useState([]);
-
+  const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
     return location?.state?.links || [{ id: nanoid(), url: "", name: "" }];
   });
@@ -92,6 +93,13 @@ const EditDraftsPage = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const { data } = await getAccountApi();
+      setProfile(data.profile_picture?.replace("image/upload/", ""));
+    })();
+  }, []);
+
   const handleToggleModal = () => {
     setIsModal((prev) => !prev);
   };
@@ -118,7 +126,7 @@ const EditDraftsPage = () => {
 
       navigate("/main");
     } catch (error) {
-      ToastError(error.message)
+      ToastError(error.message);
     }
   };
 
@@ -161,6 +169,7 @@ const EditDraftsPage = () => {
     navigate("/main/addPost/previewAdvertisemet", {
       state: {
         data,
+        profile,
         from: location.pathname,
       },
     });
@@ -195,7 +204,6 @@ const EditDraftsPage = () => {
                 />
 
                 <div className={css.btn_container}>
-
                   <button
                     type="button"
                     className={css.btn_preview_container}

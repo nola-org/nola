@@ -46,7 +46,7 @@ export const PostsAdverticerMenu = ({
 };
 
 PostsAdverticerMenu.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.number,
   postMenuActive: PropTypes.func,
   children: PropTypes.node,
   isModal: PropTypes.bool,

@@ -42,15 +42,18 @@ const PostDetailsPage = () => {
   }, [postId]);
 
   const handleBack = () => {
-    // if (locationRef.current) return;
-    navigate(-1);
-
+    // if (locationRef.current) return;   
     setPostsId(post?.id);
+    if (document.referrer) {
+      navigate(-1);
+    } else {
+      navigate('/main');
+    }
   };
 
-  useEffect(() => {
-    setPostsId(post?.id);
-  }, [post?.id, setPostsId]);
+  // useEffect(() => {
+  //   setPostsId(post?.id);
+  // }, [post?.id, setPostsId]);
 
   // const handleSavePostClick = (savedId) => {
   //   if (savedPostId.includes(post.id)) {

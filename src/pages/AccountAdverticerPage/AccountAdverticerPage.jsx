@@ -16,7 +16,6 @@ const AccountAdverticerPage = () => {
   useEffect(() => {
     const getData = (async () => {
       const {data} = await getAccountApi();
-      console.log(data);
  
       setData(data)
     })();

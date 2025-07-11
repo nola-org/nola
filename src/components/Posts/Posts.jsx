@@ -12,7 +12,7 @@ import { useCustomContext } from "../../services/Context/Context";
 
 const LOKAL_KEY = "savedPost";
 
-export const Posts = ({ post, handleSavePost, savedPost }) => {
+export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
   const { id, banners: url, title, callToAction, advertiser } = post;
 
   const { theme, postsId, setPostsId } = useCustomContext();
@@ -36,7 +36,7 @@ export const Posts = ({ post, handleSavePost, savedPost }) => {
   }, [id, postsId, setPostsId]);
 
   return (
-    <li ref={setRefs} className={`${css.card} ${css.container}`}>
+    <li id={elementId} ref={setRefs} className={`${css.card} ${css.container}`}>
       <div
         className={`${css.post_header} ${theme === "dark" ? css.iconDark : ""}`}
       >
@@ -45,7 +45,8 @@ export const Posts = ({ post, handleSavePost, savedPost }) => {
         >
           <NavLink
             to={`/${advertiser.id}`}
-            state={{ from: location }}
+            // state={{ from: location }}
+            state={{ postId: post.id }}
             className={css.footer_left}
           >
             <img
@@ -249,7 +250,7 @@ Posts.propTypes = {
   handleSavePost: PropTypes.func.isRequired,
 
   savedPost: PropTypes.bool.isRequired,
-
+  elementId:  PropTypes.string,
   // url: PropTypes.array,
   // title: PropTypes.string,
   // id: PropTypes.number,
