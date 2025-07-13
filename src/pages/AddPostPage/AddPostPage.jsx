@@ -23,7 +23,35 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   const [links, setLinks] = useState(() => {
     return location?.state?.links ?? [{ id: nanoid(), href: "", action: "" }];
   });
+  //   const [data, setData] = useState(() => {
+  //  return (
+  //       location.state ?? {
+  //         title: "",
+  //         description: "",
+  //         category: {
+  //           id: "",
+  //           name: "",
+  //         },
+  //         subcategory: {
+  //           id: "",
+  //           name: "",
+  //         },
+  //         callToAction: "" || "Read more",
+  //         callToActionLinks: "",
+  //         banners: [],
+  //         // links: [{ id: nanoid(), href: "", action: "" }],
+  //         status: "draft",
+  //       }
+  //     );
+  //   });
   const [data, setData] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem("createPost");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn("Ошибка при чтении sessionStorage:", e);
+    }
+
     return (
       location.state ?? {
         title: "",
@@ -36,10 +64,9 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
           id: "",
           name: "",
         },
-        callToAction: "" || "Read more",
+        callToAction: "Read more",
         callToActionLinks: "",
         banners: [],
-        // links: [{ id: nanoid(), href: "", action: "" }],
         status: "draft",
       }
     );
@@ -60,17 +87,18 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   const cancelAddPost = () => {
     navigate("/main");
     setIsModal((prev) => !prev);
+    sessionStorage.removeItem("createPost");
   };
 
   const createPostDrafts = async () => {
     try {
-       setIsModal((prev) => !prev);
+      setIsModal((prev) => !prev);
       const dataRes = await postPostApi({ ...data, status: "draft" });
       console.log("drafts", dataRes);
-
+      sessionStorage.removeItem("createPost");
       navigate("/main");
     } catch (error) {
-      console.log(error);
+      ToastError(error.message || "Try again later.");
     }
   };
 
@@ -103,6 +131,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
+      sessionStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }
@@ -181,8 +210,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
         </Modal>
       )}
       {postSuccessfullyAdded && (
-        <MessagePostOnModeration
-        >
+        <MessagePostOnModeration>
           Advertisement is under moderation. <br />
           It will take about 15 minutes.
         </MessagePostOnModeration>

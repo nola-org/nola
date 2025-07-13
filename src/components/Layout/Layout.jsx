@@ -13,14 +13,35 @@ import { useEffect, useState } from "react";
 import { ToastError } from "../../services/ToastError/ToastError";
 import { instance } from "../../services/axios";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchProfile } from "../../redux/profileSlice";
 
 const Layout = () => {
   const location = useLocation();
+  // const dispatch = useDispatch();
   const { token } = useAuth();
   const { theme, setTheme } = useCustomContext();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [drafts, setDrafts] = useState(true);
+
+  // const profile = useSelector(state => state.profile.data);
+  // const profileStatus = useSelector(state => state.profile.status);
+  // const profileError = useSelector(state => state.profile.error);
+
+  // useEffect(() => {
+  //   if (token && profileStatus === 'idle') {
+  //     dispatch(fetchProfile());
+  //   }
+  // }, [token, profileStatus, dispatch]);
+
+  // useEffect(() => {
+  //   if (profileError) {
+  //     ToastError(profileError);
+  //   }
+  // }, [profileError]);
+
+  // const loading = token && profileStatus === 'loading';
 
   useEffect(() => {
     const fetchData = (async () => {

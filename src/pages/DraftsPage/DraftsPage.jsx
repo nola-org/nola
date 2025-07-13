@@ -101,7 +101,7 @@ const DraftsPage = () => {
                         <img
                           src={deletePost}
                           alt="delete post"
-                          className={css.edit}
+                          // className={css.edit}
                           onClick={() => handleDeletePost(id)}
                         />
                       </div>

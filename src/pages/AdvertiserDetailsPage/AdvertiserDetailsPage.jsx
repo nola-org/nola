@@ -60,11 +60,11 @@ const AdvertiserDetailsPage = () => {
     if (openedFromPostId) {
       setPostsId(openedFromPostId);
     }
-    if (document.referrer) {
-      navigate(-1);
+    if (window.history.length > 5) {    
+    navigate(-1); 
     } else {
-      navigate('/main');
-    }
+    navigate('/main'); 
+  }
   };
 
   const handlePost = (id) => {

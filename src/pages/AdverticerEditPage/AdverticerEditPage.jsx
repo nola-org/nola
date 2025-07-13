@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import { AvatarUser } from "../../components/Avatar/Avatar";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 import { Toastify } from "../../services/Toastify/Toastify";
+import { useSavePost } from "../../services/hooks/useSavePost";
 
 const schema = yup.object().shape({
   first_name: yup.string().min(1).required("Name is required"),
@@ -26,6 +27,7 @@ const schema = yup.object().shape({
 const AdverticerEditPage = () => {
   const navigation = useNavigate();
   const { theme, setTheme } = useCustomContext();
+  const { isSaved, toggleSave } = useSavePost();
   const [data, setData] = useState([]);
   const [userId, setUserId] = useState("");
   const [errors, setErrors] = useState({});

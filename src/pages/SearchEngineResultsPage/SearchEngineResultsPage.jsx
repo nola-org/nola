@@ -99,26 +99,30 @@ const SearchEngineResultsPage = () => {
           <LoaderSpiner />
         </div>
       )}
-      <ul className={css.list}>
-        {data &&
-          data?.map((post) => (
-            <>
-              <Posts
-                key={post.id}
-                post={post}
-                handleSavePost={() => toggleSave(post)}
-                savedPost={isSaved(post.id)}
-              />
-            </>
-          ))}
-      </ul>
-      {data?.length === 0 && (
+      {!loading &&
+        <ul className={css.list}>
+          {data &&
+            data?.map((post) => (
+              <>
+                <Posts
+                  key={post.id}
+                  post={post}
+                  handleSavePost={() => toggleSave(post)}
+                  savedPost={isSaved(post.id)}
+                />
+              </>
+            ))}
+        </ul>}
+   
+       {data?.length === 0 && !loading &&(
         <div className={css.container}>
           <p className={`${css.noResults} dark:text-white`}>
             No results found for your query.
           </p>
         </div>
-      )}
+        )
+      }
+ 
     </div>
   );
 };

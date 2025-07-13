@@ -30,7 +30,7 @@ export const SavedPostsPage = () => {
 
   useEffect(() => {
     if (token) {
-      setLoading(true);
+      // setLoading(true);
       getSavePostApi()
         .then((data) => setPosts(data))
         .catch(() => ToastError("Error loading saved posts"))

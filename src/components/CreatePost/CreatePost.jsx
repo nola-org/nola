@@ -30,6 +30,10 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
     }
   };
 
+  useEffect(() => {
+    sessionStorage.setItem("createPost", JSON.stringify(post));
+  }, [post]);
+
   const handleLinkAdd = () => {
     if (
       links[links.length - 1].action === "" ||
