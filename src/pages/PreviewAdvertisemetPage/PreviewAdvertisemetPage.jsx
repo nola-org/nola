@@ -52,7 +52,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
         setTimeout(() => {
           navigate("/main");
         }, 3000);
-        sessionStorage.removeItem("createPost");
+        localStorage.removeItem("createPost");
         return;
       }
 
@@ -63,7 +63,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }

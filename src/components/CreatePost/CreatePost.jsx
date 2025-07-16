@@ -31,7 +31,7 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem("createPost", JSON.stringify(post));
+    localStorage.setItem("createPost", JSON.stringify(post));
   }, [post]);
 
   const handleLinkAdd = () => {

@@ -22,7 +22,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
     return (
-      JSON.parse(sessionStorage.getItem("createPost"))?.links ??
+      JSON.parse(localStorage.getItem("createPost"))?.links ??
       location?.state?.links ?? [{ id: nanoid(), href: "", action: "" }]
     );
   });
@@ -49,10 +49,10 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   //   });
   const [data, setData] = useState(() => {
     try {
-      const saved = sessionStorage.getItem("createPost");
+      const saved = localStorage.getItem("createPost");
       if (saved) return JSON.parse(saved);
     } catch (e) {
-      console.warn("Ошибка при чтении sessionStorage:", e);
+      console.warn("Ошибка при чтении localStorage:", e);
     }
 
     return (
@@ -90,7 +90,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   const cancelAddPost = () => {
     navigate("/main");
     setIsModal((prev) => !prev);
-    sessionStorage.removeItem("createPost");
+    localStorage.removeItem("createPost");
   };
 
   const createPostDrafts = async () => {
@@ -98,7 +98,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
       setIsModal((prev) => !prev);
       const dataRes = await postPostApi({ ...data, status: "draft" });
       console.log("drafts", dataRes);
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
       navigate("/main");
     } catch (error) {
       ToastError(error.message || "Try again later.");
@@ -134,7 +134,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }

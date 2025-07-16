@@ -28,7 +28,7 @@ const AccountAdverticerPage = () => {
 
   useEffect(() => {
     if (navigationType === "POP") {
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
     }
   }, [navigationType]);
 

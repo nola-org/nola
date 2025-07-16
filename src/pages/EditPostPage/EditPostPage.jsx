@@ -27,17 +27,17 @@ const EditPostPage = () => {
   const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
     return (
-      // JSON.parse(sessionStorage.getItem("createPost"))?.links ??
+      // JSON.parse(localStorage.getItem("createPost"))?.links ??
       [{ id: nanoid(), url: "", name: "" }]
     );
   });
   const [post, setPost] = useState(
     () => {
       // try {
-      //   const saved = sessionStorage.getItem("createPost");
+      //   const saved = localStorage.getItem("createPost");
       //   if (saved) return JSON.parse(saved);
       // } catch (e) {
-      //   console.warn("Ошибка при чтении sessionStorage:", e);
+      //   console.warn("Ошибка при чтении localStorage:", e);
       // }
 
       return (data.length !== 0 || {
@@ -54,7 +54,7 @@ const EditPostPage = () => {
 
   useEffect(() => {
     (async () => {
-      // const hasKey = sessionStorage.getItem("createPost") !== null;
+      // const hasKey = localStorage.getItem("createPost") !== null;
       //     if (hasKey) {
       //     return
       //   }
@@ -66,7 +66,7 @@ const EditPostPage = () => {
   }, []);
 
   useEffect(() => {
-    // const hasKey = sessionStorage.getItem("createPost") !== null;
+    // const hasKey = localStorage.getItem("createPost") !== null;
     const getData = (async () => {
       try {
         if (location.state) {
@@ -81,7 +81,7 @@ const EditPostPage = () => {
         setData(data);
 
         // if (hasKey) {
-        //   setLinks(JSON.parse(sessionStorage.getItem("createPost"))?.links);
+        //   setLinks(JSON.parse(localStorage.getItem("createPost"))?.links);
         //   return
         // }
         
@@ -117,7 +117,7 @@ const EditPostPage = () => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }

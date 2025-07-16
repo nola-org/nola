@@ -109,7 +109,7 @@ const EditDraftsPage = () => {
   const cancelAddPost = () => {
     navigate("/main");
     setIsModal((prev) => !prev);
-    sessionStorage.removeItem("createPost");
+    localStorage.removeItem("createPost");
   };
 
   const createPostDrafts = async () => {
@@ -123,7 +123,7 @@ const EditDraftsPage = () => {
       });
 
       navigate("/main");
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message);
     }
@@ -156,7 +156,7 @@ const EditDraftsPage = () => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
-      sessionStorage.removeItem("createPost");
+      localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error?.response?.statusText || error.message);
     }
