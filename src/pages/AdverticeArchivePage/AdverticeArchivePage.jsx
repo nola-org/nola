@@ -37,7 +37,7 @@ const AdverticeArchivePage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [postActiveId, setPostActiveId] = useState("");
-  const [isPostSctive, setIsPostSctive] = useState("");
+  const [isPostActive, setIsPostActive] = useState([]);
   const [showPost, setShowPost] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
 
@@ -106,7 +106,7 @@ const AdverticeArchivePage = () => {
         ...recoverePost,
         status: "pending",
       });
-      setIsPostSctive(id);
+      setIsPostActive((prev) => [...prev, id]);
       Toastify("Archived post has been recovered");
     } catch (error) {
       ToastError(error.message || "Try again later.");
@@ -137,7 +137,7 @@ const AdverticeArchivePage = () => {
             <li
               key={id}
               className={`${css.post_container} 
-     ${isPostSctive === id ? css.postActive : ""}
+                ${isPostActive.includes(id) ? css.postActive : ""}
               `}
             >
               <img

@@ -27,24 +27,38 @@ const EditPostPage = () => {
   const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
     return (
-      // JSON.parse(localStorage.getItem("previewPost"))?.links ||
+      // JSON.parse(sessionStorage.getItem("createPost"))?.links ??
       [{ id: nanoid(), url: "", name: "" }]
     );
   });
   const [post, setPost] = useState(
-    data.length !== 0 || {
-      description: "",
-      title: "",
-      category: { name: "" },
-      subcategory: { name: "" },
-      callToAction: "" || "Read more",
-      callToActionLinks: "",
-      banners: [],
+    () => {
+      // try {
+      //   const saved = sessionStorage.getItem("createPost");
+      //   if (saved) return JSON.parse(saved);
+      // } catch (e) {
+      //   console.warn("Ошибка при чтении sessionStorage:", e);
+      // }
+
+      return (data.length !== 0 || {
+        description: "",
+        title: "",
+        category: { name: "" },
+        subcategory: { name: "" },
+        callToAction: "" || "Read more",
+        callToActionLinks: "",
+        banners: [],
+      })
     }
   );
 
   useEffect(() => {
     (async () => {
+      // const hasKey = sessionStorage.getItem("createPost") !== null;
+      //     if (hasKey) {
+      //     return
+      //   }
+        
       const { data } = await getAccountApi();
 
       setProfile(data.profile_picture?.replace("image/upload/", ""));
@@ -52,6 +66,7 @@ const EditPostPage = () => {
   }, []);
 
   useEffect(() => {
+    // const hasKey = sessionStorage.getItem("createPost") !== null;
     const getData = (async () => {
       try {
         if (location.state) {
@@ -64,9 +79,16 @@ const EditPostPage = () => {
         const { data } = await getPostIdApi(params.editPostId);
 
         setData(data);
+
+        // if (hasKey) {
+        //   setLinks(JSON.parse(sessionStorage.getItem("createPost"))?.links);
+        //   return
+        // }
+        
         setLinks(data.links);
+
       } catch (error) {
-        console.log(error);
+        ToastError(error.message || "Try again later.");
       }
     })();
   }, [params, post, location.state]);
@@ -95,6 +117,7 @@ const EditPostPage = () => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
+      sessionStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }

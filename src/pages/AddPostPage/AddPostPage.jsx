@@ -21,7 +21,10 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   // const [sendPost, setSendPost] = useState({});
   const [profile, setProfile] = useState({});
   const [links, setLinks] = useState(() => {
-    return location?.state?.links ?? [{ id: nanoid(), href: "", action: "" }];
+    return (
+      JSON.parse(sessionStorage.getItem("createPost"))?.links ??
+      location?.state?.links ?? [{ id: nanoid(), href: "", action: "" }]
+    );
   });
   //   const [data, setData] = useState(() => {
   //  return (
@@ -121,7 +124,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
 
   const handleSubmitPost = async (e) => {
     e.preventDefault();
-    console.log("post", data);
+
     try {
       const dataRes = await postPostApi({ ...data, status: "pending" });
 
@@ -138,7 +141,6 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   };
 
   const handlePreview = () => {
-    console.log("handlePreview", data);
     navigate("/main/addPost/previewAdvertisemet", {
       state: {
         data,

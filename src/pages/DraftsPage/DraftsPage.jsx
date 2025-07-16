@@ -2,7 +2,7 @@ import css from "./DraftsPage.module.css";
 import addDrafts from "../../assets/icons/add_drafts.svg";
 import edit from "../../assets/icons/edit.svg";
 import deletePost from "../../assets/icons/deletePost.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useNavigationType } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   deletePostApi,
@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 
 const DraftsPage = () => {
   const navigate = useNavigate();
+  const navigationType = useNavigationType();
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -34,6 +35,12 @@ const DraftsPage = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (navigationType === "POP") {
+      sessionStorage.removeItem("createPost");
+    }
+  }, [navigationType]);
 
   const handleAddPost = () => {
     navigate("/main/addPost");

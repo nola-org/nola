@@ -41,7 +41,7 @@ const AdverticerPublicationsPage = () => {
   });
   const [menuActive, setMenuActive] = useState(false);
 
-  const [isPostStopped, setIsPostStopped] = useState("");
+  const [isPostStopped, setIsPostStopped] = useState([]);
 
   const [showPost, setShowPost] = useState(false);
   const [postActiveId, setPostActiveId] = useState("");
@@ -132,13 +132,13 @@ const AdverticerPublicationsPage = () => {
         ...stoppedPost,
         status: "archived",
       });
-      setIsActive({
-        archived: false,
-        stopped: true,
-        deleted: false,
-        launchAgain: false,
-      });
-      setIsPostStopped(id);
+      // setIsActive({
+      //   archived: false,
+      //   stopped: true,
+      //   deleted: false,
+      //   launchAgain: false,
+      // });
+      setIsPostStopped((prev) => [...prev, id]);
       // setIsPostStopped(true);
       Toastify("Current post stopping!");
     } catch (error) {
@@ -180,7 +180,7 @@ const AdverticerPublicationsPage = () => {
             <li
               key={id}
               className={`${css.post_container} ${
-                isPostStopped === id ? css.stoppedPost : ""
+                isPostStopped.includes(id) ? css.stoppedPost : ""
               }`}
             >
               <img

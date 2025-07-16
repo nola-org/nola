@@ -12,8 +12,8 @@ export const AddCallToAction = ({ setPost, post }) => {
 
   const [findCallToAction, setFindCallToAction] = useState(() => {
     return (
-      post.callToAction ??
-      JSON.parse(localStorage.getItem("previewPost"))?.callToAction
+      post.callToAction 
+      //?? JSON.parse(localStorage.getItem("previewPost"))?.callToAction
     );
   });
   const [callToActionIndex, setCallToActionIndex] = useState(null);
@@ -58,6 +58,7 @@ export const AddCallToAction = ({ setPost, post }) => {
   });
 
   const selected_option = callToAction[callToActionIndex];
+console.log("post?.callToActionLinks", post?.callToActionLinks, post);
 
   return (
     <ul className={css.links_list}>

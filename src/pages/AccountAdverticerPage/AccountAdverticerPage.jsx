@@ -2,7 +2,7 @@ import css from "./AccountAdverticerPage.module.css";
 import { ReactComponent as Icon_Settings } from "../../assets/icons/settings.svg";
 import { ReactComponent as Icon_Edit } from "../../assets/icons/edit_account.svg";
 
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigationType } from "react-router-dom";
 import { ScrollBar } from "../../components/ScrollBar/ScrollBar";
 import { useEffect, useState } from "react";
 import { getAccountApi } from "../../services/https/https";
@@ -11,19 +11,26 @@ import { useCustomContext } from "../../services/Context/Context";
 
 const AccountAdverticerPage = () => {
   const { theme, setTheme } = useCustomContext();
+  const navigationType = useNavigationType();
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = (async () => {
-      const {data} = await getAccountApi();
- 
-      setData(data)
+      const { data } = await getAccountApi();
+
+      setData(data);
     })();
-  }, [])
+  }, []);
 
   useEffect(() => {
     localStorage.removeItem("pathname");
   }, []);
+
+  useEffect(() => {
+    if (navigationType === "POP") {
+      sessionStorage.removeItem("createPost");
+    }
+  }, [navigationType]);
 
   const handleSetting = () => {
     localStorage.setItem("pathname", "/main/setting");

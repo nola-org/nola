@@ -33,7 +33,6 @@ const EditDraftsPage = () => {
     return location?.state?.links || [{ id: nanoid(), url: "", name: "" }];
   });
   const [post, setPost] = useState(
-    // data.length !== 0
     () => {
       return (
         // JSON.parse(localStorage.getItem("previewPost")) ??
@@ -55,7 +54,6 @@ const EditDraftsPage = () => {
     const getData = (async () => {
       try {
         if (location.state) {
-          console.log("location.state", location.state);
 
           setData(location.state);
           setPost(location.state);
@@ -105,13 +103,13 @@ const EditDraftsPage = () => {
   };
 
   const handleBack = () => {
-    console.log(isModal);
     setIsModal((prev) => !prev);
   };
 
   const cancelAddPost = () => {
     navigate("/main");
     setIsModal((prev) => !prev);
+    sessionStorage.removeItem("createPost");
   };
 
   const createPostDrafts = async () => {
@@ -125,6 +123,7 @@ const EditDraftsPage = () => {
       });
 
       navigate("/main");
+      sessionStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message);
     }
@@ -157,15 +156,13 @@ const EditDraftsPage = () => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
+      sessionStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error?.response?.statusText || error.message);
     }
   };
 
   const handlePreview = () => {
-    console.log("handlePreview");
-    console.log(data);
-
     navigate("/main/addPost/previewAdvertisemet", {
       state: {
         data,

@@ -52,7 +52,7 @@ export const AddSelectCategory = ({ setPost, post }) => {
     setFilteredSubcategories(option.subcategories || []);
     setDisabledSelect(false);
   };
-  console.log(post);
+
   const handleSelectSubcategoryPost = (option) => {
     setPost((prev) => ({
       ...prev,

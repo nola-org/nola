@@ -18,7 +18,6 @@ import { patchPostApi, postPostApi } from "../../services/https/https";
 const PreviewAdvertisemetPage = ({ setPreview }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
-
   const [validForm, setValidForm] = useState(false);
   const [preview, sePreview] = useState(() => {
     return state || state.post || state.data || {};
@@ -53,6 +52,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
         setTimeout(() => {
           navigate("/main");
         }, 3000);
+        sessionStorage.removeItem("createPost");
         return;
       }
 
@@ -63,6 +63,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
+      sessionStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }
