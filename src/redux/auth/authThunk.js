@@ -14,7 +14,7 @@ export const loginThunk = createAsyncThunk(
         return rejectWithValue("The password or email was entered incorrectly");
       } else {
         return rejectWithValue(
-          error?.response?.statusText || error.message || "Try again later."
+          error?.response?.statusText || "Error. Try again later!"
         );
       }
     }
@@ -37,7 +37,7 @@ export const registerThunk = createAsyncThunk(
       console.log(error);
 
       return rejectWithValue(
-        error?.response?.data.username[0] || error.message || "Try again later."
+         error?.response?.data?.username?.[0] || "Error. Try again later!"
         //   error?.response?.data?.errors?.Password ||
         //   error?.response?.data?.errors?.email ||
         //   error?.response?.statusText ||
