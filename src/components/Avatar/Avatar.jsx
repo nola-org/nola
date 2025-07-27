@@ -13,6 +13,7 @@ import { postImg } from "../../services/cloudinary/cloudinary";
 import { useCustomContext } from "../../services/Context/Context";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 import { getAccountApi } from "../../services/https/https";
+import { ToastContainer } from "react-toastify";
 
 export const AvatarUser = ({ setData, avatar, data }) => {
   const { theme, setTheme } = useCustomContext();
@@ -85,6 +86,8 @@ export const AvatarUser = ({ setData, avatar, data }) => {
   //       )
   //   : null;
 
+  const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
   const onClose = async () => {
     setModal(false);
 
@@ -115,8 +118,22 @@ export const AvatarUser = ({ setData, avatar, data }) => {
   };
 
   const onCrop = async (i) => {
-    // setImage(true);
+    if (!i) {
+      ToastError("Failed to process the image");
+      return;
+    }
     setSrc(i);
+  };
+
+  const onBeforeFileLoad = (elem) => {
+    const file = elem.target.files[0];
+    console.log("file", file);
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      ToastError("Photo has not suitable format");
+      elem.target.value = "";
+      return;
+    }
   };
 
   const handleAvatar = (e) => {
@@ -130,6 +147,7 @@ export const AvatarUser = ({ setData, avatar, data }) => {
 
   return (
     <>
+      <ToastContainer />
       {update && (
         <div className={css.loader}>
           <LoaderSpiner />
@@ -153,6 +171,8 @@ export const AvatarUser = ({ setData, avatar, data }) => {
                   height={210}
                   onCrop={onCrop}
                   onClose={onClose}
+                  onBeforeFileLoad={onBeforeFileLoad}
+                  fileType={ALLOWED_TYPES.join(", ")}
                 />
               </div>
             </div>

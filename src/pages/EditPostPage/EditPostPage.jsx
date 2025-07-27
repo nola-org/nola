@@ -31,16 +31,16 @@ const EditPostPage = () => {
       [{ id: nanoid(), url: "", name: "" }]
     );
   });
-  const [post, setPost] = useState(
-    () => {
-      // try {
-      //   const saved = localStorage.getItem("createPost");
-      //   if (saved) return JSON.parse(saved);
-      // } catch (e) {
-      //   console.warn("Ошибка при чтении localStorage:", e);
-      // }
+  const [post, setPost] = useState(() => {
+    // try {
+    //   const saved = localStorage.getItem("createPost");
+    //   if (saved) return JSON.parse(saved);
+    // } catch (e) {
+    //   console.warn("Ошибка при чтении localStorage:", e);
+    // }
 
-      return (data.length !== 0 || {
+    return (
+      data.length !== 0 || {
         description: "",
         title: "",
         category: { name: "" },
@@ -48,9 +48,9 @@ const EditPostPage = () => {
         callToAction: "" || "Read more",
         callToActionLinks: "",
         banners: [],
-      })
-    }
-  );
+      }
+    );
+  });
 
   useEffect(() => {
     (async () => {
@@ -58,7 +58,7 @@ const EditPostPage = () => {
       //     if (hasKey) {
       //     return
       //   }
-        
+
       const { data } = await getAccountApi();
 
       setProfile(data.profile_picture?.replace("image/upload/", ""));
@@ -66,8 +66,7 @@ const EditPostPage = () => {
   }, []);
 
   useEffect(() => {
-    // const hasKey = localStorage.getItem("createPost") !== null;
-    const getData = (async () => {
+    const fetchData = async () => {
       try {
         if (location.state) {
           setData(location.state);
@@ -76,22 +75,34 @@ const EditPostPage = () => {
           return;
         }
 
-        const { data } = await getPostIdApi(params.editPostId);
+        const response = await getPostIdApi(params.editPostId);
 
-        setData(data);
+        if (response.status === 200) {
+          setData(response?.data);
+          setLinks(response?.data?.links);
+          return;
+        }
 
-        // if (hasKey) {
-        //   setLinks(JSON.parse(localStorage.getItem("createPost"))?.links);
-        //   return
-        // }
-        
-        setLinks(data.links);
+        if (response?.status === 403) {
+          ToastError(response?.response?.data?.detail || "Try again later.");
+          setTimeout(() => {
+            navigate("/main");
+          }, 3000);
 
+          return;
+        }
+
+        throw new Error(
+          response?.data?.detail || response?.message || "Try again later."
+        );
       } catch (error) {
+        console.error("Error fetching post data:", error);
         ToastError(error.message || "Try again later.");
       }
-    })();
-  }, [params, post, location.state]);
+    };
+
+    fetchData();
+  }, [params.editPostId, location.state, navigate]);
 
   const handleChangePost = ({ target }) => {
     const { name, value } = target;
@@ -117,7 +128,7 @@ const EditPostPage = () => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
-      localStorage.removeItem("createPost");
+      // localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }

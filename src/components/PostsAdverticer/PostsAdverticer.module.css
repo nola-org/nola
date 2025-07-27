@@ -1,3 +1,9 @@
+.account_link{
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
 .img {
   display: block;
   aspect-ratio: 1;

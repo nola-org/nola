@@ -58,7 +58,6 @@ export const AddCallToAction = ({ setPost, post }) => {
   });
 
   const selected_option = callToAction[callToActionIndex];
-console.log("post?.callToActionLinks", post?.callToActionLinks, post);
 
   return (
     <ul className={css.links_list}>

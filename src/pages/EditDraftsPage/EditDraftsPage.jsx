@@ -32,29 +32,26 @@ const EditDraftsPage = () => {
   const [links, setLinks] = useState(() => {
     return location?.state?.links || [{ id: nanoid(), url: "", name: "" }];
   });
-  const [post, setPost] = useState(
-    () => {
-      return (
-        // JSON.parse(localStorage.getItem("previewPost")) ??
-        {
-          // id: nanoid(),
-          description: "",
-          title: "",
-          category: { name: "" },
-          subcategory: { name: "" },
-          callToAction: "" || "Read more",
-          callToActionLinks: "",
-          banners: [],
-        }
-      );
-    }
-  );
+  const [post, setPost] = useState(() => {
+    return (
+      {
+        // id: nanoid(),
+        description: "",
+        title: "",
+        category: { name: "" },
+        subcategory: { name: "" },
+        callToAction: "" || "Read more",
+        callToActionLinks: "",
+        banners: [],
+      }
+    );
+  });
+  
 
   useEffect(() => {
     const getData = (async () => {
       try {
         if (location.state) {
-
           setData(location.state);
           setPost(location.state);
           setLinks(
@@ -66,26 +63,44 @@ const EditDraftsPage = () => {
         }
 
         const data = await getDraftsPostId(params.editDraftsId);
-        setData(data);
-        setPost(data);
 
-        data?.links?.map(({ href, action }) => {
-          if (href?.length === 0 || action?.length === 0) {
-            setLinks([{ id: nanoid(), url: "", name: "" }]);
-            return;
-          } else if (location.state) {
-            setLinks(
-              location?.state?.links?.length > 0
-                ? location?.state?.links
-                : [{ id: nanoid(), url: "", name: "" }]
-            );
-            return;
-          } else {
-            setLinks(data?.links);
-          }
-        });
+        if (data.status === 200) {
+          setData(data.data);
+          setPost(data.data);
+          data?.data?.links?.map(({ href, action }) => {
+            if (href?.length === 0 || action?.length === 0) {
+              setLinks([{ id: nanoid(), url: "", name: "" }]);
+              return;
+            } else if (location.state) {
+              setLinks(
+                location?.state?.links?.length > 0
+                  ? location?.state?.links
+                  : [{ id: nanoid(), url: "", name: "" }]
+              );
+              return;
+            } else {
+              setLinks(data?.data?.links);
+            }
+          });
+          return;
+        }
+
+        if (data?.status === 403) {
+          ToastError(data?.response?.data?.detail || "Try again later.");
+          setTimeout(() => {
+            navigate("/main");
+          }, 3000);
+
+          return;
+        }
+
+        throw new Error(
+          data?.data?.detail || data?.message || "Try again later."
+        );
       } catch (error) {
-        ToastError(error?.response?.statusText || error.message);
+        ToastError(
+          error?.response?.statusText || error.message || "Try again later."
+        );
       }
     })();
     // eslint-disable-next-line
@@ -109,7 +124,7 @@ const EditDraftsPage = () => {
   const cancelAddPost = () => {
     navigate("/main");
     setIsModal((prev) => !prev);
-    localStorage.removeItem("createPost");
+    // localStorage.removeItem("createPost");
   };
 
   const createPostDrafts = async () => {
@@ -123,7 +138,7 @@ const EditDraftsPage = () => {
       });
 
       navigate("/main");
-      localStorage.removeItem("createPost");
+      // localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error.message);
     }
@@ -156,7 +171,7 @@ const EditDraftsPage = () => {
       setTimeout(() => {
         navigate("/main");
       }, 3000);
-      localStorage.removeItem("createPost");
+      // localStorage.removeItem("createPost");
     } catch (error) {
       ToastError(error?.response?.statusText || error.message);
     }

@@ -9,6 +9,7 @@ import { RestrictedRout } from "./components/AuthRouts/RestrictedRout";
 import { PrivateRoute } from "./components/AuthRouts/PrivateRout";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { LoaderSpiner } from "./services/loaderSpinner/LoaderSpinner";
+import { ProfileCheckRout } from "./components/AuthRouts/ProfileCheckRout";
 
 const Layout = lazy(() => import("./components/Layout/Layout"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage/LoadingPage"));
@@ -174,7 +175,7 @@ function App() {
               />
             </Route>
 
-            <Route
+            {/* <Route
               path="drafts"
               element={
                 <PrivateRoute
@@ -182,7 +183,21 @@ function App() {
                   redirectTo="/main/authorization"
                 />
               }
-              // element={<DraftsPage />}
+            /> */}
+
+            <Route
+              path="drafts"
+              element={
+                <PrivateRoute
+                  redirectTo="/main/authorization"
+                  component={
+                    <ProfileCheckRout
+                      redirectTo="/main/profileCheckPage"
+                      component={<DraftsPage />}
+                    />
+                  }
+                />
+              }
             />
 
             <Route
@@ -216,7 +231,7 @@ function App() {
             />
           </Route>
 
-          <Route
+          {/* <Route
             path="/main/addPost"
             element={
               <PrivateRoute
@@ -225,6 +240,31 @@ function App() {
               />
             }
           />
+          <Route
+            path="/main/addPost"
+            element={
+              <ProfileCheckRout
+                component={<AddPostPage />}
+                redirectTo="/main/profileCheckPage"
+              />
+            }
+          /> */}
+
+          <Route
+            path="/main/addPost"
+            element={
+              <PrivateRoute
+                redirectTo="/main/authorization"
+                component={
+                  <ProfileCheckRout
+                    redirectTo="/main/profileCheckPage"
+                    component={<AddPostPage />}
+                  />
+                }
+              />
+            }
+          />
+
           {/* 
             <Route path="/main/:postId" element={<PostDetailsPage />} /> */}
           <Route path="/main/:postId" element={<PostDetailsPage />} />

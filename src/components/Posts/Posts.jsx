@@ -9,13 +9,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 // import { prominent } from "color.js";
 import { useCustomContext } from "../../services/Context/Context";
+import { useSavePost } from "../../services/hooks/useSavePost";
 
 const LOKAL_KEY = "savedPost";
 
 export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
-  const { id, banners: url, title, callToAction, advertiser } = post;
+  const { id, banners: url, title, callToAction, advertiser, callToActionLinks } = post;
 
   const { theme, postsId, setPostsId } = useCustomContext();
+  const { isDisabled } = useSavePost();
+
   const location = useLocation();
   const targetRef = useRef();
   const { ref: inViewRef } = useInView();
@@ -61,6 +64,7 @@ export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
             type="button"
             onClick={handleSavePost}
             className={css.save_btn}
+            disabled={isDisabled}
           >
             {!savedPost ? (
               <Save_Icon />
@@ -76,16 +80,20 @@ export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
 
         <span className={`${css.line} dark:bg-white`} />
 
-        <img src={url[0] || url[1] || url[2]} alt="" className={css.img} />
+        <NavLink to={`/main/${id}`}><img src={url[0] || url[1] || url[2]} alt="" className={css.img} /></NavLink>
 
         <div className={css.footer_action}>
           <NavLink
-            to={`/main/${id}`}
+            to={`${callToActionLinks}`}
+            target="blank"
             className={`${css.action} dark:text-white`}
           >
             {callToAction}
           </NavLink>
-          <NavLink to={`/main/${id}`}>
+          <NavLink
+            to={`${callToActionLinks}`}
+             target="blank"
+          >
             <UpLeft_Icon />
           </NavLink>
         </div>
@@ -241,6 +249,7 @@ Posts.propTypes = {
     banners: PropTypes.arrayOf(PropTypes.string).isRequired,
     title: PropTypes.string.isRequired,
     callToAction: PropTypes.string,
+    callToActionLinks: PropTypes.string,
     advertiser: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       profile_picture: PropTypes.string,

@@ -16,7 +16,7 @@ import { ToastContainer } from "react-toastify";
 
 const DraftsPage = () => {
   const navigate = useNavigate();
-  const navigationType = useNavigationType();
+  // const navigationType = useNavigationType();
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -36,11 +36,11 @@ const DraftsPage = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (navigationType === "POP") {
-      localStorage.removeItem("createPost");
-    }
-  }, [navigationType]);
+  // useEffect(() => {
+  //   if (navigationType === "POP") {
+  //     localStorage.removeItem("createPost");
+  //   }
+  // }, [navigationType]);
 
   const handleAddPost = () => {
     navigate("/main/addPost");

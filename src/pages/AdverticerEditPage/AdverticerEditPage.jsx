@@ -197,8 +197,8 @@ const AdverticerEditPage = () => {
         console.log("Form submitted with data:", data);
         try {
           const dataAccount = await putAccountApi(data);
-          Toastify("Profile updated successfully");
-          // navigation("/main/accountAdverticer");
+          // Toastify("Profile updated successfully");
+          navigation("/main/accountAdverticer");
           // localStorage.removeItem("data");
         } catch (error) {
           ToastError(error.response.data.links[0] || error.message);

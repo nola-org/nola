@@ -11,7 +11,7 @@ import { useCustomContext } from "../../services/Context/Context";
 
 const AccountAdverticerPage = () => {
   const { theme, setTheme } = useCustomContext();
-  const navigationType = useNavigationType();
+  // const navigationType = useNavigationType();
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -26,11 +26,11 @@ const AccountAdverticerPage = () => {
     localStorage.removeItem("pathname");
   }, []);
 
-  useEffect(() => {
-    if (navigationType === "POP") {
-      localStorage.removeItem("createPost");
-    }
-  }, [navigationType]);
+  // useEffect(() => {
+  //   if (navigationType === "POP") {
+  //     localStorage.removeItem("createPost");
+  //   }
+  // }, [navigationType]);
 
   const handleSetting = () => {
     localStorage.setItem("pathname", "/main/setting");

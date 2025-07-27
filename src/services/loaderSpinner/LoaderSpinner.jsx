@@ -4,8 +4,8 @@ export const LoaderSpiner = () => {
   return (
     <ThreeCircles
       visible={true}
-      height="100"
-      width="100"
+      height="70"
+      width="70"
       color="#eccd43"
       ariaLabel="three-circles-loading"
       wrapperStyle={{}}

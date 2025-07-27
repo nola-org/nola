@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 
 import PropTypes from "prop-types";
 
@@ -18,13 +18,17 @@ export const Banners = ({ key, banner }) => {
               slidesPerView={1}
               spaceBetween={30}
               loop={true}
+              autoplay={{
+              delay: 3000, 
+              disableOnInteraction: false, // Продолжать после ручного переключения
+            }}
               pagination={{ el: ".swiper-pagination", clickable: true }}
               navigation={{
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
                 clickable: true,
               }}
-              modules={[EffectCoverflow, Pagination, Navigation]}
+              modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
               className={css.swiper_container}
             >
               {banners[0] && (

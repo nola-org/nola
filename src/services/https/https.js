@@ -65,10 +65,11 @@ export const getAllPostApi = async () => {
 };
 
 export const getPostIdApi = async (id) => {
-  try {
-    return await instance.get(`/ads/${id}/`);
+ try {
+    const response = await instance.get(`/ads/${id}/`);
+    return response;
   } catch (error) {
-    console.log("error", error.message);
+    return error;
   }
 };
 
@@ -103,7 +104,8 @@ export const deletePostApi = async (id) => {
 
 export const getDraftsApi = async () => {
   try {
-    return await instance.get("/ads/my/");
+    const {data} = await instance.get("/ads/my/");
+    return data
   } catch (error) {
     console.log(error);
   }
@@ -111,10 +113,10 @@ export const getDraftsApi = async () => {
 
 export const getDraftsPostId = async (id) => {
   try {
-    const { data } = await instance.get(`/ads/${id}/?status=draft`);
+    const  data  = await instance.get(`/ads/${id}/?status=draft`);
     return data;
   } catch (error) {
-    console.log(error);
+    return error
   }
 };
 

@@ -13,62 +13,62 @@ import { useEffect, useState } from "react";
 import { ToastError } from "../../services/ToastError/ToastError";
 import { instance } from "../../services/axios";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchProfile } from "../../redux/profileSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfile } from "../../redux/profileSlice";
 
 const Layout = () => {
   const location = useLocation();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { token } = useAuth();
   const { theme, setTheme } = useCustomContext();
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [profile, setProfile] = useState(null);
+  // const [loading, setLoading] = useState(true);
   const [drafts, setDrafts] = useState(true);
 
-  // const profile = useSelector(state => state.profile.data);
-  // const profileStatus = useSelector(state => state.profile.status);
-  // const profileError = useSelector(state => state.profile.error);
-
-  // useEffect(() => {
-  //   if (token && profileStatus === 'idle') {
-  //     dispatch(fetchProfile());
-  //   }
-  // }, [token, profileStatus, dispatch]);
-
-  // useEffect(() => {
-  //   if (profileError) {
-  //     ToastError(profileError);
-  //   }
-  // }, [profileError]);
-
-  // const loading = token && profileStatus === 'loading';
+  const profile = useSelector(state => state.profile.data);
+  const profileStatus = useSelector(state => state.profile.status);
+  const profileError = useSelector(state => state.profile.error);
 
   useEffect(() => {
-    const fetchData = (async () => {
-      try {
-        if (token) {
-          instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-        }
+    if (token && profileStatus === 'idle') {
+      dispatch(fetchProfile());
+    }
+  }, [token, profileStatus, dispatch]);
 
-        const res = await getAccountApi();
-        setProfile(res.data);
-      } catch (error) {
-        if (error.response?.status === 401) {
-          return;
-        } else {
-          ToastError(error.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [token]);
+  useEffect(() => {
+    if (profileError) {
+      ToastError(profileError);
+    }
+  }, [profileError]);
+
+  const loading = token && profileStatus === 'loading';
+
+  // useEffect(() => {
+  //   const fetchData = (async () => {
+  //     try {
+  //       if (token) {
+  //         instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+  //       }
+
+  //       const res = await getAccountApi();
+  //       setProfile(res.data);
+  //     } catch (error) {
+  //       if (error.response?.status === 401) {
+  //         return;
+  //       } else {
+  //         ToastError(error.message);
+  //       }
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   })();
+  // }, [token]);
 
   useEffect(() => {
     (async () => {
       try {
         const data = await getDraftsApi();
-        setDrafts(true);
+        setDrafts(data);
       } catch (error) {
         ToastError(error?.response?.statusText || error.message);
       }
@@ -145,7 +145,7 @@ const Layout = () => {
                     <Icon_Add />
                   </div>
                 </NavLink>
-              ) : !profile ? (
+              ) : !profile?.bio?.length ? (
                 <NavLink to="profileCheckPage">
                   <div
                     className={`${css.icon} ${
@@ -163,7 +163,7 @@ const Layout = () => {
                     <Icon_Add />
                   </div>
                 </NavLink>
-              ) : drafts ? (
+              ) : drafts?.length ? (
                 <NavLink to="/main/drafts">
                   <div
                     className={`${css.icon} ${

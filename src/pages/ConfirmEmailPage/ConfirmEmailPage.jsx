@@ -79,44 +79,11 @@ const ConfirmEmailPage = () => {
 
 export default ConfirmEmailPage;
 // innadidenko29@gmail.com
-// 44444Aa@ --- 44445Aa@ --- 44444Aa@
-// inna
+// 44444Aa@
+// inna / test
 // +
 
-// 60ef727a49@emaily.pro
-// test-5
-// 44444Aa@
-
-//27263c8870@emaily.pro
-// 44444Aa@
-// test +
-
-//5a75924153@emaily.pro
-// 44444Aa@
-// test-2
-
-//46d0cf53c5@emaily.pro
-// 44444Aa@
-// inna-test
-
-// 08221ba59a@emaily.pro
-// 44444Aa@
-// test2
-// +
-
-// f01040c6b7@emaily.pro
-// 44444Aa@
-// test3
-
-//d94e2f13d2@emaily.pro
-//test33
-//12345Aa$
-
-//advent
-// dc8eba2579@emaily.pro
-// f8fa00dd8e@emaily.pro
-//f75dfe35c4@emaily.pro
-//59804b75ff@emaily.pro  ++
-//51206e49bd@emaily.pro ++
-//12345Aa# ++
-//12345Aa$
+//e51e69cde0@emaily.pro
+//44444Aa@
+//inna-test
+//-

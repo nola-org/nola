@@ -14,6 +14,7 @@ export function useSavePost() {
   const { token } = useAuth();
 
   const isGuestRef = useRef(true); // ← Инициализация ref
+  const disabledRef = useRef(false);
 
   const [savedPostIds, setSavedPostIds] = useState(() => {
     return JSON.parse(localStorage.getItem("savedPostId")) ?? [];
@@ -22,7 +23,7 @@ export function useSavePost() {
   const [savedPosts, setSavedPosts] = useState(() => {
     return JSON.parse(localStorage.getItem(LOKAL_KEY)) ?? [];
   });
-
+  const [isDisabled, setIsDisabled] = useState(false);
   // 💡 Определяем, был ли пользователь гостем
   useEffect(() => {
     try {
@@ -151,5 +152,7 @@ export function useSavePost() {
     savedPosts,
     isSaved,
     toggleSave,
+    isDisabled,
+    setIsDisabled,
   };
 }
