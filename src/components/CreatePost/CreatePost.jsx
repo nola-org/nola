@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 export const CreatePost = ({ setPost, post, links, setLinks }) => {
-  const location = useLocation()
+  const location = useLocation();
   const [update, setUpdate] = useState(false);
   const [symbolsTitleCount, setSymbolsTitleCount] = useState(0);
   const [symbolspostDescriptionCount, setSymbolspostDescriptionCount] =
@@ -33,8 +33,12 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
   };
 
   useEffect(() => {
-    if (location.pathname.includes("editPost") || location.pathname.includes("drafts")) return;
-    
+    if (
+      location.pathname.includes("editPost") ||
+      location.pathname.includes("drafts")
+    )
+      return;
+
     localStorage.setItem("createPost", JSON.stringify(post));
   }, [post, location]);
 
@@ -94,7 +98,7 @@ export const CreatePost = ({ setPost, post, links, setLinks }) => {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       {update && (
         <div className={css.loader}>
           <LoaderSpiner />

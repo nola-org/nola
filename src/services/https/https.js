@@ -65,7 +65,7 @@ export const getAllPostApi = async () => {
 };
 
 export const getPostIdApi = async (id) => {
- try {
+  try {
     const response = await instance.get(`/ads/${id}/`);
     return response;
   } catch (error) {
@@ -82,16 +82,20 @@ export const getPostUserIdApi = async (id) => {
 };
 
 export const postPostApi = async (post) => {
-  const { data } = await instance.post(`/ads/`, post);
-  return data;
+  try {
+    const data = await instance.post(`/ads/`, post);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const patchPostApi = async (id, body) => {
   try {
-    const { data } = await instance.put(`/ads/${id}/`, body);
+    const data = await instance.put(`/ads/${id}/`, body);
     return data;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
@@ -104,8 +108,8 @@ export const deletePostApi = async (id) => {
 
 export const getDraftsApi = async () => {
   try {
-    const {data} = await instance.get("/ads/my/");
-    return data
+    const { data } = await instance.get("/ads/my/");
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -113,10 +117,10 @@ export const getDraftsApi = async () => {
 
 export const getDraftsPostId = async (id) => {
   try {
-    const  data  = await instance.get(`/ads/${id}/?status=draft`);
+    const data = await instance.get(`/ads/${id}/?status=draft`);
     return data;
   } catch (error) {
-    return error
+    return error;
   }
 };
 
@@ -128,7 +132,6 @@ export const deleteDraftsPostId = async (id) => {
     console.log(error);
   }
 };
-
 
 // export const postDraftsPost = async (body) => {
 //   try {
@@ -156,7 +159,6 @@ export const deleteDraftsPostId = async (id) => {
 //     console.log(error);
 //   }
 // };
-
 
 // --------Save post----------
 export const getSavePostApi = async () => {
@@ -192,7 +194,6 @@ export const getCategoriesId = async (id) => {
     console.log(error);
   }
 };
-
 
 export const getSubCategories = async () => {
   try {

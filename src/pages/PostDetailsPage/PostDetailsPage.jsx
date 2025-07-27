@@ -22,7 +22,9 @@ const PostDetailsPage = () => {
   const locationRef = useRef(location.state?.from ?? "/main");
   const navigate = useNavigate();
   const { postsId, setPostsId } = useCustomContext();
+
   const { postId } = useParams();
+  const [advertiserId, setAdvertiserId] = useState(null);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,6 +35,7 @@ const PostDetailsPage = () => {
         const { data } = await getPostIdApi(postId);
 
         setPost(data);
+        setAdvertiserId(data.advertiser.id);
       } catch (error) {
         ToastError("Error");
       } finally {
@@ -43,14 +46,13 @@ const PostDetailsPage = () => {
 
   const handleBack = () => {
     setPostsId(post?.id);
-    
-    if (window.history.length > 5) {    
-    navigate(-1); 
-    } else {
-    navigate('/main'); 
-  }
-};
 
+    if (window.history.length > 5) {
+      navigate(-1);
+    } else {
+      navigate("/main");
+    }
+  };
 
   // useEffect(() => {
   //   setPostsId(post?.id);
@@ -87,6 +89,7 @@ const PostDetailsPage = () => {
     //   ToastError("Post has been deleted");
     // }
   };
+  console.log(post);
 
   return (
     <div>
@@ -135,6 +138,7 @@ const PostDetailsPage = () => {
           </button>
 
           <PostsAdverticer
+            profileId={advertiserId}
             title={post.title}
             description={post.description}
             links={post.links}

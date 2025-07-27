@@ -6,8 +6,10 @@ import { ReactComponent as Icon_Instagram } from "../../assets/icons/instagram_i
 import { ReactComponent as Icon_Telegram } from "../../assets/icons/telegram_icon.svg";
 import { ReactComponent as Icon_TikTok } from "../../assets/icons/tikTok.svg";
 import { Link } from "react-router-dom";
+import { useCustomContext } from "../../services/Context/Context";
 
 export const OurLinksList = ({ data, setOurLinksList }) => {
+  const { theme, setTheme } = useCustomContext();
   const handleCloseBackdrop = (e) => {
     const { target, currentTarget } = e;
     if (target === currentTarget) {
@@ -20,10 +22,16 @@ export const OurLinksList = ({ data, setOurLinksList }) => {
         <ul className={css.list}>
           {data?.links?.map(({ name, url, id }) => (
             <li key={id} className={css.link_item}>
-              <Icon_Links />
+              <div className={`${theme === "dark" && css.iconDark}`}>
+                <Icon_Links />
+              </div>
               <div className={css.link_item_container}>
-                <p className={css.title}>{name}</p>
-                <a href={url} target="blank" className={css.description}>
+                <p className={`${css.title}  dark:text-white`}>{name}</p>
+                <a
+                  href={url}
+                  target="blank"
+                  className={`${css.description}  dark:text-white`}
+                >
                   {url}
                 </a>
               </div>

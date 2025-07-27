@@ -10,11 +10,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // import { prominent } from "color.js";
 import { useCustomContext } from "../../services/Context/Context";
 import { useSavePost } from "../../services/hooks/useSavePost";
+import { Banners } from "../Banners/Banners";
 
 const LOKAL_KEY = "savedPost";
 
 export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
-  const { id, banners: url, title, callToAction, advertiser, callToActionLinks } = post;
+  const {
+    id,
+    banners: url,
+    title,
+    callToAction,
+    advertiser,
+    callToActionLinks,
+  } = post;
 
   const { theme, postsId, setPostsId } = useCustomContext();
   const { isDisabled } = useSavePost();
@@ -80,7 +88,9 @@ export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
 
         <span className={`${css.line} dark:bg-white`} />
 
-        <NavLink to={`/main/${id}`}><img src={url[0] || url[1] || url[2]} alt="" className={css.img} /></NavLink>
+        <NavLink to={`/main/${id}`} className={css.img}>
+          <img src={url[0] || url[1] || url[2]} alt="" className={css.img} />
+        </NavLink>
 
         <div className={css.footer_action}>
           <NavLink
@@ -90,10 +100,7 @@ export const Posts = ({ post, handleSavePost, savedPost, elementId }) => {
           >
             {callToAction}
           </NavLink>
-          <NavLink
-            to={`${callToActionLinks}`}
-             target="blank"
-          >
+          <NavLink to={`${callToActionLinks}`} target="blank">
             <UpLeft_Icon />
           </NavLink>
         </div>
@@ -259,7 +266,7 @@ Posts.propTypes = {
   handleSavePost: PropTypes.func.isRequired,
 
   savedPost: PropTypes.bool.isRequired,
-  elementId:  PropTypes.string,
+  elementId: PropTypes.string,
   // url: PropTypes.array,
   // title: PropTypes.string,
   // id: PropTypes.number,

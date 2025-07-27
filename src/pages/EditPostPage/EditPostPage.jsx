@@ -21,7 +21,8 @@ const EditPostPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
-  const [formConfig, setFormConfig] = useState(false);
+  // const [formConfig, setFormConfig] = useState(false);
+  const [validForm, setValidForm] = useState(false);
   const [postSuccessfullyAdded, setPostSuccessfullyAdded] = useState(false);
   const [data, setData] = useState([]);
   const [profile, setProfile] = useState({});
@@ -104,17 +105,37 @@ const EditPostPage = () => {
     fetchData();
   }, [params.editPostId, location.state, navigate]);
 
-  const handleChangePost = ({ target }) => {
-    const { name, value } = target;
-    setPost({
-      ...post,
-      [name]: value,
-    });
-  };
+  // const handleChangePost = ({ target }) => {
+  //   const { name, value } = target;
+  //   setPost({
+  //     ...post,
+  //     [name]: value,
+  //   });
+  // };
+
+  useEffect(() => {
+    if (
+      data?.title !== "" &&
+      data?.banners?.some((banner) => banner?.length !== 0) &&
+      data?.description?.length !== 0 &&
+      data?.category?.name !== "" &&
+      data?.subcategory?.name !== ""
+    ) {
+      setValidForm(true);
+    } else {
+      setValidForm(false);
+    }
+  }, [
+    data?.category?.name,
+    data?.subcategory?.name,
+    data?.title,
+    data?.banners,
+    data?.description,
+  ]);
 
   const handleSubmitPost = async (e) => {
     e.preventDefault();
-    setFormConfig(true); // delete later
+    // setFormConfig(true); // delete later
     try {
       const res = await patchPostApi(params.editPostId, {
         ...data,
@@ -123,12 +144,16 @@ const EditPostPage = () => {
         status: "pending",
       });
 
-      setPostSuccessfullyAdded(true);
+      if (res.status === 201 || res.status === 200) {
+        setPostSuccessfullyAdded(true);
 
-      setTimeout(() => {
-        navigate("/main");
-      }, 3000);
-      // localStorage.removeItem("createPost");
+        setTimeout(() => {
+          navigate("/main");
+        }, 3000);
+        // localStorage.removeItem("createPost");
+      }
+
+      throw new Error("Try again later.");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }
@@ -179,7 +204,10 @@ const EditPostPage = () => {
 
                 <button
                   type="submit"
-                  className={`${css.btn} ${css.btn_active}`}
+                  className={`${css.btn}  ${
+                    validForm ? css.btn_active : css.btn_disabled
+                  }`}
+                  disabled={validForm ? false : true}
                 >
                   <span className={css.btn_back_active}>Publish</span>
                 </button>

@@ -33,20 +33,17 @@ const EditDraftsPage = () => {
     return location?.state?.links || [{ id: nanoid(), url: "", name: "" }];
   });
   const [post, setPost] = useState(() => {
-    return (
-      {
-        // id: nanoid(),
-        description: "",
-        title: "",
-        category: { name: "" },
-        subcategory: { name: "" },
-        callToAction: "" || "Read more",
-        callToActionLinks: "",
-        banners: [],
-      }
-    );
+    return {
+      // id: nanoid(),
+      description: "",
+      title: "",
+      category: { name: "" },
+      subcategory: { name: "" },
+      callToAction: "" || "Read more",
+      callToActionLinks: "",
+      banners: [],
+    };
   });
-  
 
   useEffect(() => {
     const getData = (async () => {
@@ -137,8 +134,37 @@ const EditDraftsPage = () => {
         status: "draft",
       });
 
-      navigate("/main");
-      // localStorage.removeItem("createPost");
+      if (dataRes.status === 201 || dataRes.status === 200) {
+        navigate("/main");
+        // localStorage.removeItem("createPost");
+      }
+
+      if (dataRes.status === 400) {
+        const errorData = dataRes.response?.data || {};
+
+        const allErrors = Object.entries(errorData).flatMap(
+          ([field, errors]) => {
+            if (field === "category" || field === "subcategory") {
+              const nestedErrors = errors.name;
+              const errorList = Array.isArray(nestedErrors)
+                ? nestedErrors
+                : [nestedErrors];
+              return errorList.map((error) => `${field}.name: ${error}`);
+            }
+
+            const errorList = Array.isArray(errors) ? errors : [errors];
+            return errorList.map((error) => `${field}: ${error}`);
+          }
+        );
+
+        if (allErrors.length > 0) {
+          ToastError(allErrors.join("\n"));
+        }
+
+        return;
+      }
+
+      throw new Error("Try again later.");
     } catch (error) {
       ToastError(error.message);
     }
@@ -147,6 +173,8 @@ const EditDraftsPage = () => {
   useEffect(() => {
     if (
       data?.title !== "" &&
+      data?.banners?.some((banner) => banner?.length !== 0) &&
+      data?.description?.length !== 0 &&
       data?.category?.name !== "" &&
       data?.subcategory?.name !== ""
     ) {
@@ -154,7 +182,13 @@ const EditDraftsPage = () => {
     } else {
       setValidForm(false);
     }
-  }, [data?.category, data?.subcategory, data?.title, data]);
+  }, [
+    data?.category?.name,
+    data?.subcategory?.name,
+    data?.title,
+    data?.banners,
+    data?.description,
+  ]);
 
   const handleSubmitPost = async (e) => {
     e.preventDefault();
@@ -166,14 +200,21 @@ const EditDraftsPage = () => {
         status: "pending",
       });
 
-      setPostSuccessfullyAdded(true);
+      if (dataRes.status === 201 || dataRes.status === 200) {
+        setPostSuccessfullyAdded(true);
 
-      setTimeout(() => {
-        navigate("/main");
-      }, 3000);
-      // localStorage.removeItem("createPost");
+        setTimeout(() => {
+          navigate("/main");
+        }, 3000);
+        // localStorage.removeItem("createPost");
+        return;
+      }
+
+      throw new Error("Try again later.");
     } catch (error) {
-      ToastError(error?.response?.statusText || error.message);
+      ToastError(
+        error?.response?.statusText || error.message || "Try again later."
+      );
     }
   };
 
@@ -189,7 +230,7 @@ const EditDraftsPage = () => {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <p>EditDraftsPage</p>
       {!postSuccessfullyAdded && (
         <>

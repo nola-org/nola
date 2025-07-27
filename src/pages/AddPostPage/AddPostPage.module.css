@@ -53,11 +53,11 @@
   border: transparent;
 }
 
-.btn_active {
-  background-color: var(--primary-bg);
-}
-
 .btn_disabled {
   background-color: var(--secondary-bg);
   color: #ffffff;
+}
+
+.btn_active {
+  background-color: var(--primary-bg);
 }

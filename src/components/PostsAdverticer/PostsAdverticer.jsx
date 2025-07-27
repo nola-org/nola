@@ -1,21 +1,23 @@
 import PropTypes from "prop-types";
 import { ReactComponent as Icon_Links } from "../../assets/icons/links.svg";
 import css from "./PostsAdverticer.module.css";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink, useLocation } from "react-router-dom";
+import { useCustomContext } from "../../services/Context/Context";
 
 export const PostsAdverticer = ({
   title,
   description,
   links,
   profile_picture,
+  profileId,
+  openInfo,
 }) => {
-  const profile = useSelector((state) => state.profile.data);
+  const { theme, setTheme } = useCustomContext();
 
   return (
     <>
-      <div className={css.logo_container}>
-        <NavLink to={`/${profile?.id}`} className={css.account_link}>
+      <div className={`${css.logo_container} ${openInfo && css.openInfo}`}>
+        <NavLink to={`/${profileId}`} className={css.account_link}>
           <img src={profile_picture} alt="photo" className={css.logo} />
 
           <p className={`${css.logo_description} dark:text-white`}>{title}</p>
@@ -34,7 +36,9 @@ export const PostsAdverticer = ({
           action?.length !== 0 ? (
             <li key={id} className={`${css.links_item}`}>
               {/* <img src="" alt="" className={css.link_img} /> */}
-              <Icon_Links />
+              <div className={`${theme === "dark" && css.iconDark}`}>
+                <Icon_Links />
+              </div>
               <a
                 href={href}
                 target="blank"
@@ -53,9 +57,11 @@ export const PostsAdverticer = ({
 };
 
 PostsAdverticer.propTypes = {
+  profileId: PropTypes.number,
   links: PropTypes.array,
   description: PropTypes.string,
   title: PropTypes.string,
   data: PropTypes.object,
   profile_picture: PropTypes.string,
+  openInfo: PropTypes.bool,
 };

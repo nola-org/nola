@@ -25,15 +25,18 @@ const AdvertiserDetailsPage = () => {
   const [data, setData] = useState([]);
   const [dataPublication, setDataPublication] = useState([]);
   const [showPost, setShowPost] = useState(false);
-
+  const [openInfo, setOpenInfo] = useState(true);
 
   useEffect(() => {
     const getData = (async () => {
       try {
-        const data = await getAccountId(advertiserId);
-        console.log(data);
+        if (advertiserId) {
+          const data = await getAccountId(advertiserId);
+          console.log(data);
 
-        setData(data);
+          setData(data);
+          return;
+        }
       } catch (error) {
         ToastError(error.message);
       }
@@ -60,11 +63,11 @@ const AdvertiserDetailsPage = () => {
     if (openedFromPostId) {
       setPostsId(openedFromPostId);
     }
-    if (window.history.length > 5) {    
-    navigate(-1); 
+    if (window.history.length > 5) {
+      navigate(-1);
     } else {
-    navigate('/main'); 
-  }
+      navigate("/main");
+    }
   };
 
   const handlePost = (id) => {
@@ -81,7 +84,7 @@ const AdvertiserDetailsPage = () => {
         }`}
       >
         <Icon_Back />
-        <p className={`${css.back_text} dark:text-white`}>{data.first_name}</p>
+        <p className={`${css.back_text} dark:text-white`}>{data?.first_name}</p>
       </NavLink>
 
       <Advertiser data={data} />
@@ -121,6 +124,7 @@ const AdvertiserDetailsPage = () => {
                 <Banners banner={banners} />
                 {/* <img src={banners} alt="" className={css.img} /> */}
                 <PostsAdverticer
+                  openInfo={openInfo}
                   id={id}
                   title={title}
                   description={description}

@@ -96,10 +96,40 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
   const createPostDrafts = async () => {
     try {
       setIsModal((prev) => !prev);
+
       const dataRes = await postPostApi({ ...data, status: "draft" });
-      console.log("drafts", dataRes);
-      localStorage.removeItem("createPost");
-      navigate("/main");
+
+      if (dataRes.status === 201 || dataRes.status === 200) {
+        localStorage.removeItem("createPost");
+        navigate("/main");
+        return;
+      }
+
+      if (dataRes.status === 400) {
+        const errorData = dataRes.response?.data || {};
+
+        const allErrors = Object.entries(errorData).flatMap(
+          ([field, errors]) => {
+            if (field === "category" || field === "subcategory") {
+              const nestedErrors = errors.name;
+              const errorList = Array.isArray(nestedErrors)
+                ? nestedErrors
+                : [nestedErrors];
+              return errorList.map((error) => `${field}.name: ${error}`);
+            }
+
+            const errorList = Array.isArray(errors) ? errors : [errors];
+            return errorList.map((error) => `${field}: ${error}`);
+          }
+        );
+
+        if (allErrors.length > 0) {
+          ToastError(allErrors.join("\n"));
+        }
+
+        return;
+      }
+      throw new Error("Try again later.");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }
@@ -107,16 +137,23 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
 
   useEffect(() => {
     if (
-      data.title !== "" &&
-      data.category !== "" &&
-      data.subcategory !== "" &&
-      data.banners.length !== 0
+      data?.title !== "" &&
+      data?.category?.name !== "" &&
+      data?.subcategory?.name !== "" &&
+      data?.banners?.some((banner) => banner?.length !== 0) &&
+      data?.description?.length !== 0
     ) {
       setValidForm(true);
     } else {
       setValidForm(false);
     }
-  }, [data.category, data.subcategory, data.title, data.banners]);
+  }, [
+    data.category.name,
+    data.subcategory.name,
+    data.title,
+    data?.banners,
+    data.description,
+  ]);
 
   const handleBack = () => {
     setIsModal((prev) => !prev);
@@ -128,13 +165,18 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
     try {
       const dataRes = await postPostApi({ ...data, status: "pending" });
 
-      // setSendPost(data);
-      setPostSuccessfullyAdded(true);
+      if (dataRes.status === 201 || dataRes.status === 200) {
+        // setSendPost(data);
+        setPostSuccessfullyAdded(true);
 
-      setTimeout(() => {
-        navigate("/main");
-      }, 3000);
-      localStorage.removeItem("createPost");
+        setTimeout(() => {
+          navigate("/main");
+        }, 3000);
+        localStorage.removeItem("createPost");
+        return;
+      }
+
+      throw new Error("Try again later.");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }
@@ -154,7 +196,7 @@ const AddPostPage = ({ postEdit, setPostEdit, draftsEdit, setDraftsEdit }) => {
     <div>
       {!postSuccessfullyAdded && (
         <>
-          <ToastContainer />
+          {/* <ToastContainer /> */}
           <div className={css.top_container} onClick={handleBack}>
             <GoBackButton
               to=""

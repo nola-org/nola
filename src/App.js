@@ -229,6 +229,9 @@ function App() {
                 />
               }
             />
+
+            <Route path="/main/:postId" element={<PostDetailsPage />} />
+            
           </Route>
 
           {/* <Route
@@ -265,9 +268,7 @@ function App() {
             }
           />
 
-          {/* 
-            <Route path="/main/:postId" element={<PostDetailsPage />} /> */}
-          <Route path="/main/:postId" element={<PostDetailsPage />} />
+          {/* <Route path="/main/:postId" element={<PostDetailsPage />} /> */}
 
           <Route path="/:advertiserId" element={<AdvertiserDetailsPage />} />
 

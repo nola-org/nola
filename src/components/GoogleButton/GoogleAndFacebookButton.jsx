@@ -44,7 +44,7 @@ const GoogleAndFacebookButton = () => {
         Continue with Google
       </button>
 
-      <FacebookLogin
+      {/* <FacebookLogin
         appId="366622046395430"
         autoLoad={false}
         fields="name,email,picture"
@@ -59,7 +59,7 @@ const GoogleAndFacebookButton = () => {
             Continue with Facebook
           </button>
         )}
-      />
+      /> */}
     </div>
   );
 };

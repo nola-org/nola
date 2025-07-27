@@ -29,7 +29,7 @@ const AdverticerPublicationsPage = () => {
   const { theme, setTheme } = useCustomContext();
   const [post, setPost] = useState([]);
   const [menuList, setMenuList] = useState(false);
-
+  const [openInfo, setOpenInfo] = useState(true);
   const [deletePost, setDeletePost] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [isMessage, setIsMessage] = useState(false);
@@ -322,6 +322,7 @@ const AdverticerPublicationsPage = () => {
                 {/* <img src={banners[0]} alt="" className={css.img} /> */}
                 <Banners banner={banners} />
                 <PostsAdverticer
+                  openInfo={openInfo}
                   data={post}
                   id={id}
                   title={title}
