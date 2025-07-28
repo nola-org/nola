@@ -21,7 +21,6 @@ export const getAccountApi = async () => {
 };
 
 export const putAccountApi = async ({ ...body }) => {
-  console.log("body", body);
   const data = await instance.patch("/users/me", body);
   return data;
 };

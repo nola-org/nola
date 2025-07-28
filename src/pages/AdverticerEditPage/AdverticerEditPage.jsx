@@ -43,11 +43,16 @@ const AdverticerEditPage = () => {
     const getData = (async () => {
       try {
         const data = await getAccountApi();
-        setData(data.data);
-        setUserId(data.data.id);
 
-        if (data.data.links.length <= 0) return;
-        setLinks(data.data.links);
+        if (data.status === 200) {
+          setData(data.data);
+          setUserId(data.data.id);
+
+          if (data.data.links.length <= 0) return;
+          setLinks(data.data.links);
+          return;
+        }
+        throw new Error("Try again later.");
       } catch (error) {
         ToastError("Try again later.");
         console.log(error);
@@ -197,20 +202,28 @@ const AdverticerEditPage = () => {
         console.log("Form submitted with data:", data);
         try {
           const dataAccount = await putAccountApi(data);
-          // Toastify("Profile updated successfully");
-          navigation("/main/accountAdverticer");
-          // localStorage.removeItem("data");
+
+          if (dataAccount.status === 200) {
+            // Toastify("Profile updated successfully");
+            navigation("/main/accountAdverticer");
+            // localStorage.removeItem("data");
+            return;
+          }
+          throw new Error("Try again later.");
         } catch (error) {
-          ToastError(error.response.data.links[0] || error.message);
+          ToastError(
+            error.response.data.links[0] || error.message || "Try again later."
+          );
           console.log(error);
         }
       })
 
       .catch((validationErrors) => {
         const errorsMap = {};
-        validationErrors.inner.forEach((error) => {
-          errorsMap[error.path] = error.message;
+        validationErrors?.inner?.forEach((error) => {
+          errorsMap[error.path] = error?.message;
         });
+        ToastError("Try again later.");
         setErrors(errorsMap);
       });
   };
