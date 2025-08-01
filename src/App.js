@@ -290,6 +290,16 @@ function App() {
           />
 
           <Route
+            path="/profile"
+            element={
+              <PrivateRoute
+                component={<AdverticerEditPage />}
+                redirectTo="/main/authorization"
+              />
+            }
+          />
+
+          {/* <Route
             path="main/accountAdverticer/adverticerEdit/links"
             element={
               <PrivateRoute
@@ -306,7 +316,7 @@ function App() {
                 redirectTo="/main/authorization"
               />
             }
-          />
+          /> */}
 
           <Route path="/setting" element={<SettingPage />} />
 

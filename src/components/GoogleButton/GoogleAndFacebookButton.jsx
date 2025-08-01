@@ -1,25 +1,66 @@
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import { useNavigate } from "react-router-dom";
 import css from "./GoogleAndFacebookButton.module.css";
-import { useGoogleLogin } from "@react-oauth/google";
+import { ToastError } from "../../services/ToastError/ToastError";
+import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { googleLoginThunk } from "../../redux/auth/googleLoginThunk";
+import { instance } from "../../services/axios";
 
 const GoogleAndFacebookButton = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [redirect, setRedirect] = useState(false);
 
   const googleLogin = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
+  onSuccess: async (tokenResponse) => {
+    try {
       console.log("Google login successful", tokenResponse);
-      setRedirect(true);
-      navigate("/main/accountAdverticer");
-    },
-    onError: (error) => {
-      console.error("Google login failed", error);
-    },
-  });
+      window.location.href =
+        "https://nola-spot-python-1.onrender.com/auth/login/google-oauth2/";
+    } catch (error) {
+      ToastError("Google auth failed. Try again later.");
+      console.error("Google auth failed:", error);
+    }
+  },
+  onError: (error) => {
+    ToastError("Google auth failed. Try again later.");
+    console.error("Google login failed.", error);
+  },
+  flow: 'auth-code', // если вы используете backend flow (Django), то нужен auth-code
+  redirect_uri: "https://nola-org.github.io/nola/", // Указать явно
+});
+
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: async (tokenResponse) => {
+  //     try {
+  //       console.log("Google login successful", tokenResponse);
+  //       window.location.href =
+  //         "https://nola-spot-python-1.onrender.com/auth/login/google-oauth2/";
+
+  //       // Отправляем код на бэкенд для верификации - redax
+
+  //       // Сохраняем токен и перенаправляем
+  //       // localStorage.setItem("authToken", res.data.token);
+  //       // await dispatch(googleLoginThunk(tokenResponse.access_token)).unwrap();
+  //       // setRedirect(true);
+  //       // navigate("/main/accountAdverticer");
+  //     } catch (error) {
+  //       ToastError("Google auth failed. Try again later.");
+  //       console.error("Google auth failed:", error);
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     ToastError("Google auth failed. Try again later.");
+  //     console.error("Google login failed.", error);
+  //   },
+  // });
 
   const handleFacebookSuccess = (response) => {
     console.log("Facebook login successful", response);
@@ -28,11 +69,12 @@ const GoogleAndFacebookButton = () => {
   };
 
   const handleFacebookFailure = (error) => {
-    console.error("Facebook login failed", error);
+    console.error("Facebook login failed. Try again later.");
   };
 
   return (
     <div className={css.buttonContainer}>
+      <ToastContainer />
       <div className={css.separatorLine}></div>
       <div className={`${css.orText} dark:bg-black`}>or</div>
 

@@ -5,6 +5,7 @@ import {
   refreshUserThunk,
   registerThunk,
 } from "./authThunk";
+import { googleLoginThunk } from "./googleLoginThunk";
 
 const initialState = {
   user: {},
@@ -21,6 +22,14 @@ export const authSlice = createSlice({
     logoutAction: () => initialState,
   },
   extraReducers: (builder) => {
+    builder.addCase(googleLoginThunk.fulfilled, (state, action) => {
+      console.log("action.payload", action.payload);
+      
+      state.user = action.payload.user || {};
+      state.token = action.payload.access;
+      state.refresh = action.payload.refresh || null;
+      state.isLoggedIn = true;
+    });
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.user = action.payload;
       state.isLoggedIn = true;
