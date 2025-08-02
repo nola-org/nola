@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/nola/static/css/main.37e8666c.css",
-    "main.js": "/nola/static/js/main.4661bd7c.js",
+    "main.js": "/nola/static/js/main.e79b3d05.js",
     "static/css/578.5098f83a.chunk.css": "/nola/static/css/578.5098f83a.chunk.css",
     "static/js/578.2ba6381b.chunk.js": "/nola/static/js/578.2ba6381b.chunk.js",
-    "static/css/244.0798bb1c.chunk.css": "/nola/static/css/244.0798bb1c.chunk.css",
-    "static/js/244.a65fe181.chunk.js": "/nola/static/js/244.a65fe181.chunk.js",
+    "static/css/310.6ea3fdc3.chunk.css": "/nola/static/css/310.6ea3fdc3.chunk.css",
+    "static/js/310.d7d05167.chunk.js": "/nola/static/js/310.d7d05167.chunk.js",
     "static/css/111.71268fa7.chunk.css": "/nola/static/css/111.71268fa7.chunk.css",
     "static/js/111.eae12a34.chunk.js": "/nola/static/js/111.eae12a34.chunk.js",
     "static/css/493.081b1172.chunk.css": "/nola/static/css/493.081b1172.chunk.css",
@@ -88,10 +88,16 @@
     "static/js/571.fbc8e6ea.chunk.js": "/nola/static/js/571.fbc8e6ea.chunk.js",
     "static/js/956.5f5f08c4.chunk.js": "/nola/static/js/956.5f5f08c4.chunk.js",
     "static/js/54.8319849d.chunk.js": "/nola/static/js/54.8319849d.chunk.js",
+    "static/media/nola-no-one-likes-advertisement-typography-1-Photoroom.png": "/nola/static/media/nola-no-one-likes-advertisement-typography-1-Photoroom.600e29cc4078dded2d62.png",
+    "static/media/nola-no.svg": "/nola/static/media/nola-no.9c303ebced4238230c096ef03d0c2c0a.svg",
     "static/media/search.jpg": "/nola/static/media/search.9be4ecc11aaee1560dc0.jpg",
+    "static/media/nola-no-one-likes-advertisement-typography-1.jpeg": "/nola/static/media/nola-no-one-likes-advertisement-typography-1.1625a97face4be192794.jpeg",
+    "static/media/nola-logo.jpeg": "/nola/static/media/nola-logo.0ca700b2c1a20fe6221f.jpeg",
+    "static/media/nola-no-one-likes-advertisement-typography-1-Photoroom.jpg": "/nola/static/media/nola-no-one-likes-advertisement-typography-1-Photoroom.292fe1075b14e891ea1e.jpg",
     "static/media/learn.png": "/nola/static/media/learn.c6b513e418710ce09ccd.png",
     "static/media/create.png": "/nola/static/media/create.2c468c187a901618667b.png",
     "static/media/searching.png": "/nola/static/media/searching.02bf6190679ac5bbaee7.png",
+    "static/media/nola.webp": "/nola/static/media/nola.e529c0e99c4686e83eaf.webp",
     "static/media/feedback_whatsApp.svg": "/nola/static/media/feedback_whatsApp.c1e2211c804f5eaba7cce9ab1eb242b1.svg",
     "static/media/feedback_instagram.svg": "/nola/static/media/feedback_instagram.68d1b414b432f87108016dcf3d18d954.svg",
     "static/media/moon_light.svg": "/nola/static/media/moon_light.1a55c94861377e1d6844b0087b505d37.svg",
@@ -145,11 +151,11 @@
     "static/media/setting_check.svg": "/nola/static/media/setting_check.57fa516623817cd522bb47c5d4c428f0.svg",
     "static/media/arrow-up.svg": "/nola/static/media/arrow-up.a73842b5bf3d3112696f5e5c11590f62.svg",
     "main.37e8666c.css.map": "/nola/static/css/main.37e8666c.css.map",
-    "main.4661bd7c.js.map": "/nola/static/js/main.4661bd7c.js.map",
+    "main.e79b3d05.js.map": "/nola/static/js/main.e79b3d05.js.map",
     "578.5098f83a.chunk.css.map": "/nola/static/css/578.5098f83a.chunk.css.map",
     "578.2ba6381b.chunk.js.map": "/nola/static/js/578.2ba6381b.chunk.js.map",
-    "244.0798bb1c.chunk.css.map": "/nola/static/css/244.0798bb1c.chunk.css.map",
-    "244.a65fe181.chunk.js.map": "/nola/static/js/244.a65fe181.chunk.js.map",
+    "310.6ea3fdc3.chunk.css.map": "/nola/static/css/310.6ea3fdc3.chunk.css.map",
+    "310.d7d05167.chunk.js.map": "/nola/static/js/310.d7d05167.chunk.js.map",
     "111.71268fa7.chunk.css.map": "/nola/static/css/111.71268fa7.chunk.css.map",
     "111.eae12a34.chunk.js.map": "/nola/static/js/111.eae12a34.chunk.js.map",
     "493.081b1172.chunk.css.map": "/nola/static/css/493.081b1172.chunk.css.map",
@@ -235,6 +241,6 @@
   },
   "entrypoints": [
     "static/css/main.37e8666c.css",
-    "static/js/main.4661bd7c.js"
+    "static/js/main.e79b3d05.js"
   ]
 }
