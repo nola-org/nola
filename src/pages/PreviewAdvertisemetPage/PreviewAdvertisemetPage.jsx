@@ -27,15 +27,23 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
 
   useEffect(() => {
     if (
-      preview?.title !== "" &&
-      preview?.category?.name !== "" &&
-      preview?.subcategory?.name !== ""
+      preview?.data?.title !== "" &&
+      preview?.data?.category?.name !== "" &&
+      preview?.data?.subcategory?.name !== "" &&
+      preview?.data?.banners?.some((banner) => banner?.length !== 0) &&
+      preview?.data?.description?.length !== 0
     ) {
       setValidForm(true);
     } else {
       setValidForm(false);
     }
-  }, [preview?.category?.name, preview?.subcategory?.name, preview?.title]);
+  }, [
+    preview?.data?.category?.name,
+    preview?.data?.subcategory?.name,
+    preview?.data?.title,
+    preview?.data?.banners,
+    preview?.data?.description,
+  ]);
 
   const handleConfirmClick = async () => {
     try {
@@ -47,6 +55,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
           status: "pending",
         });
 
+        if (res.status === 201 || res.status === 200) {
         setPostSuccessfullyAdded(true);
 
         setTimeout(() => {
@@ -54,9 +63,15 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
         }, 3000);
         localStorage.removeItem("createPost");
         return;
+        } else {
+          ToastError("Try again later.");
+        }          
+
       }
 
       const dataRes = await postPostApi({ ...preview.data, status: "pending" });
+      
+      if (dataRes.status === 201 || dataRes.status === 200) {
       console.log("dataRes", dataRes);
       setPostSuccessfullyAdded(true);
 
@@ -64,6 +79,9 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
         navigate("/main");
       }, 3000);
       localStorage.removeItem("createPost");
+        return;
+      }
+      throw new Error("Try again later.");
     } catch (error) {
       ToastError(error.message || "Try again later.");
     }

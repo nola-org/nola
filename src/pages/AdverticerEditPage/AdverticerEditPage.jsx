@@ -18,6 +18,8 @@ import { AvatarUser } from "../../components/Avatar/Avatar";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 import { Toastify } from "../../services/Toastify/Toastify";
 import { useSavePost } from "../../services/hooks/useSavePost";
+import { googleLoginThunk } from "../../redux/auth/googleLoginThunk";
+import { useDispatch } from "react-redux";
 
 const schema = yup.object().shape({
   first_name: yup.string().min(1).required("Name is required"),
@@ -25,6 +27,7 @@ const schema = yup.object().shape({
 });
 
 const AdverticerEditPage = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigate();
   const { theme, setTheme } = useCustomContext();
   const { isSaved, toggleSave } = useSavePost();
@@ -41,24 +44,60 @@ const AdverticerEditPage = () => {
 
   useEffect(() => {
     const getData = (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const access = params.get("access");
+      const refresh = params.get("refresh");
       try {
-        const data = await getAccountApi();
+        if (access) {
+          dispatch(googleLoginThunk({ access, refresh }));
+        } else {
+          const getData = (async () => {
+            try {
+              const data = await getAccountApi();
 
-        if (data.status === 200) {
-          setData(data.data);
-          setUserId(data.data.id);
+              if (data.status === 200) {
+                setData(data.data);
+                setUserId(data.data.id);
 
-          if (data.data.links.length <= 0) return;
-          setLinks(data.data.links);
-          return;
+                if (data.data.links.length <= 0) return;
+                setLinks(data.data.links);
+                return;
+              }
+              throw new Error("Try again later.");
+            } catch (error) {
+              ToastError("Try again later.");
+              console.log(error);
+            }
+          })();
         }
-        throw new Error("Try again later.");
       } catch (error) {
         ToastError("Try again later.");
-        console.log(error);
       }
     })();
   }, []);
+
+
+
+  // useEffect(() => {
+  //   const getData = (async () => {
+  //     try {
+  //       const data = await getAccountApi();
+
+  //       if (data.status === 200) {
+  //         setData(data.data);
+  //         setUserId(data.data.id);
+
+  //         if (data.data.links.length <= 0) return;
+  //         setLinks(data.data.links);
+  //         return;
+  //       }
+  //       throw new Error("Try again later.");
+  //     } catch (error) {
+  //       ToastError("Try again later.");
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, []);
 
   // const [links, setLinks] = useState(() => {
   //   return (
