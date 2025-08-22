@@ -10,6 +10,7 @@ import { PrivateRoute } from "./components/AuthRouts/PrivateRout";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { LoaderSpiner } from "./services/loaderSpinner/LoaderSpinner";
 import { ProfileCheckRout } from "./components/AuthRouts/ProfileCheckRout";
+import TokenCatcherRedirect from "./components/TokenCatcherRedirect/TokenCatcherRedirect";
 
 const Layout = lazy(() => import("./components/Layout/Layout"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage/LoadingPage"));
@@ -97,11 +98,18 @@ const ConfirmEmailPage = lazy(() =>
 
 function App() {
   const dispatch = useDispatch();
-  const { isRefreshing } = useAuth();
+  const { isRefreshing, token } = useAuth(); 
+  const refresh = useSelector(state => state.auth.refresh);
 
-  useEffect(() => {
-    dispatch(refreshUserThunk());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(refreshUserThunk());
+  // }, [dispatch]);
+
+    useEffect(() => {
+    if (refresh) {
+      dispatch(refreshUserThunk());
+    }
+  }, [dispatch, refresh]);
 
   return (
     <div className="App">
@@ -280,17 +288,9 @@ function App() {
           <Route path="/recovery" element={<RecoveryPage />} />
           <Route path="/updatePassword" element={<UpdatePasswordPage />} />
 
-          <Route
-  path="main/accountAdverticer/adverticerEdit"
-  element={
-    <PrivateRoute
-      component={<AdverticerEditPage />}
-      redirectTo="/main/authorization"
-    />
-  }
-/>
+          <Route path="/google-auth" element={<TokenCatcherRedirect />} />
 
-          {/* <Route
+          <Route
             path="main/accountAdverticer/adverticerEdit"
             element={
               <PrivateRoute
@@ -298,28 +298,8 @@ function App() {
                 redirectTo="/main/authorization"
               />
             }
-          /> */}
+          />
 
-          {/* <Route
-            path="/profile"
-            element={
-              <PrivateRoute
-                component={<AdverticerEditPage />}
-                redirectTo="/main/authorization"
-              />
-            }
-          /> */}
-
-           {/* <Route
-            path="main/accountAdverticer/adverticerEdit/:token"
-            element={
-              <AdverticerEditPage />
-              // <PrivateRoute
-              //   component={<AdverticerEditPage />}
-              //   redirectTo="/main/authorization"
-              // />
-            }
-          />  */}
 
           {/* <Route
             path="main/accountAdverticer/adverticerEdit/links"

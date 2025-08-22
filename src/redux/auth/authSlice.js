@@ -30,11 +30,13 @@ export const authSlice = createSlice({
     //   state.refresh = action.payload.refresh || null;
     //   state.isLoggedIn = true;
     // });
-        builder
+    builder
       .addCase(googleLoginThunk.pending, (state) => {
         state.isRefreshing = true;
       })
-      .addCase(googleLoginThunk.fulfilled, (state, action) => {
+        .addCase(googleLoginThunk.fulfilled, (state, action) => {
+        console.log("action.payload.access", action.payload, action.payload.access);
+        
         state.user = action.payload.user || {};
         state.token = action.payload.access;
         state.refresh = action.payload.refresh || null;

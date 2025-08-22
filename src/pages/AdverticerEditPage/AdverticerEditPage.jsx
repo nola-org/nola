@@ -21,6 +21,7 @@ import { useSavePost } from "../../services/hooks/useSavePost";
 import { googleLoginThunk } from "../../redux/auth/googleLoginThunk";
 import { useDispatch } from "react-redux";
 import { useLocation } from 'react-router-dom';
+import { useAuth } from "../../services/hooks/useAuth";
 
 const schema = yup.object().shape({
   first_name: yup.string().min(1).required("Name is required"),
@@ -30,8 +31,7 @@ const schema = yup.object().shape({
 const AdverticerEditPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
-  const location = useLocation();
-  
+ const { token } = useAuth();
   const { theme, setTheme } = useCustomContext();
   const { isSaved, toggleSave } = useSavePost();
   const [data, setData] = useState([]);
@@ -45,79 +45,125 @@ const AdverticerEditPage = () => {
   const [symbolspostDescriptionCount, setSymbolspostDescriptionCount] =
     useState(data?.bio?.length || 0);
   
- 
+    const navigate = useNavigate();
+   const [status, setStatus] = useState("loading"); // loading | success | error
+  const location = useLocation();
 
-  console.log("location", location);
-  
-  useEffect(() => {
-    const hashToken = new URLSearchParams(location.hash.slice(1)).get("token");
-console.log("hashToken", hashToken);
-    if (hashToken) {
-      dispatch(googleLoginThunk(hashToken));
-      window.history.replaceState(null, "", location.pathname);
-    }
-  }, [location, dispatch]);
+
+//   useEffect(() => {
+//     const hashToken = new URLSearchParams(location.hash.slice(1)).get("token");
+// console.log("hashToken", hashToken);
+//     if (hashToken) {
+//       dispatch(googleLoginThunk(hashToken));
+//       window.history.replaceState(null, "", location.pathname);
+//     }
+//   }, [location, dispatch]);
   
   
   // useEffect(() => {
   //   const getData = (async () => {
-  //     const params = new URLSearchParams(window.location.search);
-  //     const access = params.get("access");
-  //     const refresh = params.get("refresh");
-
-  //     console.log("params", params);
+  //     // const params = new URLSearchParams(window.location.search);
+  //     // const access = params.get("access");
+  //     // const refresh = params.get("refresh");
+  //     const hashToken = new URLSearchParams(location.hash.slice(1)).get("token");
       
-  //     // try {
-  //     //   if (access) {
-  //     //     dispatch(googleLoginThunk({ access, refresh }));
-  //     //   } else {
-  //     //     const getData = (async () => {
-  //     //       try {
-  //     //         const data = await getAccountApi();
-
-  //     //         if (data.status === 200) {
-  //     //           setData(data.data);
-  //     //           setUserId(data.data.id);
-
-  //     //           if (data.data.links.length <= 0) return;
-  //     //           setLinks(data.data.links);
-  //     //           return;
-  //     //         }
-  //     //         throw new Error("Try again later.");
-  //     //       } catch (error) {
-  //     //         ToastError("Try again later.");
-  //     //         console.log(error);
-  //     //       }
-  //     //     })();
-  //     //   }
-  //     // } catch (error) {
-  //     //   ToastError("Try again later.");
-  //     // }
-  //   })();
-  // }, []);
-
-
-
-  // useEffect(() => {
-  //   const getData = (async () => {
+  //     console.log("hashToken", hashToken);
+      
   //     try {
-  //       const data = await getAccountApi();
+  //       if (hashToken) {
+  //         dispatch(googleLoginThunk(hashToken));
+  //       } else {
+  //         const getData = (async () => {
+  //           try {
+  //             const data = await getAccountApi();
 
-  //       if (data.status === 200) {
-  //         setData(data.data);
-  //         setUserId(data.data.id);
+  //             if (data.status === 200) {
+  //               setData(data.data);
+  //               setUserId(data.data.id);
 
-  //         if (data.data.links.length <= 0) return;
-  //         setLinks(data.data.links);
-  //         return;
+  //               if (data.data.links.length <= 0) return;
+  //               setLinks(data.data.links);
+  //               return;
+  //             }
+  //             throw new Error("Try again later.");
+  //           } catch (error) {
+  //             ToastError("Try again later.");
+  //             console.log(error);
+  //           }
+  //         })();
   //       }
-  //       throw new Error("Try again later.");
   //     } catch (error) {
   //       ToastError("Try again later.");
-  //       console.log(error);
   //     }
   //   })();
   // }, []);
+
+
+
+// useEffect(() => {
+//   const initPage = async () => {
+// //     const hashToken = new URLSearchParams(location.hash.slice(1)).get("token");
+// // console.log("hashToken", hashToken);
+
+//     try {
+//       // if (token) {
+//       //   // 1. Google login с ожиданием завершения
+//       //   const loginResult = await dispatch(googleLoginThunk(token)).unwrap();
+
+//       //   // можно логировать:
+//       //   console.log("✅ Google login success:", loginResult);
+
+//       //   window.history.replaceState(null, "", location.pathname);
+//       // }
+
+//       // 2. Профиль — строго после loginThunk
+//       const response = await getAccountApi();
+
+//       if (response.status === 200) {
+//         const userData = response.data;
+//         setData(userData);
+//         setUserId(userData.id);
+
+//         if (userData.links?.length > 0) {
+//           setLinks(userData.links);
+//         }
+//       } else {
+//         throw new Error("Failed to load profile.");
+//       }
+//     } catch (error) {
+//       console.error("Ошибка инициализации страницы:", error);
+//       ToastError("Ошибка загрузки профиля");
+//     } finally {
+//       setLoader(false);
+//     }
+//   };
+
+//   initPage();
+  // }, [dispatch, location]);
+  
+
+
+
+  useEffect(() => {
+    const getData = (async () => {
+      try {
+        const data = await getAccountApi();
+
+        if (data.status === 200) {
+          setData(data.data);
+          setUserId(data.data.id);
+
+          if (data.data.links.length <= 0) return;
+          setLinks(data.data.links);
+          return;
+        }
+        throw new Error("Try again later.");
+      } catch (error) {
+        ToastError("Try again later.");
+        console.log(error);
+      }
+    })();
+  }, []);
 
   // const [links, setLinks] = useState(() => {
   //   return (

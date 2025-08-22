@@ -1,26 +1,28 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getAccountApi } from '../../services/https/https';
+import { token } from '../../services/axios';
 
 
-export const googleLoginThunk = createAsyncThunk(
-  "auth/googleLogin",
-  async (access, { rejectWithValue }) => {
+export const googleLoginThunk = createAsyncThunk( 
+  'auth/googleLogin',
+  async (accessToken, { rejectWithValue }) => {
     try {
-                  console.log("access", access);
-      
-            // localStorage.setItem('access', access);
-      // localStorage.setItem('refresh', refresh);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
-      const res = await getAccountApi(); // Получаем данные пользователя
+      console.log("✅ googleLoginThunk получен token:", accessToken);
+
+      token.set(accessToken);
+      const res = await getAccountApi(); 
+
+      console.log(res);
 
       return {
-        user: res.data,
-        access,
+        user: res.data,        
+        access: accessToken,
         refresh: null,
       };
     } catch (err) {
-      return rejectWithValue(err.response?.data || "Ошибка авторизации");
+      console.error("Ошибка при получении аккаунта:", err);
+      return rejectWithValue('Ошибка логина');
     }
   }
 );
