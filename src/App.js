@@ -162,10 +162,11 @@ function App() {
             <Route
               path="accountAdverticer"
               element={
-                <PrivateRoute
-                  component={<AccountAdverticerPage />}
-                  redirectTo="/main/authorization"
-                />
+                <AccountAdverticerPage />
+                // <PrivateRoute
+                //   component={<AccountAdverticerPage />}
+                //   redirectTo="/main/authorization"
+                // />
               }
             >
               <Route index element={<AdverticerPublicationsPage />} />
@@ -280,6 +281,16 @@ function App() {
           <Route path="/updatePassword" element={<UpdatePasswordPage />} />
 
           <Route
+  path="main/accountAdverticer/adverticerEdit"
+  element={
+    <PrivateRoute
+      component={<AdverticerEditPage />}
+      redirectTo="/main/authorization"
+    />
+  }
+/>
+
+          {/* <Route
             path="main/accountAdverticer/adverticerEdit"
             element={
               <PrivateRoute
@@ -287,9 +298,9 @@ function App() {
                 redirectTo="/main/authorization"
               />
             }
-          />
+          /> */}
 
-          <Route
+          {/* <Route
             path="/profile"
             element={
               <PrivateRoute
@@ -297,7 +308,18 @@ function App() {
                 redirectTo="/main/authorization"
               />
             }
-          />
+          /> */}
+
+           {/* <Route
+            path="main/accountAdverticer/adverticerEdit/:token"
+            element={
+              <AdverticerEditPage />
+              // <PrivateRoute
+              //   component={<AdverticerEditPage />}
+              //   redirectTo="/main/authorization"
+              // />
+            }
+          />  */}
 
           {/* <Route
             path="main/accountAdverticer/adverticerEdit/links"

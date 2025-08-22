@@ -3,7 +3,7 @@ import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import back from "../../assets/images/back.jpg";
 import add from "../../assets/icons/addBaner.svg";
 import deleteLink from "../../assets/icons/deleteLink.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import { useEffect, useState } from "react";
 import { getAccountApi, putAccountApi } from "../../services/https/https";
@@ -20,6 +20,7 @@ import { Toastify } from "../../services/Toastify/Toastify";
 import { useSavePost } from "../../services/hooks/useSavePost";
 import { googleLoginThunk } from "../../redux/auth/googleLoginThunk";
 import { useDispatch } from "react-redux";
+import { useLocation } from 'react-router-dom';
 
 const schema = yup.object().shape({
   first_name: yup.string().min(1).required("Name is required"),
@@ -29,6 +30,8 @@ const schema = yup.object().shape({
 const AdverticerEditPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
+  const location = useLocation();
+  
   const { theme, setTheme } = useCustomContext();
   const { isSaved, toggleSave } = useSavePost();
   const [data, setData] = useState([]);
@@ -41,40 +44,57 @@ const AdverticerEditPage = () => {
   const [links, setLinks] = useState([{ id: nanoid(), url: "", name: "" }]);
   const [symbolspostDescriptionCount, setSymbolspostDescriptionCount] =
     useState(data?.bio?.length || 0);
+  
+ 
 
+  console.log("location", location);
+  
   useEffect(() => {
-    const getData = (async () => {
-      const params = new URLSearchParams(window.location.search);
-      const access = params.get("access");
-      const refresh = params.get("refresh");
-      try {
-        if (access) {
-          dispatch(googleLoginThunk({ access, refresh }));
-        } else {
-          const getData = (async () => {
-            try {
-              const data = await getAccountApi();
+    const hashToken = new URLSearchParams(location.hash.slice(1)).get("token");
+console.log("hashToken", hashToken);
+    if (hashToken) {
+      dispatch(googleLoginThunk(hashToken));
+      window.history.replaceState(null, "", location.pathname);
+    }
+  }, [location, dispatch]);
+  
+  
+  // useEffect(() => {
+  //   const getData = (async () => {
+  //     const params = new URLSearchParams(window.location.search);
+  //     const access = params.get("access");
+  //     const refresh = params.get("refresh");
 
-              if (data.status === 200) {
-                setData(data.data);
-                setUserId(data.data.id);
+  //     console.log("params", params);
+      
+  //     // try {
+  //     //   if (access) {
+  //     //     dispatch(googleLoginThunk({ access, refresh }));
+  //     //   } else {
+  //     //     const getData = (async () => {
+  //     //       try {
+  //     //         const data = await getAccountApi();
 
-                if (data.data.links.length <= 0) return;
-                setLinks(data.data.links);
-                return;
-              }
-              throw new Error("Try again later.");
-            } catch (error) {
-              ToastError("Try again later.");
-              console.log(error);
-            }
-          })();
-        }
-      } catch (error) {
-        ToastError("Try again later.");
-      }
-    })();
-  }, []);
+  //     //         if (data.status === 200) {
+  //     //           setData(data.data);
+  //     //           setUserId(data.data.id);
+
+  //     //           if (data.data.links.length <= 0) return;
+  //     //           setLinks(data.data.links);
+  //     //           return;
+  //     //         }
+  //     //         throw new Error("Try again later.");
+  //     //       } catch (error) {
+  //     //         ToastError("Try again later.");
+  //     //         console.log(error);
+  //     //       }
+  //     //     })();
+  //     //   }
+  //     // } catch (error) {
+  //     //   ToastError("Try again later.");
+  //     // }
+  //   })();
+  // }, []);
 
 
 

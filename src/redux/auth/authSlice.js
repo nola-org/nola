@@ -22,14 +22,29 @@ export const authSlice = createSlice({
     logoutAction: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(googleLoginThunk.fulfilled, (state, action) => {
-      console.log("action.payload", action.payload);
+    // builder.addCase(googleLoginThunk.fulfilled, (state, action) => {
+    //   console.log("action.payload", action.payload);
       
-      state.user = action.payload.user || {};
-      state.token = action.payload.access;
-      state.refresh = action.payload.refresh || null;
-      state.isLoggedIn = true;
-    });
+    //   state.user = action.payload.user || {};
+    //   state.token = action.payload.access;
+    //   state.refresh = action.payload.refresh || null;
+    //   state.isLoggedIn = true;
+    // });
+        builder
+      .addCase(googleLoginThunk.pending, (state) => {
+        state.isRefreshing = true;
+      })
+      .addCase(googleLoginThunk.fulfilled, (state, action) => {
+        state.user = action.payload.user || {};
+        state.token = action.payload.access;
+        state.refresh = action.payload.refresh || null;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addCase(googleLoginThunk.rejected, (state) => {
+        state.isRefreshing = false;
+      });
+    
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.user = action.payload;
       state.isLoggedIn = true;

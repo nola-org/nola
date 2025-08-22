@@ -22,7 +22,54 @@ const GoogleAndFacebookButton = () => {
   const handleGoogleLogin = () => {
     window.location.href =
       "https://nola-spot-python-1.onrender.com/auth/login/google-oauth2/";
+  };
+
+  const handleFacebookSuccess = (response) => {
+    console.log("Facebook login successful", response);
+    setRedirect(true);
+    navigate("/main/accountAdverticer");
+  };
+
+  const handleFacebookFailure = (error) => {
+    console.error("Facebook login failed. Try again later.");
+  };
+
+  return (
+    <div className={css.buttonContainer}>
+      <ToastContainer />
+      <div className={css.separatorLine}></div>
+      <div className={`${css.orText} dark:bg-black`}>or</div>
+
+      <button
+        // onClick={() => googleLogin()}
+        onClick={handleGoogleLogin}
+        className={`${css.buttonForm} dark:bg-black dark:border-white dark:text-white`}
+      >
+        <FcGoogle className={css.icon} />
+        Continue with Google
+      </button>
+
+      {/* <FacebookLogin
+        appId="366622046395430"
+        autoLoad={false}
+        fields="name,email,picture"
+        callback={handleFacebookSuccess}
+        onFailure={handleFacebookFailure}
+        render={({ onClick }) => (
+          <button
+            onClick={onClick}
+            className={`${css.buttonForm} dark:bg-black dark:border-white dark:text-white`}
+          >
+            <FaFacebook className={css.icon} />
+            Continue with Facebook
+          </button>
+        )}
+      /> */}
+    </div>
+  );
 };
+
+export default GoogleAndFacebookButton;
 //   const googleLogin = useGoogleLogin({
 //   flow: "auth-code",
 //   onSuccess: async (tokenResponse) => {
@@ -108,50 +155,3 @@ const GoogleAndFacebookButton = () => {
   //     console.error("Google login failed.", error);
   //   },
   // });
-
-  const handleFacebookSuccess = (response) => {
-    console.log("Facebook login successful", response);
-    setRedirect(true);
-    navigate("/main/accountAdverticer");
-  };
-
-  const handleFacebookFailure = (error) => {
-    console.error("Facebook login failed. Try again later.");
-  };
-
-  return (
-    <div className={css.buttonContainer}>
-      <ToastContainer />
-      <div className={css.separatorLine}></div>
-      <div className={`${css.orText} dark:bg-black`}>or</div>
-
-      <button
-        // onClick={() => googleLogin()}
-        onClick={handleGoogleLogin}
-        className={`${css.buttonForm} dark:bg-black dark:border-white dark:text-white`}
-      >
-        <FcGoogle className={css.icon} />
-        Continue with Google
-      </button>
-
-      {/* <FacebookLogin
-        appId="366622046395430"
-        autoLoad={false}
-        fields="name,email,picture"
-        callback={handleFacebookSuccess}
-        onFailure={handleFacebookFailure}
-        render={({ onClick }) => (
-          <button
-            onClick={onClick}
-            className={`${css.buttonForm} dark:bg-black dark:border-white dark:text-white`}
-          >
-            <FaFacebook className={css.icon} />
-            Continue with Facebook
-          </button>
-        )}
-      /> */}
-    </div>
-  );
-};
-
-export default GoogleAndFacebookButton;

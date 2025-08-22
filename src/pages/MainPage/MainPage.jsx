@@ -13,12 +13,14 @@ import {
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 import { useCustomContext } from "../../services/Context/Context";
 import { useSavePost } from "../../services/hooks/useSavePost";
+import { useParams } from "react-router-dom";
 
 const LOKAL_KEY = "savedPost";
 
 export const MainPage = () => {
-  const { token } = useAuth();
   const { theme } = useCustomContext();
+  const { token } = useParams();
+  
   const { postsId, setPostsId } = useCustomContext();
 
   const [isScrollTop, setIsScrollTop] = useState(true);
@@ -29,6 +31,7 @@ export const MainPage = () => {
 
   const { isSaved, toggleSave } = useSavePost();
 
+  console.log("token", token);
   // Скролл-хедер
   useEffect(() => {
     const handleScroll = () => {
