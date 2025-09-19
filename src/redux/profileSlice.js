@@ -12,7 +12,9 @@ export const fetchProfile = createAsyncThunk(
     }
   }
 );
-// http://localhost:3000/nola/google-auth#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJUZXN0IiwiaWF0IjoxNjA5MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+// http://localhost:3000/nola/google-auth#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MDI4NTg0LCJpYXQiOjE3NTU5NDIxODQsImp0aSI6IjY5N2IzZWY2NmI4MjRiM2M5OGQ5OGU0ODIzNWRiNDM4IiwidXNlcl9pZCI6Mn0.-XAG08Z0Fxj5cZ5kkk9_Oyldn2Th_uwm8kdlKc9HoNg
+
+// http://localhost:3000/nola/main/accountAdverticer/adverticerEdit#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MDI4NTg0LCJpYXQiOjE3NTU5NDIxODQsImp0aSI6IjY5N2IzZWY2NmI4MjRiM2M5OGQ5OGU0ODIzNWRiNDM4IiwidXNlcl9pZCI6Mn0.-XAG08Z0Fxj5cZ5kkk9_Oyldn2Th_uwm8kdlKc9HoNg
 
 
 const profileSlice = createSlice({

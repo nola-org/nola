@@ -2,8 +2,22 @@ import axios from "axios";
 import { instance } from "../axios";
 
 // ----------Token---------
-export const postRefreshToken = async (body) => {
-  const data = await instance.post("/auth/token/refresh/", body);
+// export const postRefreshToken = async (body) => {
+//   const data = await instance.post("/auth/token/refresh/", body);
+
+//   return data;
+// };
+
+export const postRefreshToken = async (body = null) => {
+  const config = {
+    withCredentials: true, 
+  };
+
+  const data = await instance.post(
+    "/auth/token/refresh/",
+    body ?? {},
+    config
+  );
 
   return data;
 };
@@ -16,7 +30,9 @@ export const postlogOut = async () => {
 
 // ----------Account---------
 export const getAccountApi = async () => {
-  const data = await instance.get("/users/me");
+  const data = await instance.get("/users/me", {
+    withCredentials: true,
+  });
   return data;
 };
 
