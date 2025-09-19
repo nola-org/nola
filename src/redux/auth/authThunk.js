@@ -91,7 +91,6 @@ export const refreshUserThunk = createAsyncThunk(
       let data;
 
       if (refresh) {
-        console.log("refresh", refresh);
         data = await postRefreshToken({
           access: stateToken,
           refresh: refresh,
@@ -100,13 +99,15 @@ export const refreshUserThunk = createAsyncThunk(
       } else {
         //  Google OAuth 
         data = await postRefreshCookie();
-        console.log("data RefreshCookie", data);
+        console.log("data RefreshCookie", data?.access);
         
       }
-      console.log("data", data?.data);
-      token.set(data?.data?.access);
+      console.log("data", data?.data ?? data?.access);
 
-      return data?.data;
+      const accessToken = data?.access ?? data?.data?.access;
+      token.set(accessToken);
+
+      return accessToken;
     } catch (error) {
       console.error("❌ Refresh failed:", error);
       return thunkAPI?.rejectWithValue("No valid token");
