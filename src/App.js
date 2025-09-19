@@ -105,11 +105,19 @@ function App() {
   //   dispatch(refreshUserThunk());
   // }, [dispatch]);
 
-    useEffect(() => {
-    if (refresh) {
-      dispatch(refreshUserThunk());
-    }
-  }, [dispatch, refresh]);
+  //   useEffect(() => {
+  //   if (refresh) {
+  //     dispatch(refreshUserThunk());
+  //   }
+  // }, [dispatch, refresh]);
+
+  useEffect(() => {
+    dispatch(refreshUserThunk());
+  }, [dispatch]);
+
+  if (isRefreshing) {
+    return <div className="loader"><LoaderSpiner /></div>;
+  }
 
   return (
     <div className="App">

@@ -22,14 +22,23 @@ import { instance } from "../axios";
 //   return data;
 // };
 
-export const postRefreshToken = async (body = null) => {
-  const config = {
-    withCredentials: true,
-  };
+// export const postRefreshToken = async (body = null) => {
+//   const config = {
+//     withCredentials: true,
+//   };
 
-  const data = body
-    ? await instance.post("/auth/token/refresh/", body, config)
-    : await instance.post("/auth/token/refresh/", {}, config);
+//   const data = body
+//     ? await instance.post("/auth/token/refresh/", body, config)
+//     : await instance.post("/auth/token/refresh/", {}, config);
+
+//   return data;
+// };
+
+export const postRefreshToken = async (body = null) => {
+  const data = await instance.post(
+    "/auth/token/refresh/",
+    body ?? {}
+  );
 
   return data;
 };
@@ -42,9 +51,7 @@ export const postlogOut = async () => {
 
 // ----------Account---------
 export const getAccountApi = async () => {
-  const data = await instance.get("/users/me", {
-    withCredentials: true,
-  });
+  const data = await instance.get("/users/me");
   return data;
 };
 

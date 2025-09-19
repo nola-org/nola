@@ -19,7 +19,11 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logoutAction: () => initialState,
+    // logoutAction: () => initialState,
+    logoutAction: (state) => {
+  localStorage.removeItem("refresh");
+  return initialState;
+}
   },
   extraReducers: (builder) => {
     // builder.addCase(googleLoginThunk.fulfilled, (state, action) => {
@@ -63,7 +67,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(refreshUserThunk.fulfilled, (state, action) => {
       // state.token = action.payload.access;
-      // state.refresh = action.payload.refresh;
+       state.refresh = action.payload.refresh;
       // state.isLoggedIn = true;
       // state.isRefreshing = false;
         state.token = action.payload.access;
