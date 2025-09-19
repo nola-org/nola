@@ -74,7 +74,9 @@ export const authSlice = createSlice({
       state.user = {};
       state.token = null;
       state.refresh = null;
-      (state.isLoggedIn = false), (state.isRefreshing = false);
+      state.isLoggedIn = false;
+      state.isRefreshing = false;
+      // (state.isLoggedIn = false), (state.isRefreshing = false);
     });
     builder.addCase(refreshUserThunk.rejected, (state) => {
       state.isRefreshing = false;

@@ -103,24 +103,53 @@ export const registerThunk = createAsyncThunk(
 // );
 
 
+// export const refreshUserThunk = createAsyncThunk(
+//   "auth/refresh",
+//   async (_, thunkAPI) => {
+//     try {
+//       // Получаем refreshToken из localStorage (если он есть)
+//       const refreshToken = localStorage.getItem("refresh");
+
+//       // Вызываем универсальную функцию
+//       const { data } = await postRefreshToken(
+//         refreshToken ? { refresh: refreshToken } : null
+//       );
+
+//       console.log("✅ Новый access token:", data);
+
+//       // Устанавливаем новый access токен в axios
+//       token.set(data.access);
+
+//       // Можно при желании обновить refresh (если пришёл новый)
+//       if (data.refresh) {
+//         localStorage.setItem("refresh", data.refresh);
+//       }
+
+//       return {
+//         access: data.access,
+//         refresh: data.refresh ?? null,
+//       };
+//     } catch (error) {
+//       console.error("❌ Refresh failed:", error);
+//       return thunkAPI.rejectWithValue("Refresh failed");
+//     }
+//   }
+// );
+
 export const refreshUserThunk = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
     try {
-      // Получаем refreshToken из localStorage (если он есть)
       const refreshToken = localStorage.getItem("refresh");
 
-      // Вызываем универсальную функцию
-      const { data } = await postRefreshToken(
-        refreshToken ? { refresh: refreshToken } : null
-      );
+      const body = refreshToken ? { refresh: refreshToken } : null;
+
+      const { data } = await postRefreshToken(body);
 
       console.log("✅ Новый access token:", data);
 
-      // Устанавливаем новый access токен в axios
       token.set(data.access);
-
-      // Можно при желании обновить refresh (если пришёл новый)
+  
       if (data.refresh) {
         localStorage.setItem("refresh", data.refresh);
       }
