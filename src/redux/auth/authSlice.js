@@ -66,6 +66,8 @@ export const authSlice = createSlice({
       state.isRefreshing = true;
     });
     builder.addCase(refreshUserThunk.fulfilled, (state, action) => {
+      console.log("refreshUserThunk.fulfilled", action.payload);
+      
       // state.token = action.payload.access;
        state.refresh = action.payload.refresh;
       // state.isLoggedIn = true;

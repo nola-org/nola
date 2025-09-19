@@ -107,7 +107,7 @@ export const refreshUserThunk = createAsyncThunk(
       const accessToken = data?.access ?? data?.data?.access;
       token.set(accessToken);
 
-      return accessToken;
+      return  data?.data ?? data;
     } catch (error) {
       console.error("❌ Refresh failed:", error);
       return thunkAPI?.rejectWithValue("No valid token");
