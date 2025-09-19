@@ -39,7 +39,17 @@ export const postRefreshToken = async (body = null) => {
     "/auth/token/refresh/",
     body ?? {}
   );
+console.log("postRefreshToken", data);
 
+  return data;
+};
+
+//  Google OAuth — refresh 
+export const postRefreshCookie = async () => {
+  const { data } = await instance.post("/auth/refresh-cookie/", null);
+  
+  console.log("postRefreshCookie", postRefreshCookie);
+  
   return data;
 };
 

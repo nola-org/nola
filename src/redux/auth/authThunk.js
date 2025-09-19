@@ -1,6 +1,6 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import { instance, token } from "../../services/axios";
-import { postlogOut, postRefreshToken } from "../../services/https/https";
+import { postlogOut, postRefreshCookie, postRefreshToken } from "../../services/https/https";
 import axios from "axios";
 
 export const loginThunk = createAsyncThunk(
@@ -74,6 +74,46 @@ export const registerThunk = createAsyncThunk(
 //   }
 // );
 
+export const refreshUserThunk = createAsyncThunk(
+  "auth/refresh",
+  async (_, thunkAPI) => {
+    const stateToken = thunkAPI?.getState()?.auth?.token;
+    const refresh = thunkAPI?.getState()?.auth?.refresh;
+
+    if (!stateToken) {
+      return thunkAPI?.rejectWithValue("No valid token");
+    }
+
+    token?.set(stateToken);
+
+
+    try {
+      let data;
+
+      if (refresh) {
+        console.log("refresh", refresh);
+        data = await postRefreshToken({
+          access: stateToken,
+          refresh: refresh,
+        });
+      
+      } else {
+        //  Google OAuth 
+        data = await postRefreshCookie();
+        console.log("data RefreshCookie", data);
+        
+      }
+      console.log("data", data?.data);
+      token.set(data?.data?.access);
+
+      return data?.data;
+    } catch (error) {
+      console.error("❌ Refresh failed:", error);
+      return thunkAPI?.rejectWithValue("No valid token");
+    }
+  }
+);
+
 // export const refreshUserThunk = createAsyncThunk(
 //   "auth/refresh",
 //   async (_, thunkAPI) => {
@@ -136,34 +176,6 @@ export const registerThunk = createAsyncThunk(
 //   }
 // );
 
-export const refreshUserThunk = createAsyncThunk(
-  "auth/refresh",
-  async (_, thunkAPI) => {
-    try {
-      const refreshToken = localStorage.getItem("refresh");
-
-      const body = refreshToken ? { refresh: refreshToken } : null;
-
-      const { data } = await postRefreshToken(body);
-
-      console.log("✅ Новый access token:", data);
-
-      token.set(data.access);
-  
-      if (data.refresh) {
-        localStorage.setItem("refresh", data.refresh);
-      }
-
-      return {
-        access: data.access,
-        refresh: data.refresh ?? null,
-      };
-    } catch (error) {
-      console.error("❌ Refresh failed:", error);
-      return thunkAPI.rejectWithValue("Refresh failed");
-    }
-  }
-);
 
 export const logOutThunk = createAsyncThunk("logOut", async (_, thunkAPI) => {
   try {
