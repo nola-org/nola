@@ -81,7 +81,7 @@ export const refreshUserThunk = createAsyncThunk(
     const refresh = thunkAPI?.getState()?.auth?.refresh;
 
     if (!stateToken) {
-      return thunkAPI?.rejectWithValue("No valid token");
+       return isRejectedWithValue("No valid token");
     }
 
     token?.set(stateToken);
@@ -110,7 +110,7 @@ export const refreshUserThunk = createAsyncThunk(
       return  data?.data ?? data;
     } catch (error) {
       console.error("❌ Refresh failed:", error);
-      return thunkAPI?.rejectWithValue("No valid token");
+      return isRejectedWithValue("No valid token");
     }
   }
 );

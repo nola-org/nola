@@ -3,21 +3,23 @@ import { Link, NavLink, useParams } from "react-router-dom";
 import { ToastError } from "../../services/ToastError/ToastError";
 import checked from "../../assets/icons/checked.svg";
 import attention from "../../assets/icons/attention.svg";
-import css from "./ConfirmEmailPage.module.css";
+import css from "./ConfirmEmailChangeEmailPage.module.css";
 import { instance } from "../../services/axios";
 import { LoaderSpiner } from "../../services/loaderSpinner/LoaderSpinner";
 
-const ConfirmEmailPage = () => {
+const ConfirmEmailChangeEmailPage = () => {
   const { token } = useParams();
   const [validUrl, setValidUrl] = useState(false);
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    const verifyEmailUrl = (async () => {
+    const сhangeEmail = (async () => {
       try {
         const { data } = await instance.post(
           `/auth/email/verify?token=${token}`
         );
+        console.log(data);
+        
         if (!token) {
           throw new Error();
         }
@@ -75,6 +77,6 @@ const ConfirmEmailPage = () => {
       )}
     </>
   );
-};
+}
 
-export default ConfirmEmailPage;
+export default ConfirmEmailChangeEmailPage;

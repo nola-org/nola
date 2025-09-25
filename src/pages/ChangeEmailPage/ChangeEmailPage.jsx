@@ -103,13 +103,11 @@ export const ChangeEmailPage = () => {
       setErrors({});
       setValidForm(false);
 
-      // setTimeout(() => {
-      //   navigate("/setting");
-      // }, 3000);
       setTimeout(() => {
         dispatch(logOutThunk());
         navigate("/main/authorization");
       }, 3000);
+      window.location.reload();
     } catch (error) {
       ToastError(error.message);
     }
@@ -241,14 +239,15 @@ export const ChangeEmailPage = () => {
               <Button
                 label="Send a request"
                 disabled={
-                  (formData?.email?.includes("gmail.com") ||
-                    formData?.email?.includes("ukr.net") ||
-                    formData?.email?.includes("meta.ua")) &&
-                  (formData?.newEmail?.includes("gmail.com") ||
-                    formData?.newEmail?.includes("ukr.net") ||
-                    formData?.newEmail?.includes("meta.ua"))
-                    ? false
-                    : true
+                  // (formData?.email?.includes("gmail.com") ||
+                  //   formData?.email?.includes("ukr.net") ||
+                  //   formData?.email?.includes("meta.ua")) &&
+                  // (formData?.newEmail?.includes("gmail.com") ||
+                  //   formData?.newEmail?.includes("ukr.net") ||
+                  //   formData?.newEmail?.includes("meta.ua"))
+                  //   ? false
+                  //   : true
+                  !validForm
                 }
               />
             </div>

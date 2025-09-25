@@ -34,10 +34,10 @@ import { instance } from "../axios";
 //   return data;
 // };
 
-export const postRefreshToken = async (body = null) => {
+export const postRefreshToken = async (body) => {
   const data = await instance.post(
     "/auth/token/refresh/",
-    body ?? {}
+    body
   );
 console.log("postRefreshToken", data);
 
@@ -54,7 +54,7 @@ export const postRefreshCookie = async () => {
 };
 
 export const postlogOut = async () => {
-  const data = await instance.post("/auth/logout");
+  const data = await instance.post("/auth/logout/");
 
   return data;
 };

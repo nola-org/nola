@@ -95,15 +95,18 @@ const EditDraftsPage = lazy(() =>
 const ConfirmEmailPage = lazy(() =>
   import("./pages/ConfirmEmailPage/ConfirmEmailPage")
 );
+const ConfirmEmailChangeEmailPage = lazy(() =>
+  import("./pages/ConfirmEmailChangeEmailPage/ConfirmEmailChangeEmailPage")
+);
 
 function App() {
   const dispatch = useDispatch();
   const { isRefreshing, token } = useAuth(); 
   const refresh = useSelector(state => state.auth.refresh);
 
-  // useEffect(() => {
-  //   dispatch(refreshUserThunk());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(refreshUserThunk());
+  }, [dispatch]);
 
   //   useEffect(() => {
   //   if (refresh) {
@@ -111,18 +114,18 @@ function App() {
   //   }
   // }, [dispatch, refresh]);
 
-  useEffect(() => {
-    dispatch(refreshUserThunk());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(refreshUserThunk());
+  // }, [dispatch]);
 
-  if (isRefreshing) {
-    return <div className="loader"><LoaderSpiner /></div>;
-  }
+  // if (isRefreshing) {
+  //   return <div className="loader"><LoaderSpiner /></div>;
+  // }
 
   return (
     <div className="App">
       <ScrollToTop />
-      {/* {!isRefreshing && ( */}
+     {!isRefreshing && ( 
       <Suspense
         fallback={
           <div className="loader">
@@ -368,11 +371,11 @@ function App() {
           <Route path="/verify-email/:token" element={<ConfirmEmailPage />} />
           <Route path="/verify-email/" element={<ConfirmEmailPage />} />
 
-          <Route path="/confirm-email/:token" element={<ConfirmEmailPage />} />
-          <Route path="/confirm-email/" element={<ConfirmEmailPage />} />
+          <Route path="/confirm-email/:token" element={<ConfirmEmailChangeEmailPage />} />
+          <Route path="/confirm-email/" element={<ConfirmEmailChangeEmailPage />} />
         </Routes>
       </Suspense>
-      {/* // )} */}
+    )} 
     </div>
   );
 }
