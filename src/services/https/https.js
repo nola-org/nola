@@ -1,6 +1,6 @@
 import axios from "axios";
 import { instance } from "../axios";
-// 123321Aa#
+// 123321Aa# 262fdb4adc@webxios.pro inna2 inna3-s62379020@gmail.com
 // ----------Token---------
 // export const postRefreshToken = async (body) => {
 //   const data = await instance.post("/auth/token/refresh/", body);
@@ -35,11 +35,7 @@ import { instance } from "../axios";
 // };
 
 export const postRefreshToken = async (body) => {
-  const data = await instance.post(
-    "/auth/token/refresh/",
-    body
-  );
-console.log("postRefreshToken", data);
+  const data = await instance.post("/auth/token/refresh/", body);
 
   return data;
 };
@@ -295,6 +291,6 @@ export const getResetPassword = async (email, token) => {
 // ---------EmailChange-------
 
 export const postEmailChange = async (email) => {
-  const data = await instance.post(`/auth/email/change/`, email);
+  const data = await instance.post(`/auth/email/change-simple/`, email);
   return data;
 };

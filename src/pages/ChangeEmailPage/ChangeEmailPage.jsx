@@ -14,8 +14,9 @@ import { ToastError } from "../../services/ToastError/ToastError";
 import { ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { logOutThunk } from "../../redux/auth/authThunk";
+import { getAccountApi } from "../../services/https/https";
 
-const schema = yup.object().shape({
+const schema = (dataEmail) => yup.object().shape({
   email: yup
     .string()
     .required("Email is required")
@@ -29,8 +30,13 @@ const schema = yup.object().shape({
     .matches(
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
       "Please enter valid characters"
-    ),
-
+  )
+    .test("email-match", "Email doesn’t match", function (value) {
+      if (!dataEmail) return true; 
+      if (!value) return true; 
+      return value.trim().toLowerCase() === dataEmail.trim().toLowerCase();
+    }),
+  
   newEmail: yup
     .string()
     .required("Email is required")
@@ -43,7 +49,13 @@ const schema = yup.object().shape({
     .matches(
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
       "Mail is not registered in the system. Please try again."
-    ),
+    )
+    .test("newEmail-diff", "Emails must differ", (value, ctx) => {
+      return (
+        value?.trim().toLowerCase() !==
+        ctx.parent.email?.trim().toLowerCase()
+        );
+    }),
 });
 
 export const ChangeEmailPage = () => {
@@ -57,8 +69,16 @@ export const ChangeEmailPage = () => {
     email: "",
     newEmail: "",
   });
-
+  const [data, setData] = useState([]);
   const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+    const getData = (async () => {
+      const { data } = await getAccountApi();
+
+      setData(data);
+    })();
+  }, []);
 
   // useEffect(() => { }, [errors]);
 
@@ -75,15 +95,8 @@ export const ChangeEmailPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleToggleModal = () => {
@@ -95,19 +108,20 @@ export const ChangeEmailPage = () => {
 
     try {
       handleToggleModal();
-      const data = await postEmailChange(formData);
-
-      setMessageChangePassword(true);
+      const data = await postEmailChange({newEmail: formData.newEmail});
 
       setFormData({ email: "", newEmail: "" });
       setErrors({});
       setValidForm(false);
+      
+      setMessageChangePassword(true);
 
       setTimeout(() => {
         dispatch(logOutThunk());
         navigate("/main/authorization");
-      }, 3000);
-      window.location.reload();
+        window.location.reload();
+      }, 3500);
+
     } catch (error) {
       ToastError(error.message);
     }
@@ -115,17 +129,10 @@ export const ChangeEmailPage = () => {
 
   const handleBlur = async (field) => {
     try {
-      await schema.validateAt(field, formData);
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [field]: "",
-      }));
-    } catch (validationError) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [field]: validationError.message,
-      }));
-      setValidForm(false);
+      await schema(data?.email).validateAt(field, formData);
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    } catch (err) {
+      setErrors((prev) => ({ ...prev, [field]: err.message }));
     }
   };
 
@@ -137,21 +144,21 @@ export const ChangeEmailPage = () => {
     navigate(-1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    schema
-      .validate(formData, { abortEarly: false })
-      .then(() => {
-        setIsModal(true);
-      })
-      .catch((validationErrors) => {
-        const newErrors = {};
-        validationErrors.inner.forEach((error) => {
-          newErrors[error.path] = error.message;
-        });
-        setErrors(newErrors);
+    try {
+      await schema(data?.email).validate(formData, { abortEarly: false });
+      setIsModal(true);
+      setValidForm(true);
+    } catch (validationErrors) {
+      const newErrors = {};
+      validationErrors.inner.forEach((error) => {
+        newErrors[error.path] = error.message;
       });
+      setErrors(newErrors);
+      setValidForm(false);
+    }
   };
 
   return (
@@ -178,7 +185,9 @@ export const ChangeEmailPage = () => {
             <h2 className={css.change_title}>Change your email</h2>
             <p className={`${css.change_info} dark:text-white`}>
               A request to confirm your email change <br />
-              will be sent to your primary email address
+              will be sent to your
+              {/* primary */}
+              email address
             </p>
           </div>
           <form onSubmit={handleSubmit} className={css.formContainer}>
@@ -267,9 +276,13 @@ export const ChangeEmailPage = () => {
       )}
 
       {messageChangePassword && (
-        <MessagePostOnModeration>
-          The request has been sent to your primary email
-        </MessagePostOnModeration>
+        <Modal childrenEl="true" handleToggleModal={handleToggleModal}>
+          <p>
+            Confirmation email is complete!
+            <br /> Check your e-mail
+          {/* The request has been sent to your primary email */}
+          </p>
+        </Modal>
       )}
     </>
   );
