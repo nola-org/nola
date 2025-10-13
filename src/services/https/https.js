@@ -2,38 +2,6 @@ import axios from "axios";
 import { instance } from "../axios";
 // 123321Aa# 262fdb4adc@webxios.pro inna2 inna3-s62379020@gmail.com
 // ----------Token---------
-// export const postRefreshToken = async (body) => {
-//   const data = await instance.post("/auth/token/refresh/", body);
-
-//   return data;
-// };
-
-// export const postRefreshToken = async (body = null) => {
-//   const config = {
-//     withCredentials: true,
-//   };
-
-//   const data = await instance.post(
-//     "/auth/token/refresh/",
-//     body ?? {},
-//     config
-//   );
-
-//   return data;
-// };
-
-// export const postRefreshToken = async (body = null) => {
-//   const config = {
-//     withCredentials: true,
-//   };
-
-//   const data = body
-//     ? await instance.post("/auth/token/refresh/", body, config)
-//     : await instance.post("/auth/token/refresh/", {}, config);
-
-//   return data;
-// };
-
 export const postRefreshToken = async (body) => {
   const data = await instance.post("/auth/token/refresh/", body);
 

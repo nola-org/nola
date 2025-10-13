@@ -107,6 +107,11 @@ function App() {
   useEffect(() => {
     dispatch(refreshUserThunk());
   }, [dispatch]);
+//   useEffect(() => {
+//   if (!token && refresh) {
+//     dispatch(refreshUserThunk());
+//   }
+// }, [dispatch, token, refresh]);
 
   //   useEffect(() => {
   //   if (refresh) {

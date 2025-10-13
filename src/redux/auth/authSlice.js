@@ -26,30 +26,26 @@ export const authSlice = createSlice({
 // }
   },
   extraReducers: (builder) => {
-    // builder.addCase(googleLoginThunk.fulfilled, (state, action) => {
-    //   console.log("action.payload", action.payload);
-      
-    //   state.user = action.payload.user || {};
-    //   state.token = action.payload.access;
-    //   state.refresh = action.payload.refresh || null;
-    //   state.isLoggedIn = true;
-    // });
-    builder
-      .addCase(googleLoginThunk.pending, (state) => {
+    builder.addCase(googleLoginThunk.pending, (state) => {
         state.isRefreshing = true;
       })
-        .addCase(googleLoginThunk.fulfilled, (state, action) => {
-        console.log("action.payload.access", action.payload, action.payload.access);
-        
-        state.user = action.payload.user || {};
-        state.token = action.payload.access;
-        state.refresh = action.payload.refresh || null;
-        state.isLoggedIn = true;
-        state.isRefreshing = false;
-      })
-      .addCase(googleLoginThunk.rejected, (state) => {
-        state.isRefreshing = false;
-      });
+    builder.addCase(googleLoginThunk.fulfilled, (state, action) => {
+           console.log(
+             "action.payload.access",
+             action.payload,
+             action.payload.access
+           );
+
+           // state.user = action.payload.user || {};
+           state.user = {};
+           state.token = action.payload.access;
+           state.refresh = action.payload.refresh || null;
+           state.isLoggedIn = true;
+           state.isRefreshing = false;
+         })
+    builder.addCase(googleLoginThunk.rejected, (state) => {
+          state.isRefreshing = false;
+        });
     
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.user = action.payload;
@@ -77,9 +73,9 @@ export const authSlice = createSlice({
       state.user = {};
       state.token = null;
       state.refresh = null;
-      // state.isLoggedIn = false;
-      // state.isRefreshing = false;
-       (state.isLoggedIn = false), (state.isRefreshing = false);
+      state.isLoggedIn = false;
+      state.isRefreshing = false;
+      // (state.isLoggedIn = false), (state.isRefreshing = false);
     });
     builder.addCase(refreshUserThunk.rejected, (state) => {
       state.isRefreshing = false;

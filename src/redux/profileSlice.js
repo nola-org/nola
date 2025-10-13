@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAccountApi } from '../services/https/https'; 
+import { logOutThunk } from './auth/authThunk';
 
 export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
@@ -12,40 +13,39 @@ export const fetchProfile = createAsyncThunk(
     }
   }
 );
-// http://localhost:3000/nola/google-auth#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MDI4NTg0LCJpYXQiOjE3NTU5NDIxODQsImp0aSI6IjY5N2IzZWY2NmI4MjRiM2M5OGQ5OGU0ODIzNWRiNDM4IiwidXNlcl9pZCI6Mn0.-XAG08Z0Fxj5cZ5kkk9_Oyldn2Th_uwm8kdlKc9HoNg
 
-// http://localhost:3000/nola/main/accountAdverticer/adverticerEdit#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MDI4NTg0LCJpYXQiOjE3NTU5NDIxODQsImp0aSI6IjY5N2IzZWY2NmI4MjRiM2M5OGQ5OGU0ODIzNWRiNDM4IiwidXNlcl9pZCI6Mn0.-XAG08Z0Fxj5cZ5kkk9_Oyldn2Th_uwm8kdlKc9HoNg
-
+const initialState = {
+  data: null,
+  status: "idle",
+  error: null,
+};
 
 const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
   initialState: {
     data: null,
-    status: 'idle', // 'loading' | 'succeeded' | 'failed'
+    status: "idle", // 'loading' | 'succeeded' | 'failed'
     error: null,
   },
   reducers: {
-    clearProfile: (state) => {
-      state.data = null;
-      state.status = 'idle';
-      state.error = null;
-    }
+    clearProfile: (state) => () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
         state.error = null;
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.data = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.payload;
-      });
-  }
+      })
+      .addCase(logOutThunk.fulfilled, () => initialState);
+  },
 });
 
 export const { clearProfile } = profileSlice.actions;

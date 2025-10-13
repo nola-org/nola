@@ -2,6 +2,8 @@ import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import { instance, token } from "../../services/axios";
 import { postlogOut, postRefreshCookie, postRefreshToken } from "../../services/https/https";
 import axios from "axios";
+import { logoutAction } from "./authSlice";
+import { clearProfile } from "../profileSlice";
 
 export const loginThunk = createAsyncThunk(
   "login",
@@ -115,74 +117,21 @@ export const refreshUserThunk = createAsyncThunk(
   }
 );
 
-// export const refreshUserThunk = createAsyncThunk(
-//   "auth/refresh",
-//   async (_, thunkAPI) => {
-//     try {
-//       // Просто делаем POST без тела, cookie придёт автоматически
-//       const { data } = await axios.post(
-//         "https://nola-spot-python-1.onrender.com/api/auth/token/refresh/",
-//         {},
-//         {
-//           withCredentials: true, // 🔥 нужно для куки
-//         }
-//       );
-// console.log("data", data);
+export const logOutThunk = createAsyncThunk(
+  "logOut",
+  async (_, { dispatch, thunkAPI }) => {
+    try {
+      await postlogOut();
+      token.unset();
 
-//       // Устанавливаем новый access token
-//       token.set(data.access);
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.disableAutoSelect();
+      }
 
-//       return {
-//         access: data.access,
-//         // refresh: null, // refresh теперь не нужен в redux
-//       };
-//     } catch (error) {
-//       console.error("❌ Refresh failed:", error);
-//       return thunkAPI.rejectWithValue("Refresh failed");
-//     }
-//   }
-// );
-
-
-// export const refreshUserThunk = createAsyncThunk(
-//   "auth/refresh",
-//   async (_, thunkAPI) => {
-//     try {
-//       // Получаем refreshToken из localStorage (если он есть)
-//       const refreshToken = localStorage.getItem("refresh");
-
-//       // Вызываем универсальную функцию
-//       const { data } = await postRefreshToken(
-//         refreshToken ? { refresh: refreshToken } : null
-//       );
-
-//       console.log("✅ Новый access token:", data);
-
-//       // Устанавливаем новый access токен в axios
-//       token.set(data.access);
-
-//       // Можно при желании обновить refresh (если пришёл новый)
-//       if (data.refresh) {
-//         localStorage.setItem("refresh", data.refresh);
-//       }
-
-//       return {
-//         access: data.access,
-//         refresh: data.refresh ?? null,
-//       };
-//     } catch (error) {
-//       console.error("❌ Refresh failed:", error);
-//       return thunkAPI.rejectWithValue("Refresh failed");
-//     }
-//   }
-// );
-
-
-export const logOutThunk = createAsyncThunk("logOut", async (_, thunkAPI) => {
-  try {
-    await postlogOut();
-    token.unset();
-  } catch (error) {
-    return isRejectedWithValue(error.message || "Try again later.");
+      dispatch(logoutAction());
+      dispatch(clearProfile());
+    } catch (error) {
+      return isRejectedWithValue(error.message || "Try again later.");
+    }
   }
-});
+);
