@@ -3,6 +3,7 @@ import { ReactComponent as Icon_Links } from "../../assets/icons/links.svg";
 import css from "./PostsAdverticer.module.css";
 import { NavLink, useLocation } from "react-router-dom";
 import { useCustomContext } from "../../services/Context/Context";
+import image_account from "../../assets/icons/image.svg";
 
 export const PostsAdverticer = ({
   title,
@@ -18,7 +19,11 @@ export const PostsAdverticer = ({
     <>
       <div className={`${css.logo_container} ${openInfo && css.openInfo}`}>
         <NavLink to={`/${profileId}`} className={css.account_link}>
-          <img src={profile_picture} alt="photo" className={css.logo} />
+          <img
+            src={profile_picture || image_account}
+            alt="photo"
+            className={css.logo}
+          />
 
           <p className={`${css.logo_description} dark:text-white`}>{title}</p>
         </NavLink>

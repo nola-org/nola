@@ -78,7 +78,6 @@ const RecoverPasswordPage = () => {
     e.preventDefault();
 
     try {
-      console.log("Form submitted with data:", formData);
       const data = await postResetPassword(formData);
       setPostSuccessfullyAdded(true);
 
@@ -86,7 +85,6 @@ const RecoverPasswordPage = () => {
         navigate("/main/authorization");
       }, 3000);
     } catch (error) {
-      console.log(error);
       ToastError(
         error?.response?.data?.errors?.Password[0] || error.response.statusText
       );

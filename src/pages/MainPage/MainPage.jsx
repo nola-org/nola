@@ -31,7 +31,6 @@ export const MainPage = () => {
 
   const { isSaved, toggleSave } = useSavePost();
 
-  console.log("token", token);
   // Скролл-хедер
   useEffect(() => {
     const handleScroll = () => {

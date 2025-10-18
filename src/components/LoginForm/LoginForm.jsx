@@ -100,7 +100,6 @@ const LoginForm = () => {
     schema
       .validate(formData, { abortEarly: false })
       .then(async () => {
-        console.log("Form submitted with data:", formData);
         try {
           await dispatch(loginThunk(formData)).unwrap();
           // Toastify("SignIn sucsessfull");
@@ -290,7 +289,6 @@ export default LoginForm;
 //     schema
 //       .validate(formData, { abortEarly: false })
 //       .then(async () => {
-//         console.log("Form submitted with data:", formData);
 //         try {
 //           await dispatch(loginThunk(formData)).unwrap();
 //           Toastify("SignIn sucsessfull");

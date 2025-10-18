@@ -160,7 +160,6 @@ const AdverticerEditPage = () => {
         throw new Error("Try again later.");
       } catch (error) {
         ToastError("Try again later.");
-        console.log(error);
       }
     })();
   }, []);
@@ -304,7 +303,6 @@ const AdverticerEditPage = () => {
     schema
       .validate(data, { abortEarly: false })
       .then(async () => {
-        console.log("Form submitted with data:", data);
         try {
           const dataAccount = await putAccountApi(data);
 
@@ -319,7 +317,6 @@ const AdverticerEditPage = () => {
           ToastError(
             error.response.data.links[0] || error.message || "Try again later."
           );
-          console.log(error);
         }
       })
 

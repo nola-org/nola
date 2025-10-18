@@ -57,7 +57,6 @@ const RecoveryForm = () => {
       .validate(formData, { abortEarly: false })
       .then(async () => {
         try {
-          console.log("Form submitted with data:", formData);
           // const data = await postForgotPassword(formData.email);
           setMessageChangePassword(true);
 
@@ -66,7 +65,6 @@ const RecoveryForm = () => {
           }, 3000);
           // Toastify("New password sent by email");
         } catch (error) {
-          console.log(error);
           ToastError(
             error?.response?.data ||
               error?.response?.statusText ||

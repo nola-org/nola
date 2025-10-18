@@ -115,8 +115,6 @@ const AdverticerPublicationsPage = () => {
   };
 
   const handlePostArchivation = (id) => {
-    console.log("handlePostArchivation", id);
-
     setPost(post.filter((item) => item.id !== id));
     handleToggleModal();
     Toastify("Curent post has been archived!");

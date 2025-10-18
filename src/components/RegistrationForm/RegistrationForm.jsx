@@ -15,13 +15,13 @@ import { Modal } from "../Modal/Modal";
 const schema = yup.object().shape({
   email: yup
     .string()
-    // .matches(
-    //   /^[a-zA-Z0-9._%+-]+@(gmail\.com|ukr\.net|meta\.ua)$/,
-    //   "Please enter valid characters"
-    // )
-    // .matches(/^[^\s]*$/, "Please enter valid characters")
-    // .matches(/^[^а-яА-ЯіІїЇєЄ]*$/, "Please enter valid characters")
-    // .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@(gmail\.com|ukr\.net|meta\.ua)$/,
+      "Please enter valid characters"
+    )
+    .matches(/^[^\s]*$/, "Please enter valid characters")
+    .matches(/^[^а-яА-ЯіІїЇєЄ]*$/, "Please enter valid characters")
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address")
     .required("Email is required"),
   password: yup
     .string()
@@ -127,7 +127,6 @@ const RegistrationForm = () => {
     schema
       .validate(formData, { abortEarly: false })
       .then(async () => {
-        console.log("Form submitted with data:", formData);
 
         try {
           await dispatch(registerThunk(formData)).unwrap();
@@ -162,7 +161,7 @@ const RegistrationForm = () => {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <form onSubmit={handleSubmit}>
         <div className={css.inputContainer}>
           {errors.email && <div className={css.errorText}>{errors.email}</div>}

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getAccountApi } from "../../services/https/https";
 import { Advertiser } from "../../components/Advertiser/Advertiser";
 import { useCustomContext } from "../../services/Context/Context";
+import { ToastError } from "../../services/ToastError/ToastError";
 
 const AccountAdverticerPage = () => {
   const { theme, setTheme } = useCustomContext();
@@ -16,9 +17,17 @@ const AccountAdverticerPage = () => {
 
   useEffect(() => {
     const getData = (async () => {
-      const { data } = await getAccountApi();
-
-      setData(data);
+      try {
+        const data = await getAccountApi();
+        
+        if (data.status === 200) {
+          setData(data?.data);
+          return
+        }
+        throw new Error("Try again later.");
+      } catch (error) {
+        ToastError("Try again later.");
+      }
     })();
   }, []);
 

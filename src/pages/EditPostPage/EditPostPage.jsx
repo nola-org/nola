@@ -97,7 +97,6 @@ const EditPostPage = () => {
           response?.data?.detail || response?.message || "Try again later."
         );
       } catch (error) {
-        console.error("Error fetching post data:", error);
         ToastError(error.message || "Try again later.");
       }
     };
@@ -160,7 +159,6 @@ const EditPostPage = () => {
   };
 
   const handlePreview = () => {
-    console.log(post);
     navigate("/main/addPost/previewAdvertisemet", {
       state: {
         data,

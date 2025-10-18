@@ -14,6 +14,7 @@ import { Banners } from "../../components/Banners/Banners";
 import { ToastError } from "../../services/ToastError/ToastError";
 import { ToastContainer } from "react-toastify";
 import { patchPostApi, postPostApi } from "../../services/https/https";
+import image_account from "../../assets/icons/image.svg";
 
 const PreviewAdvertisemetPage = ({ setPreview }) => {
   const navigate = useNavigate();
@@ -72,7 +73,6 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
       const dataRes = await postPostApi({ ...preview.data, status: "pending" });
       
       if (dataRes.status === 201 || dataRes.status === 200) {
-      console.log("dataRes", dataRes);
       setPostSuccessfullyAdded(true);
 
       setTimeout(() => {
@@ -129,7 +129,6 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
                           }}
                           className={css.swiper_slide}
                         >
-                          {console.log(banners)}
                           <img src={banners[0]} alt="" className={css.img} />
                         </SwiperSlide>
                       )}
@@ -141,7 +140,6 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
                           }}
                           className={css.swiper_slide}
                         >
-                          {console.log(banners)}
                           <img src={banners[1]} alt="" className={css.img} />
                         </SwiperSlide>
                       )}
@@ -153,7 +151,6 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
                           }}
                           className={css.swiper_slide}
                         >
-                          {console.log(banners)}
                           <img src={banners[2]} alt="" className={css.img} />
                         </SwiperSlide>
                       )}
@@ -188,7 +185,7 @@ const PreviewAdvertisemetPage = ({ setPreview }) => {
                             preview?.advertiser?.profile_picture?.replace(
                               "image/upload/",
                               ""
-                            )
+                            ) || image_account
                           }
                         />
                       </>

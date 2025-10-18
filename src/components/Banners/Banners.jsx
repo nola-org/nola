@@ -20,7 +20,7 @@ export const Banners = ({ key, banner }) => {
               loop={true}
               autoplay={{
               delay: 3000, 
-              disableOnInteraction: false, // Продолжать после ручного переключения
+              disableOnInteraction: false,
             }}
               pagination={{ el: ".swiper-pagination", clickable: true }}
               navigation={{
@@ -89,77 +89,6 @@ export const Banners = ({ key, banner }) => {
           </>
         ))}
     </>
-
-    // <>
-    //   <Swiper
-    //     slidesPerView={1}
-    //     spaceBetween={30}
-    //     loop={true}
-    //     pagination={{ el: ".swiper-pagination", clickable: true }}
-    //     navigation={{
-    //       nextEl: ".swiper-button-next",
-    //       prevEl: ".swiper-button-prev",
-    //       clickable: true,
-    //     }}
-    //     modules={[EffectCoverflow, Pagination, Navigation]}
-    //     className={css.swiper_container}
-    //   >
-    //     {banners[0] && (
-    //       <SwiperSlide
-    //         style={{
-    //           width: "80%",
-    //         }}
-    //         className={css.swiper_slide}
-    //       >
-    //         {console.log(banners)}
-    //         <img src={banners[0]} alt="" className={css.img} />
-    //       </SwiperSlide>
-    //     )}
-
-    //     {banners[1] && (
-    //       <SwiperSlide
-    //         style={{
-    //           width: "80%",
-    //         }}
-    //         className={css.swiper_slide}
-    //       >
-    //         {console.log(banners)}
-    //         <img src={banners[1]} alt="" className={css.img} />
-    //       </SwiperSlide>
-    //     )}
-
-    //     {banners[2] && (
-    //       <SwiperSlide
-    //         style={{
-    //           width: "80%",
-    //         }}
-    //         className={css.swiper_slide}
-    //       >
-    //         {console.log(banners)}
-    //         <img src={banners[2]} alt="" className={css.img} />
-    //       </SwiperSlide>
-    //     )}
-    //     {/* // ))} */}
-    //     <div className="slider-controler">
-    //       <div
-    //         className="swiper-button-prev slider-arrow"
-    //         style={{ color: "transparent" }}
-    //       ></div>
-    //       <div
-    //         className="swiper-button-next slider-arrow"
-    //         style={{ color: "transparent" }}
-    //       ></div>
-
-    //       <div
-    //         className="swiper-pagination"
-    //         style={{
-    //           position: "relative",
-    //           bottom: "2px",
-    //         }}
-    //       ></div>
-    //     </div>
-    //   </Swiper>
-    // </>
   );
 };
 

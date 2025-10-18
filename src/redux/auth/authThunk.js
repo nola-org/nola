@@ -33,14 +33,14 @@ export const registerThunk = createAsyncThunk(
         user
       );
       token.set(data?.access);
-      console.log(data);
 
       return data;
     } catch (error) {
-      console.log(error);
 
       return rejectWithValue(
-         error?.response?.data?.username?.[0] || "Error. Try again later!"
+        error.status === 500
+          ? "Registration error. You may already be registered with Google. Please try again later or sign in with Google"
+          : error?.response?.data?.username?.[0] || "Error. Try again later!"
         //   error?.response?.data?.errors?.Password ||
         //   error?.response?.data?.errors?.email ||
         //   error?.response?.statusText ||
@@ -52,26 +52,36 @@ export const registerThunk = createAsyncThunk(
 );
 
 // export const refreshUserThunk = createAsyncThunk(
-//   "refresh",
+//   "auth/refresh",
 //   async (_, thunkAPI) => {
-//     const stateToken = thunkAPI.getState().auth.token;
-//     const refresh = thunkAPI.getState().auth.refresh;
+//     const state = thunkAPI.getState();
+//     const stateToken = state.auth.token;
+//     const refresh = state.auth.refresh;
 
-//     if (!stateToken) {
-//       return isRejectedWithValue("No valid token");
+//     if (!stateToken || !refresh) {
+//       return thunkAPI.rejectWithValue("No valid token"); // ✅ исправлено
 //     }
+
 //     token.set(stateToken);
+//     console.log("🔄 refreshUserThunk start");
 
 //     try {
-//       // const { data } = await getAccountApi();
 //       const { data } = await postRefreshToken({
 //         access: stateToken,
 //         refresh: refresh,
 //       });
+
+//       console.log("✅ refreshUserThunk response:", data);
+
 //       token.set(data.access);
-//       return data;
+
+//       return {
+//         access: data.access,
+//         refresh: data.refresh || refresh,
+//       };
 //     } catch (error) {
-//       return isRejectedWithValue("No valid token");
+//       console.error("❌ Refresh failed:", error);
+//       return thunkAPI.rejectWithValue(error.response?.data);
 //     }
 //   }
 // );
@@ -83,11 +93,10 @@ export const refreshUserThunk = createAsyncThunk(
     const refresh = thunkAPI?.getState()?.auth?.refresh;
 
     if (!stateToken) {
-       return isRejectedWithValue("No valid token");
+      return isRejectedWithValue("No valid token");
     }
 
     token?.set(stateToken);
-
 
     try {
       let data;
@@ -97,25 +106,69 @@ export const refreshUserThunk = createAsyncThunk(
           access: stateToken,
           refresh: refresh,
         });
-      
       } else {
-        //  Google OAuth 
+        //  Google OAuth
         data = await postRefreshCookie();
         console.log("data RefreshCookie", data?.access);
-        
       }
       console.log("data", data?.data ?? data?.access);
 
       const accessToken = data?.access ?? data?.data?.access;
       token.set(accessToken);
 
-      return  data?.data ?? data;
+      return data?.data ?? data;
     } catch (error) {
       console.error("❌ Refresh failed:", error);
       return isRejectedWithValue("No valid token");
     }
   }
 );
+
+
+// export const refreshUserThunk = createAsyncThunk(
+//   "auth/refresh",
+//   async (_, thunkAPI) => {
+//     try {
+//       const state = thunkAPI.getState();
+//       const stateToken = state?.auth?.token;
+//       const refresh = state?.auth?.refresh;
+
+//       if (!stateToken && !refresh) {
+//         return thunkAPI.rejectWithValue("No valid token");
+//       }
+
+//       token.set(stateToken);
+
+//       let data;
+
+//       // Если есть refresh
+//       if (refresh) {
+//         const response = await postRefreshToken({
+//           access: stateToken,
+//           refresh: refresh,
+//         });
+//         data = response.data;
+//       }
+//       // Если refresh нет — пробуем через cookie (OAuth)
+//       else {
+//         const response = await postRefreshCookie();
+//         data = response?.data ?? response;
+//       }
+
+
+//       const accessToken = data?.access ?? data?.data?.access;
+//       const refreshToken = data?.refresh ?? data?.data?.refresh ?? refresh;
+//       token.set(accessToken);
+
+//       return {
+//         access: accessToken,
+//         refresh: refreshToken,
+//       };
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue("Refresh failed");
+//     }
+//   }
+// );
 
 export const logOutThunk = createAsyncThunk(
   "logOut",

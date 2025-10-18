@@ -46,10 +46,6 @@ const Layout = () => {
   // useEffect(() => {
   //   const fetchData = (async () => {
   //     try {
-  //       if (token) {
-  //         instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-  //       }
-
   //       const res = await getAccountApi();
   //       setProfile(res.data);
   //     } catch (error) {

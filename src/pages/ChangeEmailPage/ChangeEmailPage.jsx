@@ -83,8 +83,6 @@ export const ChangeEmailPage = () => {
   // useEffect(() => { }, [errors]);
 
   useEffect(() => {
-    console.log(errors?.email?.length, errors?.newEmail?.length);
-
     if (errors?.email?.length === 0 && errors?.newEmail?.length === 0) {
       setValidForm(true);
       return;
@@ -104,7 +102,6 @@ export const ChangeEmailPage = () => {
   };
 
   const confirmMessage = async () => {
-    console.log("Form submitted with data:", formData);
 
     try {
       handleToggleModal();

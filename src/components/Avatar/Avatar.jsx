@@ -100,9 +100,6 @@ export const AvatarUser = ({ setData, avatar, data }) => {
       setUpdate(true);
       const avatar = await postImg(formData);
       const res = await getAccountApi();
-      console.log(res.data);
-
-      console.log("111111111", data);
 
       setData({
         ...data,
@@ -127,7 +124,6 @@ export const AvatarUser = ({ setData, avatar, data }) => {
 
   const onBeforeFileLoad = (elem) => {
     const file = elem.target.files[0];
-    console.log("file", file);
 
     if (!ALLOWED_TYPES.includes(file.type)) {
       ToastError("Photo has not suitable format");
