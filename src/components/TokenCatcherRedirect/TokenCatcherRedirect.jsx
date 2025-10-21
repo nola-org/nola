@@ -22,8 +22,7 @@ useEffect(() => {
     }
 
     try {
-      const res = await axios.post(
-        "https://nola-spot-python-1.onrender.com/api/auth/refresh-cookie/",
+      const res = await axios.post(process.env.REACT_APP_GOOGLE_AUTH,
         { access: hashToken },
         {
           withCredentials: true,
@@ -45,28 +44,6 @@ useEffect(() => {
   handleLogin();
 }, [location, dispatch, navigate]);
 
-  // useEffect(() => {
-  //   const hashToken = new URLSearchParams(location.hash.slice(1)).get("token");
-
-
-  //   if (hashToken) {
-  //     dispatch(googleLoginThunk(hashToken))
-  //       .unwrap()
-  //       .then(() => {
-  //         setStatus("success");
-  //         // Чистим hash и переходим
-  //       //   window.history.replaceState(null, "", location.pathname);
-  //         navigate("/main/accountAdverticer/adverticerEdit", { replace: true });
-  //       })
-  //       .catch(() => {
-  //         setStatus("error");
-  //         navigate("/main/authorization", { replace: true });
-  //       });
-  //   } else {
-  //     setStatus("error");
-  //     navigate("/main/authorization", { replace: true });
-  //   }
-  // }, [location, dispatch, navigate]);
 
   return (
     <div>

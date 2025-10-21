@@ -18,7 +18,6 @@ const ConfirmEmailChangeEmailPage = () => {
         const { data } = await instance.post(
           `/auth/email/verify?token=${token}`
         );
-        console.log(data);
         
         if (!token) {
           throw new Error();

@@ -89,7 +89,6 @@ const PostDetailsPage = () => {
     //   ToastError("Post has been deleted");
     // }
   };
-  console.log(post);
 
   return (
     <div>

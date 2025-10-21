@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+const CLIENTID = process.env.REACT_APP_GOOGLE_CLIENTID;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -18,7 +19,7 @@ root.render(
       <div className="container bg-white dark:bg-black dark:text-white">
         <BrowserRouter basename="/nola">
           <PersistGate loading={null} persistor={persistor}>
-            <GoogleOAuthProvider clientId="276809120280-phkthdt9ggdfm3aqbtudsum4isdpes7v.apps.googleusercontent.com">
+            <GoogleOAuthProvider clientId={CLIENTID}>
               <App />
             </GoogleOAuthProvider>
           </PersistGate>

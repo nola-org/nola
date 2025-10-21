@@ -20,8 +20,7 @@ const GoogleAndFacebookButton = () => {
 
 
   const handleGoogleLogin = () => {
-    window.location.href =
-      "https://nola-spot-python-1.onrender.com/auth/login/google-oauth2/";
+    window.location.href = process.env.REACT_APP_GOOGLE_REDIRECT;
   };
 
   const handleFacebookSuccess = (response) => {

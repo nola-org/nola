@@ -231,7 +231,6 @@ const EditDraftsPage = () => {
   return (
     <>
       {/* <ToastContainer /> */}
-      <p>EditDraftsPage</p>
       {!postSuccessfullyAdded && (
         <>
           <div className={css.top_container} onClick={handleBack}>

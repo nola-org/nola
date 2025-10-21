@@ -29,62 +29,11 @@ export const AvatarUser = ({ setData, avatar, data }) => {
   //   return JSON.parse(localStorage.getItem("account"))?.image ?? "";
   // });
 
-  // const cld = new Cloudinary({
-  //   cloud: {
-  //     cloudName: "dpsjhatpy",
-  //   },
-  // });
 
   // eslint-disable-next-line no-undef
   const upload_presets = process.env.REACT_APP_UPLOAD_PRESETS;
   // eslint-disable-next-line no-undef
   const api_key = process.env.REACT_APP_API_KEY;
-
-  // useEffect(() => {
-  //   setData((prev) => ({
-  //     ...data,
-  //     profile_picture: photo,
-  //     // image: image,
-  //   }));
-  //   // eslint-disable-next-line
-  // }, [photo]);
-
-  // const handleAddPhoto = async (e) => {
-  //   const filesOne = e.target.files[0];
-
-  //   const formData = new FormData();
-  //   formData.append("file", filesOne);
-  //   formData.append("api_key", api_key);
-  //   formData.append("upload_preset", upload_presets);
-
-  //   if (filesOne) {
-  //     try {
-  //       setUpdate(true);
-  //       const response = await fetch(
-  //         `https://api.cloudinary.com/v1_1/dpsjhatpy/image/upload`,
-  //         {
-  //           method: "POST",
-  //           body: formData,
-  //         }
-  //       );
-  //       const data = await response.json();
-
-  //       setPhoto(data?.public_id);
-  //     } catch (error) {
-  //       ToastError(error.message);
-  //     } finally {
-  //       setUpdate(false);
-  //     }
-  //   }
-  // };
-
-  // const imgRes = photo
-  //   ? cld
-  //       .image(photo)
-  //       .resize(
-  //         thumbnail().width(100).height(100).gravity(focusOn(FocusOn.face()))
-  //       )
-  //   : null;
 
   const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 

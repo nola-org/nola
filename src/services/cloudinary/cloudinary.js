@@ -1,5 +1,5 @@
 import axios from "axios";
-const cloud_name = "dpsjhatpy";
+const cloud_name = process.env.REACT_APP_CLOUDINARY;
 
 export const postImg = async (post) => {
   const data = await axios.post(

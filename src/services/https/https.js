@@ -1,6 +1,6 @@
 import axios from "axios";
 import { instance } from "../axios";
-// 123321Aa# 262fdb4adc@webxios.pro inna2 inna3-s62379020@gmail.com
+
 // ----------Token---------
 export const postRefreshToken = async (body) => {
   const data = await instance.post("/auth/token/refresh/", body);

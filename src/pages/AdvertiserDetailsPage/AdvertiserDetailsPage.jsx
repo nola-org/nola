@@ -32,7 +32,6 @@ const AdvertiserDetailsPage = () => {
       try {
         if (advertiserId) {
           const data = await getAccountId(advertiserId);
-          console.log(data);
 
           setData(data);
           return;
