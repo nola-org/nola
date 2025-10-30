@@ -21,44 +21,44 @@ const Layout = () => {
   const dispatch = useDispatch();
   const { token } = useAuth();
   const { theme, setTheme } = useCustomContext();
-  // const [profile, setProfile] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [drafts, setDrafts] = useState(true);
 
-  const profile = useSelector(state => state.profile.data);
-  const profileStatus = useSelector(state => state.profile.status);
-  const profileError = useSelector(state => state.profile.error);
-
-  useEffect(() => {
-    if (token && profileStatus === 'idle') {
-      dispatch(fetchProfile());
-    }
-  }, [token, profileStatus, dispatch]);
-
-  useEffect(() => {
-    if (profileError) {
-      ToastError(profileError);
-    }
-  }, [profileError]);
-
-  const loading = token && profileStatus === 'loading';
+  // const profile = useSelector(state => state.profile.data);
+  // const profileStatus = useSelector(state => state.profile.status);
+  // const profileError = useSelector(state => state.profile.error);
 
   // useEffect(() => {
-  //   const fetchData = (async () => {
-  //     try {
-  //       const res = await getAccountApi();
-  //       setProfile(res.data);
-  //     } catch (error) {
-  //       if (error.response?.status === 401) {
-  //         return;
-  //       } else {
-  //         ToastError(error.message);
-  //       }
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   })();
-  // }, [token]);
+  //   if (token && profileStatus === 'idle') {
+  //     dispatch(fetchProfile());
+  //   }
+  // }, [token, profileStatus, dispatch]);
+
+  // useEffect(() => {
+  //   if (profileError) {
+  //     ToastError(profileError);
+  //   }
+  // }, [profileError]);
+
+  // const loading = token && profileStatus === 'loading';
+
+  useEffect(() => {
+    const fetchData = (async () => {
+      try {
+        const res = await getAccountApi();
+        setProfile(res.data);
+      } catch (error) {
+        if (error.response?.status === 401) {
+          return;
+        } else {
+          ToastError(error.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [token]);
 
   useEffect(() => {
     (async () => {
